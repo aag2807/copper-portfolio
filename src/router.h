@@ -15,7 +15,7 @@ typedef struct
     int has_params; // whether this route has {param} segments
 } Route;
 
-typedef struct
+typedef struct Router
 {
     Route* routes;
     int count;
