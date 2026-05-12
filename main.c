@@ -33,10 +33,13 @@ int main(int argc, char* argv[])
     server_use(server, logging_middleware, NULL);
     server_use(server, static_middleware, NULL);
 
+    // HTML ROUTES
     server_get(server, "/", home_index);
     server_get(server, "/about", home_about);
     server_get(server, "/users/list", users_list);
     server_get(server, "/users/{id}", users_show);
+
+    // API ROUTES
     server_get(server, "/api/users", api_users);
 
     server_start(server);

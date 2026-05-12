@@ -6,7 +6,6 @@
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -80,6 +79,21 @@ void server_get(Server* s, const char* path, RouteHandler handler)
 void server_post(Server* s, const char* path, RouteHandler handler)
 {
     router_add(s->router, "POST", path, handler);
+}
+
+void server_delete(Server* s, const char* path, RouteHandler handler)
+{
+    router_add(s->router, "DELETE", path, handler);
+}
+
+void server_put(Server* s, const char* path, RouteHandler handler)
+{
+    router_add(s->router, "PUT", path, handler);
+}
+
+void server_patch(Server* s, const char* path, RouteHandler handler)
+{
+    router_add(s->router, "PATCH", path, handler);
 }
 
 void server_start(Server* s)
