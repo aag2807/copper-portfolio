@@ -54,8 +54,9 @@ static int match_pattern(const char* pattern, const char* path, Request* req)
         {
             char param[64] = {0};
             int i = 1;
-            while (p_seg[i] && p_seg[i] != '}' && i < (int)sizeof(param))
+            while (p_seg[i] && p_seg[i] != '}' && i - 1 < (int)sizeof(param) - 1)
             {
+                param[i - 1] = p_seg[i];
                 i++;
             }
             request_set_param(req, param, path_seg);

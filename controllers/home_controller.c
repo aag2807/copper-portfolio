@@ -5,14 +5,21 @@
 
 ACTION(home_index)
 {
-    ViewData data[] = {{"title", "text", "Welcome"}, {"message", "text", "In C"}};
+    ViewData data[] = {
+        {"title", "text", "Welcome", NULL},
+        {"message", "text", "In C", NULL},
+        {NULL, NULL, NULL, NULL},
+    };
     response_status(res, 200, "OK");
     render_view(res, "home/index.html", data);
 }
 
 ACTION(home_about)
 {
-    ViewData data[] = {{"title", "text", "About"}, {NULL, NULL, NULL}};
+    ViewData data[] = {
+        {"title", "text", "About", NULL},
+        {NULL, NULL, NULL, NULL},
+    };
     response_status(res, 200, "OK");
     render_view(res, "home/about.html", data);
 }

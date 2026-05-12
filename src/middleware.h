@@ -5,9 +5,6 @@
 #include "response.h"
 typedef struct Router Router;
 typedef struct MiddlewareNode MiddlewareNode;
-// A middleware function receives the request, response, and
-// a pointer to the current node. Returns 1 to continue the
-// chain, 0 to stop (response already sent).
 
 typedef int (*MiddlewareFunc)(Request*, Response*, MiddlewareNode* self, Router* router);
 

@@ -1,7 +1,18 @@
-<h1>{{title}}</h1>
+<h1 class="text-2xl text-slate-800 mb-2">{{title}}</h1>
 <p>Total users: {{user_count}}</p>
-<ul>
-  <li>User 1 → <a href="/users/1">View</a></li>
-  <li>User 2 → <a href="/users/2">View</a></li>
-  <li>User 3 → <a href="/users/3">View</a></li>
+
+{{#if users}}
+<ul class="flex flex-col">
+  {{#each users}}
+  <li class="pl-2">
+    <span class="text-lg text-slate-900 text-[800]">{{name}}</span> →
+    <a class="transition hover:text-blue-900 text-blue-400" href="/users/{{id}}"
+      >View</a
+    >
+  </li>
+  {{/each}}
 </ul>
+
+{{else}}
+<p>No users yet.</p>
+{{/if}}

@@ -3,12 +3,13 @@
 
 #include "router.h"
 
-#include <stdio.h>
 #include <stdlib.h>
+
 MiddlewarePipeline* middleware_create(void)
 {
     return calloc(1, sizeof(MiddlewarePipeline));
 }
+
 void middleware_add(MiddlewarePipeline* p, MiddlewareFunc func, void* ctx)
 {
     MiddlewareNode* node = malloc(sizeof(MiddlewareNode));
@@ -26,8 +27,7 @@ void middleware_add(MiddlewarePipeline* p, MiddlewareFunc func, void* ctx)
     p->tail = node;
     p->count++;
 }
-// Call the next middleware in the chain,
-// or route the request if at the end
+
 int middleware_next(MiddlewareNode* self, Request* req, Response* res, Router* router)
 {
     if (self->next)
@@ -48,6 +48,7 @@ int middleware_next(MiddlewareNode* self, Request* req, Response* res, Router* r
     }
     return 1;
 }
+
 void middleware_run(MiddlewarePipeline* p, Request* req, Response* res, Router* router)
 {
     if (p->head)
@@ -70,6 +71,7 @@ void middleware_run(MiddlewarePipeline* p, Request* req, Response* res, Router* 
         }
     }
 }
+
 void middleware_destroy(MiddlewarePipeline* p)
 {
     MiddlewareNode* cur = p->head;
