@@ -19,6 +19,7 @@ void response_header(Response* res, const char* key, const char* value);
 void response_send(Response* res, const char* body);
 void response_json(Response* res, const char* json);
 void response_html(Response* res, const char* html);
+void response_bytes(Response* res, const char* content_type, const void* data, size_t len);
 void response_redirect(Response* res, const char* url);
 void response_flush(Response* res, int fd);
 void response_cleanup(Response* res);

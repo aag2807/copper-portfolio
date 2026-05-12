@@ -39,6 +39,18 @@ void str_append(String* s, const char* data)
     s->len += dlen;
 }
 
+void str_append_bytes(String* s, const void* data, size_t len)
+{
+    if (s->len + len + 1 > s->cap)
+    {
+        s->cap = s->len + len + 64;
+        s->data = realloc(s->data, s->cap);
+    }
+    memcpy(s->data + s->len, data, len);
+    s->len += len;
+    s->data[s->len] = '\0';
+}
+
 void str_appendf(String* s, const char* fmt, ...)
 {
     va_list ap;

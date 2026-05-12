@@ -2,15 +2,17 @@
 <html>
   <head>
     <title>{{title}} - C MVC</title>
-    <link rel="stylesheet" href="/style.css" />
+    <!-- <link rel="stylesheet" href="/static/style.css" /> -->
+    <script defer src="/static/alpine.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   </head>
-  <body>
-    <nav>
+  <body class="min-h-screen w-full flex flex-col">
+    <nav class="px-3 py-4 flex flex-row gap-3 bg-slate-300">
       <a href="/">Home</a>
       <a href="/users/list">Users</a>
     </nav>
-    <main>{{body}}</main>
-    <footer>
+    <main class="flex flex-col h-full px-3">{{body}}</main>
+    <footer class="mt-auto px-3 py-6 bg-slate-400">
       <p>C MVC Framework © 2026</p>
     </footer>
   </body>

@@ -5,7 +5,7 @@
 
 ACTION(home_index)
 {
-    ViewData data[] = {{"title", "text", "Welcome"}, {NULL, NULL, NULL}};
+    ViewData data[] = {{"title", "text", "Welcome"}, {"message", "text", "In C"}};
     response_status(res, 200, "OK");
     render_view(res, "home/index.html", data);
 }

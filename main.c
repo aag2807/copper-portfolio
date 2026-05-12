@@ -1,4 +1,5 @@
 #include "src/server.h"
+#include "src/static.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,6 +31,7 @@ int main(int argc, char* argv[])
     Server* server = server_create(port);
 
     server_use(server, logging_middleware, NULL);
+    server_use(server, static_middleware, NULL);
 
     server_get(server, "/", home_index);
     server_get(server, "/about", home_about);

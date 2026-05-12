@@ -45,6 +45,12 @@ void response_html(Response* res, const char* html)
     str_append(&res->body, html);
 }
 
+void response_bytes(Response* res, const char* content_type, const void* data, size_t len)
+{
+    response_header(res, "Content-Type", content_type);
+    str_append_bytes(&res->body, data, len);
+}
+
 void response_redirect(Response* res, const char* url)
 {
     res->status_code = 302;
