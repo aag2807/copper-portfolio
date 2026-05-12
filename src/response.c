@@ -76,7 +76,16 @@ void response_flush(Response* res, int fd)
     str_append(&buf, str_cstr(&res->body));
 
     // Write to socket
-    write(fd, str_cstr(&buf), buf.len);
+    const char* data = str_cstr(&buf);
+    size_t remaining = buf.len;
+    while (remaining > 0)
+    {
+        ssize_t n = write(fd, data, remaining);
+        if (n <= 0)
+            break;
+        data += n;
+        remaining -= n;
+    }
 
     str_free(&buf);
 }

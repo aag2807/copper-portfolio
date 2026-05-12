@@ -4,6 +4,7 @@
 #include "../src/view.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 extern User* user_find_by_id(int id);
 

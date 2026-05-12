@@ -4,7 +4,7 @@
 #include "request.h"
 #include "response.h"
 
-typedef void (*ActionFunc)(Request*, Response*);
+typedef void (*ActionFunc)(Request*, Response*, void*);
 
 typedef struct
 {
@@ -13,6 +13,8 @@ typedef struct
 } Controller;
 
 // Macro to define action handlers function.
-#define ACTION(name) void name(Request* req, Response* res)
+#define ACTION(name) void name(Request* req __attribute__((unused)), \
+                               Response* res __attribute__((unused)), \
+                               void* ctx __attribute__((unused)))
 
 #endif // !CONTROLLER_H

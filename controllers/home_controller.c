@@ -3,9 +3,16 @@
 
 #include <stdio.h>
 
-ACTION(index)
+ACTION(home_index)
 {
-    ViewData data[] = {{"title", "text", "Welcome"}, {"title", "text", "Welcome"}, {NULL, NULL, NULL}};
-    response_status(res, 200, "About");
-    render_view(res, "home/about.html", data)
+    ViewData data[] = {{"title", "text", "Welcome"}, {NULL, NULL, NULL}};
+    response_status(res, 200, "OK");
+    render_view(res, "home/index.html", data);
+}
+
+ACTION(home_about)
+{
+    ViewData data[] = {{"title", "text", "About"}, {NULL, NULL, NULL}};
+    response_status(res, 200, "OK");
+    render_view(res, "home/about.html", data);
 }

@@ -1,8 +1,5 @@
 #include "server.h"
 
-#include <asm-generic/errno-base.h>
-#include <asm-generic/socket.h>
-#include <bits/getopt_core.h>
 #include <errno.h>
 #include <netinet/in.h>
 #include <pthread.h>
@@ -70,7 +67,7 @@ Server* server_create(int port)
     return s;
 }
 
-Server* server_use(Server* s, MiddlewareFunc func, void* ctx)
+void server_use(Server* s, MiddlewareFunc func, void* ctx)
 {
     middleware_add(s->pipeline, func, ctx);
 }
@@ -94,15 +91,16 @@ void server_start(Server* s)
         exit(1);
     }
 
-    int apt = 1;
+    int opt = 1;
 
     setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
 
-    struct sockaddr_in addr = {0} addr.sin_family = AF_INET;
+    struct sockaddr_in addr = {0};
+    addr.sin_family = AF_INET;
     addr.sin_port = htons(s->port);
     addr.sin_addr.s_addr = INADDR_ANY;
 
-    if (bind(fd, (struct sockaddre*)&addr, sizeof(addr)) < 0)
+    if (bind(fd, (struct sockaddr*)&addr, sizeof(addr)) < 0)
     {
         perror("bind");
         close(fd);
@@ -142,6 +140,7 @@ void server_start(Server* s)
 
         ClientJob* job = malloc(sizeof(ClientJob));
         job->server = s;
+        job->client_fd = client_fd;
         job->client_addr = client_addr;
 
         pthread_t thread;
@@ -154,7 +153,7 @@ void server_start(Server* s)
 void server_stop(Server* s)
 {
     s->running = 0;
-    close(s->running);
+    close(s->socked_fd);
 }
 
 void server_destroy(Server* s)
