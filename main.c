@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
         port = atoi(argv[1]);
     printf("\n");
     printf(" ╔══════════════════════════════════════╗\n");
-    printf(" ║      C MVC Web Framework v1.0        ║\n");
+    printf(" ║      C MVC Web Framework v0.02        ║\n");
     printf(" ╚══════════════════════════════════════╝\n\n");
 
     Server* server = server_create(port);
