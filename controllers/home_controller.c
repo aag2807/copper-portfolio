@@ -23,3 +23,25 @@ ACTION(home_about)
     response_status(res, 200, "OK");
     render_view(res, "home/about.html", data);
 }
+
+ACTION(home_counter)
+{
+    ViewData data[] = {
+        {"title", "text", "Counter", NULL},
+        {"luaModule", "text", "pages/counter", NULL},
+        {NULL, NULL, NULL, NULL},
+    };
+    response_status(res, 200, "OK");
+    render_view(res, "home/counter.html", data);
+}
+
+ACTION(home_todolist)
+{
+    ViewData data[] = {
+        {"title", "text", "Todos", NULL},
+        {"luaModule", "text", "pages/todolist", NULL},
+        {NULL, NULL, NULL, NULL},
+    };
+    response_status(res, 200, "OK");
+    render_view(res, "home/todolist.html", data);
+}

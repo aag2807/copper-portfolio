@@ -4,7 +4,15 @@
 
 #include <stdio.h>
 #include <string.h>
+
+#ifdef _WIN32
+#include <winsock2.h>
+#define sock_write(fd, buf, n) send((SOCKET)(fd), (const char*)(buf), (int)(n), 0)
+typedef int ssize_t;
+#else
 #include <unistd.h>
+#define sock_write(fd, buf, n) write((fd), (buf), (n))
+#endif
 
 void response_init(Response* res, int fd)
 {
@@ -86,7 +94,7 @@ void response_flush(Response* res, int fd)
     size_t remaining = buf.len;
     while (remaining > 0)
     {
-        ssize_t n = write(fd, data, remaining);
+        ssize_t n = sock_write(fd, data, remaining);
         if (n <= 0)
             break;
         data += n;

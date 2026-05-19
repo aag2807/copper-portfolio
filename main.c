@@ -6,6 +6,8 @@
 
 extern void home_index(Request*, Response*, void*);
 extern void home_about(Request*, Response*, void*);
+extern void home_counter(Request*, Response*, void*);
+extern void home_todolist(Request*, Response*, void*);
 extern void users_list(Request*, Response*, void*);
 extern void users_show(Request*, Response*, void*);
 extern void api_users(Request*, Response*, void*);
@@ -24,9 +26,9 @@ int main(int argc, char* argv[])
     if (argc > 1)
         port = atoi(argv[1]);
     printf("\n");
-    printf(" ╔══════════════════════════════════════╗\n");
-    printf(" ║      C MVC Web Framework v0.02        ║\n");
-    printf(" ╚══════════════════════════════════════╝\n\n");
+    printf(" ╔══════════════════════════════════════════╗\n");
+    printf(" ║       C Copper Web Framework v0.02       ║\n");
+    printf(" ╚══════════════════════════════════════════╝\n\n");
 
     Server* server = server_create(port);
 
@@ -36,6 +38,8 @@ int main(int argc, char* argv[])
     // HTML ROUTES
     server_get(server, "/", home_index);
     server_get(server, "/about", home_about);
+    server_get(server, "/counter", home_counter);
+    server_get(server, "/todos", home_todolist);
     server_get(server, "/users/list", users_list);
     server_get(server, "/users/{id}", users_show);
 

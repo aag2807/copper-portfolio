@@ -4,12 +4,15 @@
     <title>{{title}} - C MVC</title>
     <!-- <link rel="stylesheet" href="/static/style.css" /> -->
     <script defer src="/static/alpine.js"></script>
+    <script defer src="/static/framework/lua-framework.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   </head>
-  <body class="min-h-screen w-full flex flex-col">
+  <body class="min-h-screen w-full flex flex-col" {{#if luaModule}}data-lua-module="{{luaModule}}"{{/if}}>
     <nav class="px-3 py-4 flex flex-row gap-3 bg-slate-300">
       <a href="/">Home</a>
       <a href="/users/list">Users</a>
+      <a href="/counter">Counter</a>
+      <a href="/todos">Todos</a>
     </nav>
     <main class="flex flex-col h-full px-3">{{body}}</main>
     <footer class="mt-auto px-3 py-6 bg-slate-400">

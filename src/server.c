@@ -1,14 +1,24 @@
 #include "server.h"
 
 #include <errno.h>
-#include <netinet/in.h>
 #include <pthread.h>
-#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#ifdef _WIN32
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#define sock_close(fd) closesocket((SOCKET)(fd))
+#define sock_read(fd, buf, n) recv((SOCKET)(fd), (buf), (int)(n), 0)
+#else
+#include <netinet/in.h>
+#include <signal.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
+#define sock_close(fd) close(fd)
+#define sock_read(fd, buf, n) read((fd), (buf), (n))
+#endif
 
 typedef struct
 {
@@ -24,7 +34,7 @@ static void* handle_client(void* arg)
     int fd = job->client_fd;
 
     char buffer[65536];
-    ssize_t bytes_read = read(fd, buffer, sizeof(buffer) - 1);
+    ssize_t bytes_read = sock_read(fd, buffer, sizeof(buffer) - 1);
 
     if (bytes_read > 0)
     {
@@ -48,7 +58,7 @@ static void* handle_client(void* arg)
         response_cleanup(&res);
     }
 
-    close(fd);
+    sock_close(fd);
     free(job);
 
     return NULL;
@@ -98,6 +108,15 @@ void server_patch(Server* s, const char* path, RouteHandler handler)
 
 void server_start(Server* s)
 {
+#ifdef _WIN32
+    WSADATA wsa;
+    if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
+    {
+        fprintf(stderr, "WSAStartup failed\n");
+        exit(1);
+    }
+#endif
+
     int fd = socket(AF_INET, SOCK_STREAM, 0);
     if (fd < 0)
     {
@@ -107,7 +126,7 @@ void server_start(Server* s)
 
     int opt = 1;
 
-    setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+    setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, (const char*)&opt, sizeof(opt));
 
     struct sockaddr_in addr = {0};
     addr.sin_family = AF_INET;
@@ -117,22 +136,24 @@ void server_start(Server* s)
     if (bind(fd, (struct sockaddr*)&addr, sizeof(addr)) < 0)
     {
         perror("bind");
-        close(fd);
+        sock_close(fd);
         exit(1);
     }
 
     if (listen(fd, 128) < 0)
     {
         perror("listen");
-        close(fd);
+        sock_close(fd);
         exit(1);
     }
 
     s->socked_fd = fd;
     s->running = 1;
 
+#ifndef _WIN32
     // ignore SIGPIPE so server doesnt die when a client disconnects
     signal(SIGPIPE, SIG_IGN);
+#endif
 
     printf(" ✓ Server listening on http://localhost:%d\n", s->port);
 
@@ -141,13 +162,15 @@ void server_start(Server* s)
         struct sockaddr_in client_addr;
         socklen_t addr_len = sizeof(client_addr);
 
-        int client_fd = accept(fd, (struct sockaddr*)&client_addr, &addr_len);
+        int client_fd = (int)accept(fd, (struct sockaddr*)&client_addr, &addr_len);
         if (client_fd < 0)
         {
+#ifndef _WIN32
             if (errno == EINTR)
             {
                 break;
             }
+#endif
             perror("accept");
             continue;
         }
@@ -161,13 +184,16 @@ void server_start(Server* s)
         pthread_create(&thread, NULL, handle_client, job);
         pthread_detach(thread);
     }
-    close(fd);
+    sock_close(fd);
+#ifdef _WIN32
+    WSACleanup();
+#endif
 }
 
 void server_stop(Server* s)
 {
     s->running = 0;
-    close(s->socked_fd);
+    sock_close(s->socked_fd);
 }
 
 void server_destroy(Server* s)
