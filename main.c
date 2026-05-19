@@ -5,7 +5,10 @@
 #include <stdlib.h>
 
 extern void home_index(Request*, Response*, void*);
-extern void home_about(Request*, Response*, void*);
+extern void home_systems(Request*, Response*, void*);
+extern void home_gamedev(Request*, Response*, void*);
+extern void home_web(Request*, Response*, void*);
+extern void home_contact(Request*, Response*, void*);
 extern void home_counter(Request*, Response*, void*);
 extern void home_todolist(Request*, Response*, void*);
 
@@ -34,7 +37,10 @@ int main(int argc, char* argv[])
 
     // HTML ROUTES
     server_get(server, "/", home_index);
-    server_get(server, "/about", home_about);
+    server_get(server, "/systems", home_systems);
+    server_get(server, "/gamedev", home_gamedev);
+    server_get(server, "/web", home_web);
+    server_get(server, "/contact", home_contact);
     server_get(server, "/counter", home_counter);
     server_get(server, "/todos", home_todolist);
 

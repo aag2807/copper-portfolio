@@ -1,5 +1,248 @@
-<h1 class="text-2xl text-slate-800">{{title}}</h1>
-<p class="text-md text-slate-800">{{message}}</p>
-<p class="text-md text-slate-800">
-  This page was rendered by our C MVC framework.
-</p>
+<div class="flex flex-col gap-8">
+
+  <!-- Hero Bento Frame -->
+  <div class="w-full bg-[#0A0A0B] flex flex-col border border-slate-800 rounded-lg overflow-hidden shadow-[0_20px_40px_-15px_rgba(0,0,0,0.6)]">
+    <div class="grid grid-cols-1 lg:grid-cols-12 min-h-[580px]">
+
+      <!-- LEFT — Modules sidebar -->
+      <aside class="lg:col-span-3 border-b lg:border-b-0 lg:border-r border-slate-800 p-6 flex flex-col justify-between bg-[#0E0E10]">
+        <div>
+          <div class="mb-8">
+            <span class="text-[10px] font-mono tracking-widest text-emerald-500 block uppercase mb-1">PROGRAMMER INDEX</span>
+            <h1 class="text-3xl font-bold tracking-tighter text-white leading-none mb-2">CORE<br/>MODULES</h1>
+            <div class="h-1 w-12 bg-emerald-500"></div>
+          </div>
+
+          <ul class="space-y-5">
+            <a href="/systems" class="group block">
+              <div class="text-[10px] text-emerald-500 font-mono mb-1 flex items-center gap-1">
+                <span>[0x01]</span>
+                <span class="w-1 h-1 rounded-full bg-emerald-500"></span>
+              </div>
+              <div class="text-xs font-semibold group-hover:text-white uppercase tracking-wider text-neutral-200">SYSTEMS // C_RUNTIME</div>
+              <div class="text-[11px] text-slate-500 font-mono leading-snug">HTTP server in C, route table, middleware chain, template engine</div>
+            </a>
+            <a href="/gamedev" class="group block">
+              <div class="text-[10px] text-emerald-500 font-mono mb-1 flex items-center gap-1">
+                <span>[0x02]</span>
+                <span class="w-1 h-1 rounded-full bg-emerald-500"></span>
+              </div>
+              <div class="text-xs font-semibold group-hover:text-white uppercase tracking-wider text-neutral-200">GAMEDEV // LOVE2D</div>
+              <div class="text-[11px] text-slate-500 font-mono leading-snug">LÖVE 11.5 prototypes, lua game loops, frame-paced sims</div>
+            </a>
+            <a href="/web" class="group block">
+              <div class="text-[10px] text-emerald-500 font-mono mb-1 flex items-center gap-1">
+                <span>[0x03]</span>
+                <span class="w-1 h-1 rounded-full bg-emerald-500"></span>
+              </div>
+              <div class="text-xs font-semibold group-hover:text-white uppercase tracking-wider text-neutral-200">WEB // LUA_REACTIVE</div>
+              <div class="text-[11px] text-slate-500 font-mono leading-snug">wasmoon-bridged lua in the browser, signal-based reactivity</div>
+            </a>
+          </ul>
+        </div>
+
+        <div class="pt-6 border-t border-slate-800 mt-8 lg:mt-0">
+          <div class="text-[10px] font-mono text-slate-500 uppercase mb-3 tracking-widest">CURRENT_FOCUS</div>
+          <div class="bg-emerald-500/10 border border-emerald-500/20 p-3 rounded">
+            <div class="text-xs text-emerald-400 font-medium">Browser-side Lua runtime</div>
+            <div class="text-[9px] text-emerald-600 font-mono mt-1">Per-route module loading via WASM</div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- CENTER — Hero showcase -->
+      <section class="lg:col-span-6 border-b lg:border-b-0 lg:border-r border-slate-800 flex flex-col">
+        <div class="p-8 sm:p-10 flex-1 flex flex-col justify-center">
+          <div class="inline-block self-start px-3 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-full mb-6 uppercase tracking-widest leading-none">
+            Runtime status: ONLINE
+          </div>
+
+          <h2 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-white leading-none mb-6">
+            BUILT THE <span class="text-emerald-500 underline decoration-4 underline-offset-8">STACK</span> FROM SCRATCH.
+          </h2>
+
+          <p class="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-lg">
+            A self-hosted developer portfolio served from a hand-written C HTTP framework. Pages render through a templated MVC pipeline; client-side interactivity loads Lua modules on demand via wasmoon. The site is its own demo.
+          </p>
+
+          <div class="mt-8 grid grid-cols-2 gap-4">
+            <a href="/systems" class="block p-4 border border-slate-800 rounded bg-[#0E0E10]/50 hover:border-emerald-500/40 transition-colors">
+              <div class="text-xl font-bold tracking-tighter font-mono text-emerald-400">1,559</div>
+              <div class="text-[9px] text-slate-500 uppercase font-mono mt-1">Lines of C, framework core</div>
+            </a>
+            <a href="/web" class="block p-4 border border-slate-800 rounded bg-[#0E0E10]/50 hover:border-emerald-500/40 transition-colors">
+              <div class="text-xl font-bold tracking-tighter font-mono text-emerald-400">184</div>
+              <div class="text-[9px] text-slate-500 uppercase font-mono mt-1">Lines of lua, browser runtime</div>
+            </a>
+          </div>
+
+          <div class="flex flex-wrap gap-3 pt-6 mt-4 border-t border-slate-900">
+            <a href="/counter" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-neutral-950 font-bold font-mono text-[10px] uppercase tracking-wider rounded transition-all active:scale-[0.98]">
+              Run Counter Demo
+            </a>
+            <a href="/systems" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-neutral-200 hover:text-emerald-400 font-bold font-mono text-[10px] uppercase tracking-wider border border-slate-800 rounded transition-all active:scale-[0.98]">
+              Inspect Framework
+            </a>
+          </div>
+        </div>
+
+        <!-- Bottom stack-trace strip -->
+        <div class="h-44 border-t border-slate-800 bg-[#070708] flex mt-auto">
+          <div class="flex-1 border-r border-slate-800 p-5 flex flex-col justify-center overflow-hidden">
+            <div class="text-[9px] font-mono text-slate-500 mb-1.5 tracking-widest">REQUEST_TRACE</div>
+            <div class="font-mono text-[10px] leading-snug text-emerald-600/80">
+              static int route_match(Router* r, Request* req) {<br/>
+              &nbsp;&nbsp;for (Route* it = r-&gt;head; it; it = it-&gt;next)<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;if (path_matches(it-&gt;pattern, req-&gt;path))<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return it-&gt;handler(req, res, ctx);<br/>
+              &nbsp;&nbsp;return 404;<br/>
+              }
+            </div>
+          </div>
+          <a href="/systems" class="w-36 p-5 flex flex-col items-center justify-center text-center group active:scale-95 transition">
+            <div class="w-10 h-10 border-2 border-emerald-500 rotate-45 flex items-center justify-center mb-2 group-hover:bg-emerald-500/10 transition-all">
+              <div class="w-3 h-3 bg-emerald-500 -rotate-45"></div>
+            </div>
+            <span class="text-[9px] font-mono uppercase tracking-widest text-[#D1D1D1] group-hover:text-emerald-400 transition-colors">Inspect_C</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- RIGHT — Toolkit & status -->
+      <aside class="lg:col-span-3 p-6 bg-[#0A0A0B] flex flex-col justify-between space-y-6">
+        <div class="space-y-6">
+          <div class="space-y-2">
+            <div class="text-[10px] font-mono text-slate-500 uppercase tracking-widest">TOOLKIT</div>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm">C99</span>
+              <span class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm">Pthreads</span>
+              <span class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm">Lua 5.4</span>
+              <span class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm">LÖVE 11.5</span>
+              <span class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm">wasmoon</span>
+              <span class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm">Webpack 5</span>
+              <span class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm">Tailwind v4</span>
+              <span class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm">SQLite</span>
+              <span class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm">Linux/WSL</span>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <div class="text-[10px] font-mono text-slate-500 uppercase tracking-widest">SYSTEMS_STATUS</div>
+            <div class="grid grid-cols-7 gap-1 max-w-[140px]">
+              <div class="h-3 w-3 rounded-sm bg-emerald-900"></div>
+              <div class="h-3 w-3 rounded-sm bg-emerald-800"></div>
+              <div class="h-3 w-3 rounded-sm bg-emerald-700"></div>
+              <div class="h-3 w-3 rounded-sm bg-emerald-500"></div>
+              <div class="h-3 w-3 rounded-sm bg-emerald-700"></div>
+              <div class="h-3 w-3 rounded-sm bg-emerald-900"></div>
+              <div class="h-3 w-3 rounded-sm bg-emerald-800"></div>
+              <div class="h-3 w-3 rounded-sm bg-emerald-800"></div>
+              <div class="h-3 w-3 rounded-sm bg-emerald-500"></div>
+              <div class="h-3 w-3 rounded-sm bg-emerald-300"></div>
+              <div class="h-3 w-3 rounded-sm bg-emerald-500"></div>
+              <div class="h-3 w-3 rounded-sm bg-emerald-800"></div>
+              <div class="h-3 w-3 rounded-sm bg-emerald-900"></div>
+              <div class="h-3 w-3 rounded-sm bg-emerald-700"></div>
+              <div class="h-3 w-3 rounded-sm bg-emerald-300"></div>
+              <div class="h-3 w-3 rounded-sm bg-emerald-900"></div>
+              <div class="h-3 w-3 rounded-sm bg-emerald-800"></div>
+              <div class="h-3 w-3 rounded-sm bg-emerald-500"></div>
+              <div class="h-3 w-3 rounded-sm bg-emerald-500"></div>
+              <div class="h-3 w-3 rounded-sm bg-emerald-300"></div>
+              <div class="h-3 w-3 rounded-sm bg-emerald-500"></div>
+            </div>
+            <div class="text-[9px] font-mono text-slate-500">21 telemetry clock signals processed</div>
+          </div>
+        </div>
+
+        <div class="pt-6 border-t border-slate-800 flex flex-col space-y-3">
+          <a href="https://github.com/aagn2807" target="_blank" rel="noreferrer" class="flex items-center space-x-3 group">
+            <div class="w-8 h-8 border border-slate-800 bg-[#0E0E10] flex items-center justify-center font-mono text-xs text-emerald-500 group-hover:bg-emerald-500 group-hover:text-black transition-colors rounded">GH</div>
+            <div class="text-[11px] font-mono text-slate-400 group-hover:text-white transition-colors">/aagn2807</div>
+          </a>
+          <a href="/contact" class="flex items-center space-x-3 group">
+            <div class="w-8 h-8 border border-slate-800 bg-[#0E0E10] flex items-center justify-center font-mono text-xs text-emerald-500 group-hover:bg-emerald-500 group-hover:text-black transition-colors rounded">@</div>
+            <div class="text-[11px] font-mono text-slate-400 group-hover:text-white transition-colors">/connect</div>
+          </a>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+
+  <!-- Capabilities row -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+    <!-- LHS — Terminal echo -->
+    <div class="lg:col-span-7 flex flex-col gap-3">
+      <div class="flex justify-between items-center text-xs font-mono px-1">
+        <span class="text-slate-400 uppercase tracking-widest font-semibold">06_REQUEST_LOG_TAIL</span>
+        <span class="text-emerald-500 flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 glow-green"></span> LIVE
+        </span>
+      </div>
+      <div class="bg-[#070708] border border-slate-800 rounded-lg p-4 font-mono text-[11px] leading-relaxed text-slate-300 min-h-[300px]">
+        <div><span class="text-emerald-500">$</span> ./server 8080</div>
+        <div class="text-slate-500"> ╔══════════════════════════════════════════╗</div>
+        <div class="text-slate-500"> ║       C Copper Web Framework v0.02       ║</div>
+        <div class="text-slate-500"> ╚══════════════════════════════════════════╝</div>
+        <div class="text-slate-500">listening on 0.0.0.0:8080 ...</div>
+        <div><span class="text-slate-600">[req]</span> GET /</div>
+        <div><span class="text-slate-600">[req]</span> GET /static/framework/lua-framework.js</div>
+        <div><span class="text-slate-600">[req]</span> GET /counter</div>
+        <div><span class="text-slate-600">[req]</span> GET /static/lua/manifest.json</div>
+        <div><span class="text-slate-600">[req]</span> GET /static/lua/reactive.lua</div>
+        <div><span class="text-slate-600">[req]</span> GET /static/lua/h.lua</div>
+        <div><span class="text-slate-600">[req]</span> GET /static/lua/utils.lua</div>
+        <div><span class="text-slate-600">[req]</span> GET /static/lua/pages/counter.lua</div>
+        <div class="text-emerald-400">wasmoon engine booted // 5ms</div>
+        <div class="text-emerald-400">page module mounted // pages/counter.lua</div>
+        <div class="flex items-center gap-1">
+          <span class="text-emerald-500">$</span>
+          <span class="w-1.5 h-3.5 bg-emerald-500 animate-pulse"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RHS — capabilities -->
+    <div class="lg:col-span-5 flex flex-col gap-3">
+      <div class="bg-[#121214] border border-slate-800 rounded-lg p-5 flex flex-col justify-between h-full min-h-[300px]">
+        <div>
+          <div class="flex items-center gap-2 mb-4 border-b border-slate-800 pb-2.5">
+            <svg class="w-4 h-4 text-emerald-500 glow-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/></svg>
+            <span class="text-xs uppercase font-mono tracking-wider text-slate-300 font-bold">Specialized Capabilities</span>
+          </div>
+
+          <div class="space-y-4">
+            <div class="bg-[#0A0A0B] p-3 rounded border border-slate-800">
+              <div class="flex justify-between items-center mb-1 text-xs font-mono">
+                <span class="text-slate-200 font-bold uppercase tracking-wider">Systems &amp; Runtimes</span>
+                <span class="text-emerald-400 text-[10px] font-semibold">C, Lua, POSIX</span>
+              </div>
+              <p class="text-[11px] text-slate-400 leading-relaxed">Threaded HTTP servers, manual memory allocators, template engines, embedded scripting bridges. The whole stack visible from the bare socket() call up to handlebars-style template interpolation.</p>
+            </div>
+            <div class="bg-[#0A0A0B] p-3 rounded border border-slate-800">
+              <div class="flex justify-between items-center mb-1 text-xs font-mono">
+                <span class="text-slate-200 font-bold uppercase tracking-wider">Game Loops &amp; Sim</span>
+                <span class="text-emerald-400 text-[10px] font-semibold">LÖVE, Lua 5.4</span>
+              </div>
+              <p class="text-[11px] text-slate-400 leading-relaxed">Frame-paced update loops, signal-driven reactivity, deterministic fixed timestep physics. Built directly against love.update / love.draw without engine abstractions.</p>
+            </div>
+            <div class="bg-[#0A0A0B] p-3 rounded border border-slate-800">
+              <div class="flex justify-between items-center mb-1 text-xs font-mono">
+                <span class="text-slate-200 font-bold uppercase tracking-wider">Browser-side Lua</span>
+                <span class="text-emerald-400 text-[10px] font-semibold">wasmoon, WASM</span>
+              </div>
+              <p class="text-[11px] text-slate-400 leading-relaxed">Lua compiled to WebAssembly drives the front-end. Per-route module loading, weak-key signals, custom hyperscript dom helpers — no React, no virtual DOM.</p>
+            </div>
+          </div>
+        </div>
+
+        <p class="text-[8px] text-slate-500 font-mono uppercase tracking-wider text-right mt-6">
+          BOUNDARY MAPPED // 0x0A0A0B
+        </p>
+      </div>
+    </div>
+  </div>
+
+</div>

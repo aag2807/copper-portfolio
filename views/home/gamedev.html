@@ -1,0 +1,177 @@
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+  <!-- Top hero strip -->
+  <div class="lg:col-span-12 bg-[#121214] border border-slate-800 rounded-lg p-5 flex flex-col lg:flex-row gap-6 items-start">
+    <div class="lg:max-w-xl">
+      <span class="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold block mb-1">Engine // LÖVE 11.5</span>
+      <h3 class="text-2xl font-bold text-slate-100 tracking-tight leading-tight">
+        Lua, run from the metal of the game loop.
+      </h3>
+      <p class="text-xs text-slate-400 mt-2 leading-relaxed max-w-lg">
+        Built directly against the LÖVE callback surface — no wrapping engine, no entity component DSL. Update, draw, and input live in plain modules. Frame-paced sims, weak-key reactive primitives, and fixed-timestep physics, all in lua.
+      </p>
+    </div>
+    <div class="flex-1 grid grid-cols-3 gap-3 w-full lg:w-auto font-mono">
+      <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
+        <div class="text-[9px] uppercase tracking-wider text-slate-500 mb-1">love.update(dt)</div>
+        <div class="text-emerald-400 text-[11px]">fixed step</div>
+      </div>
+      <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
+        <div class="text-[9px] uppercase tracking-wider text-slate-500 mb-1">love.draw()</div>
+        <div class="text-emerald-400 text-[11px]">canvas batched</div>
+      </div>
+      <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
+        <div class="text-[9px] uppercase tracking-wider text-slate-500 mb-1">love.physics</div>
+        <div class="text-emerald-400 text-[11px]">box2d body sim</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LHS — Project slots (zig-zag, not 3-col) -->
+  <div class="lg:col-span-7 flex flex-col gap-4">
+
+    <!-- Coming soon placeholder (shown while real captures aren't ready) -->
+    <div class="relative bg-[#121214] border border-slate-800 rounded-lg p-8 min-h-[420px] flex flex-col items-center justify-center text-center overflow-hidden">
+      <!-- decorative grid background -->
+      <div class="absolute inset-0 opacity-[0.08] pointer-events-none" style="background-image:linear-gradient(to right, #10b981 1px, transparent 1px), linear-gradient(to bottom, #10b981 1px, transparent 1px); background-size: 32px 32px;"></div>
+      <!-- rotated emerald square -->
+      <div class="relative w-16 h-16 border-2 border-emerald-500 rotate-45 flex items-center justify-center mb-6">
+        <div class="w-4 h-4 bg-emerald-500 -rotate-45 glow-green"></div>
+      </div>
+      <div class="text-[10px] font-mono uppercase tracking-widest text-emerald-500 mb-2">[status] capture queue</div>
+      <h4 class="text-xl font-bold text-slate-100 tracking-tight mb-2">Live captures, coming soon.</h4>
+      <p class="text-[11px] text-slate-400 leading-relaxed max-w-md font-mono">
+        Project reels are being recorded against LÖVE 11.5 builds. This slot will swap in tile-prototype, physics sandbox, and shader-pass demos as each clip lands.
+      </p>
+      <div class="mt-6 flex items-center gap-4 text-[10px] font-mono">
+        <span class="flex items-center gap-1.5 text-slate-500">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 glow-green"></span>
+          recording
+        </span>
+        <span class="text-slate-700">|</span>
+        <span class="text-slate-500">ETA &middot; rolling</span>
+      </div>
+    </div>
+
+    <!-- Real project cards — gated until captures are ready. Flip to {{#if true}} or wire a real ViewData key. -->
+    {{#if false}}
+    <div class="flex justify-between items-center text-xs font-mono">
+      <span class="text-slate-400 uppercase tracking-widest font-semibold">Active Builds</span>
+      <span class="text-[10px] text-slate-500">slot // placeholders below — drop real captures in</span>
+    </div>
+
+    <!-- Card 01 — left-image right-text -->
+    <article class="grid grid-cols-1 sm:grid-cols-5 gap-4 bg-[#121214] border border-slate-800 rounded-lg overflow-hidden">
+      <div class="sm:col-span-2 aspect-video sm:aspect-auto bg-[#0A0A0B] relative overflow-hidden">
+        <img src="https://picsum.photos/seed/love2d-tilemap/600/400" alt="prototype capture" class="w-full h-full object-cover opacity-70" />
+        <div class="absolute inset-0 bg-gradient-to-tr from-[#0A0A0B] via-transparent to-emerald-950/30 pointer-events-none"></div>
+        <div class="absolute top-2 left-2 px-2 py-0.5 bg-emerald-500 text-black text-[9px] font-mono uppercase tracking-wider rounded">slot_01</div>
+      </div>
+      <div class="sm:col-span-3 p-5 flex flex-col justify-between">
+        <div>
+          <div class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest mb-1">[0x01]_TILE_PROTOTYPE</div>
+          <h4 class="text-base font-bold text-slate-100 tracking-tight mb-2">Tile-based pathfinder sketch</h4>
+          <p class="text-[11px] text-slate-400 leading-relaxed">
+            A* over weighted tile grids, mouse-driven goal selection, smoothed agent steering. Built on raw love.graphics with no rendering library. Replace this slot with real screen captures.
+          </p>
+        </div>
+        <div class="mt-3 flex flex-wrap gap-1.5 font-mono text-[9px]">
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">love.graphics</span>
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">A*</span>
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">love.mouse</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 02 — right-image left-text (zig) -->
+    <article class="grid grid-cols-1 sm:grid-cols-5 gap-4 bg-[#121214] border border-slate-800 rounded-lg overflow-hidden">
+      <div class="sm:col-span-3 p-5 flex flex-col justify-between order-2 sm:order-1">
+        <div>
+          <div class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest mb-1">[0x02]_PHYSICS_SANDBOX</div>
+          <h4 class="text-base font-bold text-slate-100 tracking-tight mb-2">Box2D rigid body playground</h4>
+          <p class="text-[11px] text-slate-400 leading-relaxed">
+            love.physics shapes, joints, and contact callbacks wired to a step-debugger overlay. Tunable gravity, mass, restitution per body. Useful for tuning game-feel before locking down values.
+          </p>
+        </div>
+        <div class="mt-3 flex flex-wrap gap-1.5 font-mono text-[9px]">
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">love.physics</span>
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">box2d</span>
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">contact callbacks</span>
+        </div>
+      </div>
+      <div class="sm:col-span-2 aspect-video sm:aspect-auto bg-[#0A0A0B] relative overflow-hidden order-1 sm:order-2">
+        <img src="https://picsum.photos/seed/love2d-physics/600/400" alt="prototype capture" class="w-full h-full object-cover opacity-70" />
+        <div class="absolute inset-0 bg-gradient-to-tl from-[#0A0A0B] via-transparent to-emerald-950/30 pointer-events-none"></div>
+        <div class="absolute top-2 right-2 px-2 py-0.5 bg-emerald-500 text-black text-[9px] font-mono uppercase tracking-wider rounded">slot_02</div>
+      </div>
+    </article>
+
+    <!-- Card 03 — left-image right-text -->
+    <article class="grid grid-cols-1 sm:grid-cols-5 gap-4 bg-[#121214] border border-slate-800 rounded-lg overflow-hidden">
+      <div class="sm:col-span-2 aspect-video sm:aspect-auto bg-[#0A0A0B] relative overflow-hidden">
+        <img src="https://picsum.photos/seed/love2d-shader/600/400" alt="prototype capture" class="w-full h-full object-cover opacity-70" />
+        <div class="absolute inset-0 bg-gradient-to-tr from-[#0A0A0B] via-transparent to-emerald-950/30 pointer-events-none"></div>
+        <div class="absolute top-2 left-2 px-2 py-0.5 bg-emerald-500 text-black text-[9px] font-mono uppercase tracking-wider rounded">slot_03</div>
+      </div>
+      <div class="sm:col-span-3 p-5 flex flex-col justify-between">
+        <div>
+          <div class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest mb-1">[0x03]_SHADER_PASS</div>
+          <h4 class="text-base font-bold text-slate-100 tracking-tight mb-2">GLSL post-processing chain</h4>
+          <p class="text-[11px] text-slate-400 leading-relaxed">
+            Render-to-canvas pipeline running scanline, bloom, and chroma-aberration shaders on a final composite pass. The pixel-CRT look is one swappable .glsl away.
+          </p>
+        </div>
+        <div class="mt-3 flex flex-wrap gap-1.5 font-mono text-[9px]">
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">love.graphics.newShader</span>
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">GLSL</span>
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">canvas chain</span>
+        </div>
+      </div>
+    </article>
+    {{/if}}
+  </div>
+
+  <!-- RHS — Loop skeleton & capabilities -->
+  <div class="lg:col-span-5 flex flex-col gap-4">
+    <div class="bg-[#121214] border border-slate-800 rounded-lg p-5">
+      <div class="text-xs font-mono uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-1.5">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 glow-green"></span>
+        love2d_loop.lua
+      </div>
+      <pre class="bg-[#0A0A0B] text-slate-300 p-4 rounded border border-slate-800 font-mono text-[11px] leading-relaxed overflow-x-auto"><code><span class="text-sky-400">function</span> love.load()
+    world = love.physics.newWorld(<span class="text-amber-400">0</span>, <span class="text-amber-400">9.81</span>*<span class="text-amber-400">64</span>)
+    player = entities.spawn(<span class="text-emerald-400">"player"</span>, <span class="text-amber-400">100</span>, <span class="text-amber-400">100</span>)
+<span class="text-sky-400">end</span>
+
+<span class="text-sky-400">function</span> love.update(dt)
+    accumulator = accumulator + dt
+    <span class="text-sky-400">while</span> accumulator &gt;= STEP <span class="text-sky-400">do</span>
+        world:update(STEP)
+        input.poll()
+        ai.tick(STEP)
+        accumulator = accumulator - STEP
+    <span class="text-sky-400">end</span>
+<span class="text-sky-400">end</span>
+
+<span class="text-sky-400">function</span> love.draw()
+    camera:attach()
+    tilemap:draw()
+    entities:draw()
+    camera:detach()
+    hud:draw()
+<span class="text-sky-400">end</span></code></pre>
+    </div>
+
+    <div class="bg-[#121214] border border-slate-800 rounded-lg p-5">
+      <div class="text-xs font-mono uppercase tracking-wider text-slate-400 mb-3">Subsystem coverage</div>
+      <ul class="divide-y divide-slate-800/70 font-mono text-[11px]">
+        <li class="py-2 flex justify-between items-center"><span class="text-slate-300">love.graphics</span><span class="text-emerald-400 text-[10px]">canvases, batches, shaders</span></li>
+        <li class="py-2 flex justify-between items-center"><span class="text-slate-300">love.physics</span><span class="text-emerald-400 text-[10px]">box2d bodies, joints</span></li>
+        <li class="py-2 flex justify-between items-center"><span class="text-slate-300">love.audio</span><span class="text-emerald-400 text-[10px]">positional sources</span></li>
+        <li class="py-2 flex justify-between items-center"><span class="text-slate-300">love.keyboard</span><span class="text-emerald-400 text-[10px]">edge + held detection</span></li>
+        <li class="py-2 flex justify-between items-center"><span class="text-slate-300">conf.lua</span><span class="text-emerald-400 text-[10px]">window + module flags</span></li>
+      </ul>
+    </div>
+  </div>
+
+</div>

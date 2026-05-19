@@ -6,22 +6,51 @@
 ACTION(home_index)
 {
     ViewData data[] = {
-        {"title", "text", "Welcome", NULL},
-        {"message", "text", "In C", NULL},
+        {"title", "text", "Home", NULL},
         {NULL, NULL, NULL, NULL},
     };
     response_status(res, 200, "OK");
     render_view(res, "home/index.html", data);
 }
 
-ACTION(home_about)
+ACTION(home_systems)
 {
     ViewData data[] = {
-        {"title", "text", "About", NULL},
+        {"title", "text", "Systems", NULL},
         {NULL, NULL, NULL, NULL},
     };
     response_status(res, 200, "OK");
-    render_view(res, "home/about.html", data);
+    render_view(res, "home/systems.html", data);
+}
+
+ACTION(home_gamedev)
+{
+    ViewData data[] = {
+        {"title", "text", "Gamedev", NULL},
+        {NULL, NULL, NULL, NULL},
+    };
+    response_status(res, 200, "OK");
+    render_view(res, "home/gamedev.html", data);
+}
+
+ACTION(home_web)
+{
+    ViewData data[] = {
+        {"title", "text", "Web", NULL},
+        {NULL, NULL, NULL, NULL},
+    };
+    response_status(res, 200, "OK");
+    render_view(res, "home/web.html", data);
+}
+
+ACTION(home_contact)
+{
+    ViewData data[] = {
+        {"title", "text", "Connect", NULL},
+        {NULL, NULL, NULL, NULL},
+    };
+    response_status(res, 200, "OK");
+    render_view(res, "home/contact.html", data);
 }
 
 ACTION(home_counter)

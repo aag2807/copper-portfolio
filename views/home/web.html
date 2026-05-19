@@ -1,0 +1,134 @@
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+  <!-- Top hero — architecture explainer -->
+  <div class="lg:col-span-12 bg-[#121214] border border-slate-800 rounded-lg p-5 flex flex-col gap-4">
+    <div class="flex flex-col lg:flex-row gap-6 items-start">
+      <div class="lg:max-w-xl">
+        <span class="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold block mb-1">Browser Runtime</span>
+        <h3 class="text-2xl font-bold text-slate-100 tracking-tight leading-tight">Lua, in the browser, mounted per route.</h3>
+        <p class="text-xs text-slate-400 mt-2 leading-relaxed max-w-lg">
+          The page you're reading is served by the C MVC framework. Pages that need interactivity declare a <code class="text-emerald-400 font-mono">data-lua-module</code> attribute on the body. A wasmoon-compiled Lua engine boots in the browser, fetches only that module, and runs it. No virtual DOM, no React. Signals + hyperscript, ~180 lines of lua.
+        </p>
+      </div>
+      <div class="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-2 w-full font-mono text-[10px]">
+        <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
+          <div class="text-slate-500 uppercase tracking-wider mb-1">[01] server</div>
+          <div class="text-emerald-400 leading-snug">stamps body<br/>data-lua-module="..."</div>
+        </div>
+        <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
+          <div class="text-slate-500 uppercase tracking-wider mb-1">[02] boot.js</div>
+          <div class="text-emerald-400 leading-snug">reads attr,<br/>mounts library + page</div>
+        </div>
+        <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
+          <div class="text-slate-500 uppercase tracking-wider mb-1">[03] wasmoon</div>
+          <div class="text-emerald-400 leading-snug">lua.doFile()<br/>renders into #app</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LHS — Live demos -->
+  <div class="lg:col-span-8 flex flex-col gap-4">
+    <div class="flex justify-between items-center text-xs font-mono">
+      <span class="text-slate-400 uppercase tracking-widest font-semibold">Live Demos</span>
+      <span class="text-emerald-500 flex items-center gap-1">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 glow-green"></span> wasmoon online
+      </span>
+    </div>
+
+    <!-- Counter demo card -->
+    <a href="/counter" class="block group bg-[#121214] border border-slate-800 hover:border-emerald-500/40 rounded-lg overflow-hidden transition-colors">
+      <div class="grid grid-cols-1 sm:grid-cols-5">
+        <div class="sm:col-span-2 p-6 flex flex-col justify-center bg-[#0E0E10]">
+          <div class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest mb-1">[demo_01]</div>
+          <h4 class="text-base font-bold text-slate-100 tracking-tight mb-2">Reactive counter</h4>
+          <p class="text-[11px] text-slate-400 leading-relaxed mb-4">A single signal driving a text node and two button handlers. The whole demo is ~20 lines of lua.</p>
+          <span class="self-start px-3 py-1 bg-emerald-600 group-hover:bg-emerald-500 text-neutral-950 font-bold font-mono text-[10px] uppercase tracking-wider rounded transition-all">Run demo &rarr;</span>
+        </div>
+        <div class="sm:col-span-3 bg-[#0A0A0B] p-6 flex items-center justify-center border-t sm:border-t-0 sm:border-l border-slate-800">
+          <pre class="font-mono text-[11px] leading-snug text-slate-300 w-full overflow-x-auto"><code><span class="text-slate-500">-- pages/counter.lua</span>
+<span class="text-sky-400">local</span> count, setCount = reactive.signal(<span class="text-amber-400">0</span>)
+
+<span class="text-sky-400">local</span> root = h(<span class="text-emerald-400">"div"</span>, {},
+    h(<span class="text-emerald-400">"p"</span>, {}, <span class="text-sky-400">function</span>()
+        <span class="text-sky-400">return</span> <span class="text-emerald-400">"Count: "</span>..count()
+    <span class="text-sky-400">end</span>),
+    h(<span class="text-emerald-400">"button"</span>, {
+        onClick = <span class="text-sky-400">function</span>() setCount(count()+<span class="text-amber-400">1</span>) <span class="text-sky-400">end</span>,
+    }, <span class="text-emerald-400">"+"</span>)
+)
+
+dom.mount(root, <span class="text-emerald-400">"#app"</span>)</code></pre>
+        </div>
+      </div>
+    </a>
+
+    <!-- Todos demo card -->
+    <a href="/todos" class="block group bg-[#121214] border border-slate-800 hover:border-emerald-500/40 rounded-lg overflow-hidden transition-colors">
+      <div class="grid grid-cols-1 sm:grid-cols-5">
+        <div class="sm:col-span-3 bg-[#0A0A0B] p-6 flex items-center justify-center border-b sm:border-b-0 sm:border-r border-slate-800 order-2 sm:order-1">
+          <pre class="font-mono text-[11px] leading-snug text-slate-300 w-full overflow-x-auto"><code><span class="text-slate-500">-- pages/todolist.lua</span>
+<span class="text-sky-400">local</span> items, setItems = reactive.signal({})
+<span class="text-sky-400">local</span> draft, setDraft = reactive.signal(<span class="text-emerald-400">""</span>)
+
+reactive.effect(<span class="text-sky-400">function</span>()
+    list.innerHTML = <span class="text-emerald-400">""</span>
+    <span class="text-sky-400">for</span> _, v <span class="text-sky-400">in</span> ipairs(items()) <span class="text-sky-400">do</span>
+        dom.append(list, h(<span class="text-emerald-400">"li"</span>, {}, v))
+    <span class="text-sky-400">end</span>
+<span class="text-sky-400">end</span>)</code></pre>
+        </div>
+        <div class="sm:col-span-2 p-6 flex flex-col justify-center bg-[#0E0E10] order-1 sm:order-2">
+          <div class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest mb-1">[demo_02]</div>
+          <h4 class="text-base font-bold text-slate-100 tracking-tight mb-2">Mutable list with effect</h4>
+          <p class="text-[11px] text-slate-400 leading-relaxed mb-4">A reactive.effect re-renders the list whenever the signal changes. Input wired via dom.on event bridging.</p>
+          <span class="self-start px-3 py-1 bg-emerald-600 group-hover:bg-emerald-500 text-neutral-950 font-bold font-mono text-[10px] uppercase tracking-wider rounded transition-all">Run demo &rarr;</span>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <!-- RHS — runtime facts -->
+  <div class="lg:col-span-4 flex flex-col gap-4">
+    <div class="bg-[#121214] border border-slate-800 rounded-lg p-5">
+      <div class="text-xs font-mono uppercase tracking-wider text-slate-400 mb-3">Runtime topology</div>
+      <ul class="divide-y divide-slate-800/70 font-mono text-[11px]">
+        <li class="py-2 flex justify-between items-center"><span class="text-slate-300">wasmoon</span><span class="text-emerald-400 text-[10px]">Lua 5.4 → WASM</span></li>
+        <li class="py-2 flex justify-between items-center"><span class="text-slate-300">reactive.lua</span><span class="text-emerald-400 text-[10px]">signal / effect / computed</span></li>
+        <li class="py-2 flex justify-between items-center"><span class="text-slate-300">h.lua</span><span class="text-emerald-400 text-[10px]">hyperscript dom builder</span></li>
+        <li class="py-2 flex justify-between items-center"><span class="text-slate-300">manifest.json</span><span class="text-emerald-400 text-[10px]">library mount list</span></li>
+        <li class="py-2 flex justify-between items-center"><span class="text-slate-300">pages/*.lua</span><span class="text-emerald-400 text-[10px]">fetched on demand</span></li>
+      </ul>
+    </div>
+
+    <div class="bg-[#121214] border border-slate-800 rounded-lg p-5">
+      <div class="text-xs font-mono uppercase tracking-wider text-slate-400 mb-3">Page weight, this route</div>
+      <div class="space-y-3 font-mono text-[11px]">
+        <div class="flex justify-between items-end">
+          <span class="text-slate-400">lua-framework.js</span>
+          <span class="text-emerald-400">~168 KiB</span>
+        </div>
+        <div class="flex justify-between items-end">
+          <span class="text-slate-400">3× library .lua</span>
+          <span class="text-emerald-400">~2 KiB</span>
+        </div>
+        <div class="flex justify-between items-end">
+          <span class="text-slate-400">page module .lua</span>
+          <span class="text-emerald-400">~0.6 KiB</span>
+        </div>
+        <div class="flex justify-between items-end border-t border-slate-800 pt-2">
+          <span class="text-slate-300 font-semibold">non-lua routes</span>
+          <span class="text-emerald-400 font-semibold">0 bytes</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-[#121214] border border-slate-800 rounded-lg p-5">
+      <div class="text-[10px] font-mono text-slate-500 uppercase mb-2 tracking-widest">Design note</div>
+      <p class="text-[11px] text-slate-400 leading-relaxed">
+        The page weight line above is real. Pages without <code class="text-emerald-400">data-lua-module</code> ship zero wasmoon — boot.js returns early. The framework JS is only fetched once per origin and cached.
+      </p>
+    </div>
+  </div>
+
+</div>

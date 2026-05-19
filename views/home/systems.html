@@ -1,0 +1,155 @@
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+  <!-- LEFT — Source viewer -->
+  <div class="lg:col-span-7 flex flex-col gap-4">
+    <div class="bg-[#121214] border border-slate-800 rounded-lg p-4 flex flex-col">
+      <div class="flex justify-between items-center mb-3">
+        <span class="text-xs font-mono uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+          <svg class="w-4 h-4 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 6L2 12l6 6M16 6l6 6-6 6"/></svg>
+          src/router.c // pattern_match
+        </span>
+        <span class="px-2 py-0.5 bg-emerald-950/30 border border-emerald-800 text-[10px] uppercase font-mono tracking-wider rounded text-emerald-300">live source</span>
+      </div>
+      <pre class="bg-[#0A0A0B] text-slate-300 p-4 rounded border border-slate-800 font-mono text-[11px] leading-relaxed overflow-x-auto"><code><span class="text-slate-500">// Thread-safe URL pattern matching using strtok_r</span>
+<span class="text-sky-400">static int</span> match_pattern(<span class="text-sky-400">const char</span>* pattern, <span class="text-sky-400">const char</span>* path, Request* req)
+{
+    <span class="text-sky-400">if</span> (!strchr(pattern, <span class="text-emerald-400">'{'</span>))
+        <span class="text-sky-400">return</span> strcmp(pattern, path) == <span class="text-amber-400">0</span>;
+
+    <span class="text-sky-400">char</span> pat_copy[<span class="text-amber-400">256</span>], path_copy[<span class="text-amber-400">256</span>];
+    strncat(pat_copy, pattern, <span class="text-sky-400">sizeof</span>(pat_copy) - <span class="text-amber-400">1</span>);
+    strncat(path_copy, path, <span class="text-sky-400">sizeof</span>(path_copy) - <span class="text-amber-400">1</span>);
+
+    <span class="text-sky-400">char</span> *save1, *save2;
+    <span class="text-sky-400">char</span>* p_seg    = strtok_r(pat_copy,  <span class="text-emerald-400">"/"</span>, &amp;save1);
+    <span class="text-sky-400">char</span>* path_seg = strtok_r(path_copy, <span class="text-emerald-400">"/"</span>, &amp;save2);
+
+    <span class="text-sky-400">while</span> (p_seg &amp;&amp; path_seg) {
+        <span class="text-sky-400">if</span> (p_seg[<span class="text-amber-400">0</span>] == <span class="text-emerald-400">'{'</span>) {
+            <span class="text-slate-500">// extract {id} → bind to request param</span>
+            request_set_param(req, param, path_seg);
+        } <span class="text-sky-400">else if</span> (strcmp(p_seg, path_seg) != <span class="text-amber-400">0</span>) {
+            <span class="text-sky-400">return</span> <span class="text-amber-400">0</span>;
+        }
+        p_seg    = strtok_r(<span class="text-rose-400">NULL</span>, <span class="text-emerald-400">"/"</span>, &amp;save1);
+        path_seg = strtok_r(<span class="text-rose-400">NULL</span>, <span class="text-emerald-400">"/"</span>, &amp;save2);
+    }
+    <span class="text-sky-400">return</span> (p_seg == <span class="text-rose-400">NULL</span> &amp;&amp; path_seg == <span class="text-rose-400">NULL</span>);
+}</code></pre>
+    </div>
+
+    <!-- Pipeline diagram -->
+    <div class="bg-[#121214] border border-slate-800 rounded-lg p-5">
+      <div class="text-xs font-mono uppercase tracking-wider text-slate-400 mb-4 flex items-center gap-1.5">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 glow-green"></span>
+        Request Pipeline
+      </div>
+      <div class="flex items-center justify-between gap-2 font-mono text-[10px] uppercase tracking-wider">
+        <div class="flex-1 px-2 py-3 bg-[#0A0A0B] border border-slate-800 rounded text-center">
+          <div class="text-emerald-400">socket()</div>
+          <div class="text-[8px] text-slate-500 mt-1">accept + read</div>
+        </div>
+        <span class="text-slate-700">&rarr;</span>
+        <div class="flex-1 px-2 py-3 bg-[#0A0A0B] border border-slate-800 rounded text-center">
+          <div class="text-emerald-400">middleware</div>
+          <div class="text-[8px] text-slate-500 mt-1">log + static</div>
+        </div>
+        <span class="text-slate-700">&rarr;</span>
+        <div class="flex-1 px-2 py-3 bg-[#0A0A0B] border border-slate-800 rounded text-center">
+          <div class="text-emerald-400">router</div>
+          <div class="text-[8px] text-slate-500 mt-1">match + bind</div>
+        </div>
+        <span class="text-slate-700">&rarr;</span>
+        <div class="flex-1 px-2 py-3 bg-[#0A0A0B] border border-slate-800 rounded text-center">
+          <div class="text-emerald-400">controller</div>
+          <div class="text-[8px] text-slate-500 mt-1">ACTION()</div>
+        </div>
+        <span class="text-slate-700">&rarr;</span>
+        <div class="flex-1 px-2 py-3 bg-[#0A0A0B] border border-slate-800 rounded text-center">
+          <div class="text-emerald-400">view</div>
+          <div class="text-[8px] text-slate-500 mt-1">render + layout</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT — Anatomy + stats -->
+  <div class="lg:col-span-5 flex flex-col gap-4">
+    <!-- Module breakdown -->
+    <div class="bg-[#121214] border border-slate-800 rounded-lg p-5">
+      <div class="flex items-center gap-2 mb-4 border-b border-slate-800 pb-2.5">
+        <svg class="w-4 h-4 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        <span class="text-xs uppercase font-mono tracking-wider text-slate-300 font-bold">Framework Anatomy</span>
+      </div>
+      <ul class="divide-y divide-slate-800/70 font-mono text-[11px]">
+        <li class="py-2 flex justify-between items-center">
+          <span class="text-slate-300">src/server.c</span>
+          <span class="text-emerald-400 text-[10px]">socket loop / pthread dispatch</span>
+        </li>
+        <li class="py-2 flex justify-between items-center">
+          <span class="text-slate-300">src/router.c</span>
+          <span class="text-emerald-400 text-[10px]">pattern match + param bind</span>
+        </li>
+        <li class="py-2 flex justify-between items-center">
+          <span class="text-slate-300">src/middleware.c</span>
+          <span class="text-emerald-400 text-[10px]">linked-list chain</span>
+        </li>
+        <li class="py-2 flex justify-between items-center">
+          <span class="text-slate-300">src/static.c</span>
+          <span class="text-emerald-400 text-[10px]">/static/* &rarr; public/*</span>
+        </li>
+        <li class="py-2 flex justify-between items-center">
+          <span class="text-slate-300">src/view.c</span>
+          <span class="text-emerald-400 text-[10px]">handlebars-style engine</span>
+        </li>
+        <li class="py-2 flex justify-between items-center">
+          <span class="text-slate-300">src/response.c</span>
+          <span class="text-emerald-400 text-[10px]">html / json / bytes</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Stats -->
+    <div class="bg-[#121214] border border-slate-800 rounded-lg p-5">
+      <div class="text-xs font-mono uppercase tracking-wider text-slate-400 mb-3">Source Topology</div>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded text-center">
+          <div class="text-lg font-mono font-bold text-emerald-400">1,559</div>
+          <div class="text-[9px] uppercase tracking-wider text-slate-500 font-mono mt-1">Lines, src + ctrl</div>
+        </div>
+        <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded text-center">
+          <div class="text-lg font-mono font-bold text-emerald-400">7</div>
+          <div class="text-[9px] uppercase tracking-wider text-slate-500 font-mono mt-1">HTTP routes registered</div>
+        </div>
+        <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded text-center">
+          <div class="text-lg font-mono font-bold text-emerald-400">3</div>
+          <div class="text-[9px] uppercase tracking-wider text-slate-500 font-mono mt-1">Template directives</div>
+        </div>
+        <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded text-center">
+          <div class="text-lg font-mono font-bold text-emerald-400">0</div>
+          <div class="text-[9px] uppercase tracking-wider text-slate-500 font-mono mt-1">Runtime dependencies</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Template engine syntax -->
+    <div class="bg-[#121214] border border-slate-800 rounded-lg p-5">
+      <div class="text-xs font-mono uppercase tracking-wider text-slate-400 mb-3">Template directives</div>
+      <div class="space-y-2 font-mono text-[11px]">
+        <div class="bg-[#0A0A0B] border border-slate-800 px-3 py-2 rounded flex items-center justify-between">
+          <code class="text-emerald-400">&#123;&#123; key &#125;&#125;</code>
+          <span class="text-[10px] text-slate-500">interpolate</span>
+        </div>
+        <div class="bg-[#0A0A0B] border border-slate-800 px-3 py-2 rounded flex items-center justify-between">
+          <code class="text-emerald-400">&#123;&#123;#if x&#125;&#125; ... &#123;&#123;/if&#125;&#125;</code>
+          <span class="text-[10px] text-slate-500">conditional</span>
+        </div>
+        <div class="bg-[#0A0A0B] border border-slate-800 px-3 py-2 rounded flex items-center justify-between">
+          <code class="text-emerald-400">&#123;&#123;#each rows&#125;&#125; ... &#123;&#123;/each&#125;&#125;</code>
+          <span class="text-[10px] text-slate-500">iterate</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

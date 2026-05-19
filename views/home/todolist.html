@@ -1,2 +1,43 @@
-<h1 class="text-2xl text-slate-800">{{title}}</h1>
-<div id="app"></div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+  <!-- Mount target — left -->
+  <div class="lg:col-span-7 bg-[#121214] border border-slate-800 rounded-lg overflow-hidden">
+    <div class="px-5 py-3 border-b border-slate-800 bg-[#0E0E10] flex items-center justify-between">
+      <span class="text-xs font-mono uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 glow-green"></span>
+        wasmoon // pages/todolist.lua
+      </span>
+      <span class="text-[10px] font-mono text-slate-500">data-lua-module="pages/todolist"</span>
+    </div>
+    <div class="p-8 min-h-[300px]">
+      <div id="app" class="text-slate-100 w-full font-mono"></div>
+    </div>
+  </div>
+
+  <!-- Source viewer — right -->
+  <div class="lg:col-span-5 bg-[#121214] border border-slate-800 rounded-lg p-5">
+    <div class="text-xs font-mono uppercase tracking-wider text-slate-400 mb-3">source</div>
+    <pre class="bg-[#0A0A0B] text-slate-300 p-4 rounded border border-slate-800 font-mono text-[11px] leading-relaxed overflow-x-auto"><code><span class="text-sky-400">local</span> items, setItems = reactive.signal({})
+<span class="text-sky-400">local</span> draft, setDraft = reactive.signal(<span class="text-emerald-400">""</span>)
+
+<span class="text-sky-400">local</span> <span class="text-sky-400">function</span> addItem()
+    <span class="text-sky-400">local</span> d = draft()
+    <span class="text-sky-400">if</span> d == <span class="text-emerald-400">""</span> <span class="text-sky-400">then return end</span>
+    <span class="text-sky-400">local</span> copy = {}
+    <span class="text-sky-400">for</span> i, v <span class="text-sky-400">in</span> ipairs(items()) <span class="text-sky-400">do</span> copy[i] = v <span class="text-sky-400">end</span>
+    copy[#copy+<span class="text-amber-400">1</span>] = d
+    setItems(copy)
+    setDraft(<span class="text-emerald-400">""</span>)
+<span class="text-sky-400">end</span>
+
+reactive.effect(<span class="text-sky-400">function</span>()
+    list.innerHTML = <span class="text-emerald-400">""</span>
+    <span class="text-sky-400">for</span> _, v <span class="text-sky-400">in</span> ipairs(items()) <span class="text-sky-400">do</span>
+        dom.append(list, h(<span class="text-emerald-400">"li"</span>, {}, v))
+    <span class="text-sky-400">end</span>
+<span class="text-sky-400">end</span>)</code></pre>
+    <p class="text-[10px] font-mono text-slate-500 leading-relaxed mt-3">
+      Two signals + one effect. The effect tears down and rebuilds the list whenever the items signal mutates.
+    </p>
+  </div>
+</div>
