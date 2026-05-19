@@ -8,9 +8,6 @@ extern void home_index(Request*, Response*, void*);
 extern void home_about(Request*, Response*, void*);
 extern void home_counter(Request*, Response*, void*);
 extern void home_todolist(Request*, Response*, void*);
-extern void users_list(Request*, Response*, void*);
-extern void users_show(Request*, Response*, void*);
-extern void api_users(Request*, Response*, void*);
 
 static int logging_middleware(Request* req, Response* res, MiddlewareNode* self, Router* router)
 {
@@ -40,11 +37,6 @@ int main(int argc, char* argv[])
     server_get(server, "/about", home_about);
     server_get(server, "/counter", home_counter);
     server_get(server, "/todos", home_todolist);
-    server_get(server, "/users/list", users_list);
-    server_get(server, "/users/{id}", users_show);
-
-    // API ROUTES
-    server_get(server, "/api/users", api_users);
 
     server_start(server);
 

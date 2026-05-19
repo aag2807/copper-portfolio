@@ -26,6 +26,7 @@ async function boot() {
   await factory.mountFile(pagePath, pageSrc);
 
   const lua = await factory.createEngine();
+  window.__lua = lua;
   lua.global.set("dom", makeBridge());
 
   await lua.doString(`package.path = "./?.lua;./?/init.lua"`);

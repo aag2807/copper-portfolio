@@ -1,9 +1,10 @@
 local M = {}
 local current_effect = nil
+local effects = {} -- strong-reference root so effects survive Lua GC
 
 function M.signal(initial)
 	local value = initial
-	local subs = setmetatable({}, { __mode = "k" }) -- weak keys
+	local subs = {}
 
 	local function get()
 		if current_effect then
@@ -32,6 +33,7 @@ function M.effect(fn)
 		fn()
 		current_effect = prev
 	end
+	effects[#effects + 1] = run
 	run()
 	return run
 end
