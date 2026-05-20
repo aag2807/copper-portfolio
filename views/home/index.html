@@ -112,7 +112,7 @@
           </div>
 
           <h2
-            class="text-4xl sm:text-5xl font-extrabold tracking-tight text-white leading-none mb-6"
+            class="text-4xl sm:text-5xl font-extrabold tracking-tight text-white leading-none mb-4"
           >
             BUILT THE
             <span
@@ -122,14 +122,19 @@
             FROM SCRATCH.
           </h2>
 
-          <p class="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-lg">
-            Software engineer from the Dominican Republic. This portfolio is
-            served by a hand-written C HTTP framework I built — pages render
-            through a templated MVC pipeline; client-side interactivity loads
-            Lua modules on demand via wasmoon. The site is its own demo.
+          <p class="text-[11px] sm:text-xs font-mono uppercase tracking-widest text-emerald-400 leading-snug mb-5">
+            Web and AI in practice. Systems, languages, and game loops in depth.
           </p>
 
-          <div class="mt-8 grid grid-cols-2 gap-4">
+          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-lg mb-3">
+            Senior software engineer, fintech and banking background. Co-founder at <span class="text-emerald-400 font-semibold">NeuVerge</span> (product studio, Dominican Republic). Currently building <span class="text-emerald-400 font-semibold">Aurora</span> &mdash; an on-premise AI gateway for financial services &mdash; and <span class="text-emerald-400 font-semibold">c-copper</span>, the framework serving this page.
+          </p>
+          <!-- TODO: confirm availability + time zones -->
+          <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed max-w-lg font-mono">
+            Available for senior IC and applied-AI engagements, EU and LATAM time zones.
+          </p>
+
+          <div class="mt-6 grid grid-cols-2 gap-4">
             <a
               href="/systems"
               class="block p-4 border border-slate-800 rounded bg-[#0E0E10]/50 hover:border-emerald-500/40 transition-colors"
@@ -165,12 +170,23 @@
             >
               Run Counter Demo
             </a>
+            <!-- TODO: confirm c-copper repo URL (likely github.com/aagn2807/c-copper) -->
             <a
-              href="/systems"
+              href="https://github.com/aagn2807/c-copper"
+              target="_blank"
+              rel="noreferrer"
               class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-neutral-200 hover:text-emerald-400 font-bold font-mono text-[10px] uppercase tracking-wider border border-slate-800 rounded transition-all active:scale-[0.98]"
             >
-              Inspect Framework
+              Inspect Framework &rarr;
             </a>
+            <!-- TODO: drop cv.pdf at public/cv/alvaro-guzman.pdf, then enable this link -->
+            <span
+              aria-disabled="true"
+              title="CV not yet uploaded"
+              class="px-4 py-2 bg-[#0A0A0B] text-slate-600 font-bold font-mono text-[10px] uppercase tracking-wider border border-slate-800 border-dashed rounded cursor-not-allowed select-none"
+            >
+              Download CV &middot; pending
+            </span>
           </div>
         </div>
 
@@ -221,45 +237,36 @@
             <div
               class="text-[10px] font-mono text-slate-500 uppercase tracking-widest"
             >
-              TOOLKIT
+              TOOLKIT // experimental_stack
             </div>
             <div class="flex flex-wrap gap-1.5">
-              <span
-                class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm"
-                >C99</span
-              >
-              <span
-                class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm"
-                >Pthreads</span
-              >
-              <span
-                class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm"
-                >Lua 5.4</span
-              >
-              <span
-                class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm"
-                >LÖVE 11.5</span
-              >
-              <span
-                class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm"
-                >wasmoon</span
-              >
-              <span
-                class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm"
-                >Webpack 5</span
-              >
-              <span
-                class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm"
-                >Tailwind v4</span
-              >
-              <span
-                class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm"
-                >SQLite</span
-              >
-              <span
-                class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm"
-                >Linux/WSL</span
-              >
+              <span class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm">C99</span>
+              <span class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm">Pthreads</span>
+              <span class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm">Lua 5.4</span>
+              <span class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm">LÖVE 11.5</span>
+              <span class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm">wasmoon</span>
+              <span class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm">Webpack 5</span>
+              <span class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm">Tailwind v4</span>
+              <span class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm">SQLite</span>
+              <span class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm">Linux/WSL</span>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <div class="text-[10px] font-mono text-slate-500 uppercase tracking-widest">
+              // professional_stack
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm">Angular</span>
+              <span class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm">.NET</span>
+              <span class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm">C#</span>
+              <span class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm">TypeScript</span>
+              <span class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm">SignalR</span>
+              <span class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm">Azure</span>
+              <span class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm">Docker</span>
+              <span class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm">RAG</span>
+              <span class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm">Ollama</span>
+              <span class="px-2 py-1 bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 rounded-sm">WordPress</span>
             </div>
           </div>
 
@@ -298,36 +305,36 @@
           </div>
         </div>
 
-        <div class="pt-6 border-t border-slate-800 flex flex-col space-y-3">
-          <a
-            href="https://github.com/aagn2807"
-            target="_blank"
-            rel="noreferrer"
-            class="flex items-center space-x-3 group"
-          >
-            <div
-              class="w-8 h-8 border border-slate-800 bg-[#0E0E10] flex items-center justify-center font-mono text-xs text-emerald-500 group-hover:bg-emerald-500 group-hover:text-black transition-colors rounded"
+        <div class="pt-6 border-t border-slate-800 flex flex-col gap-3">
+          <div class="text-[9px] font-mono text-emerald-400 uppercase tracking-widest leading-snug">
+            AVAILABLE_FOR <span class="text-slate-600">//</span> senior_ic <span class="text-slate-600">//</span> applied_ai <span class="text-slate-600">//</span> systems_engineering
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <!-- TODO: replace with real hire email -->
+            <a
+              href="mailto:TODO@example.com"
+              class="px-2.5 py-1.5 bg-[#0E0E10] hover:bg-emerald-500 hover:text-black border border-slate-800 hover:border-emerald-500 text-[10px] font-mono text-slate-300 rounded transition-colors"
             >
-              GH
-            </div>
-            <div
-              class="text-[11px] font-mono text-slate-400 group-hover:text-white transition-colors"
+              [hire@TODO]
+            </a>
+            <!-- TODO: replace with real linkedin slug -->
+            <a
+              href="https://www.linkedin.com/in/TODO"
+              target="_blank"
+              rel="noreferrer"
+              class="px-2.5 py-1.5 bg-[#0E0E10] hover:bg-emerald-500 hover:text-black border border-slate-800 hover:border-emerald-500 text-[10px] font-mono text-slate-300 rounded transition-colors"
             >
-              /aagn2807
-            </div>
-          </a>
-          <a href="/contact" class="flex items-center space-x-3 group">
-            <div
-              class="w-8 h-8 border border-slate-800 bg-[#0E0E10] flex items-center justify-center font-mono text-xs text-emerald-500 group-hover:bg-emerald-500 group-hover:text-black transition-colors rounded"
+              [linkedin/TODO]
+            </a>
+            <a
+              href="https://github.com/aagn2807"
+              target="_blank"
+              rel="noreferrer"
+              class="px-2.5 py-1.5 bg-[#0E0E10] hover:bg-emerald-500 hover:text-black border border-slate-800 hover:border-emerald-500 text-[10px] font-mono text-slate-300 rounded transition-colors"
             >
-              @
-            </div>
-            <div
-              class="text-[11px] font-mono text-slate-400 group-hover:text-white transition-colors"
-            >
-              /connect
-            </div>
-          </a>
+              [github/aagn2807]
+            </a>
+          </div>
         </div>
       </aside>
     </div>
