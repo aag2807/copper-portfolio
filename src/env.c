@@ -81,12 +81,20 @@ void env_load(const char* path)
 
 const char* env_get(const char* key)
 {
+    // Look up the .env-loaded value first. If it exists and is non-empty,
+    // .env wins (explicit local override). If it's empty/missing, fall through
+    // to the process environment — this is the Cloud Run / docker -e path,
+    // where .env may carry placeholders only.
     for (int i = 0; i < g_count; i++)
     {
         if (strcmp(g_pairs[i].key, key) == 0)
-            return g_pairs[i].value;
+        {
+            if (g_pairs[i].value && *g_pairs[i].value)
+                return g_pairs[i].value;
+            break;
+        }
     }
-    return NULL;
+    return getenv(key);
 }
 
 void env_cleanup(void)
