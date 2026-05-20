@@ -14,6 +14,7 @@ extern void home_gamedev(Request*, Response*, void*);
 extern void home_web(Request*, Response*, void*);
 extern void home_contact(Request*, Response*, void*);
 extern void home_ai(Request*, Response*, void*);
+extern void home_workshop(Request*, Response*, void*);
 extern void home_counter(Request*, Response*, void*);
 extern void home_todolist(Request*, Response*, void*);
 extern void contact_submit(Request*, Response*, void*);
@@ -55,6 +56,7 @@ int main(int argc, char* argv[])
     server_get(server, "/web", home_web);
     server_get(server, "/contact", home_contact);
     server_get(server, "/ai", home_ai);
+    server_get(server, "/workshop", home_workshop);
     server_get(server, "/counter", home_counter);
     server_get(server, "/todos", home_todolist);
 
