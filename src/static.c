@@ -38,6 +38,8 @@ static const char* content_type_for(const char* path)
         return "font/woff";
     if (!strcmp(dot, ".woff2"))
         return "font/woff2";
+    if (!strcmp(dot, ".pdf"))
+        return "application/pdf";
     return "application/octet-stream";
 }
 
