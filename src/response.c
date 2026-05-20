@@ -69,36 +69,37 @@ void response_redirect(Response* res, const char* url)
 
 void response_flush(Response* res, int fd)
 {
-    // Build the status line
+    // Build the headers as a single buffer (status line + headers + blank line).
     String buf = str_new();
     str_appendf(&buf, "HTTP/1.1 %d %s\r\n", res->status_code, str_cstr(&res->status_text));
-
-    // Add content - length char cl[32];
-    char cl[32];
-
-    snprintf(cl, sizeof(cl), "%zu", res->body.len);
-    str_appendf(&buf, "Content-Length: %s\r\n", cl);
+    str_appendf(&buf, "Content-Length: %zu\r\n", res->body.len);
     str_append(&buf, "Connection: close\r\n");
-
-    // Add custom headers
     str_append(&buf, str_cstr(&res->headers));
-
-    // End headers
     str_append(&buf, "\r\n");
 
-    // Add body
-    str_append(&buf, str_cstr(&res->body));
-
-    // Write to socket
-    const char* data = str_cstr(&buf);
-    size_t remaining = buf.len;
-    while (remaining > 0)
+    // Write headers to socket.
+    const char* head_data = str_cstr(&buf);
+    size_t head_remaining = buf.len;
+    while (head_remaining > 0)
     {
-        ssize_t n = sock_write(fd, data, remaining);
+        ssize_t n = sock_write(fd, head_data, head_remaining);
         if (n <= 0)
             break;
-        data += n;
-        remaining -= n;
+        head_data += n;
+        head_remaining -= n;
+    }
+
+    // Write body separately so binary payloads (PDFs, fonts, images) are not
+    // truncated at the first NUL byte. We use res->body.len, not strlen.
+    const char* body_data = str_cstr(&res->body);
+    size_t body_remaining = res->body.len;
+    while (body_remaining > 0)
+    {
+        ssize_t n = sock_write(fd, body_data, body_remaining);
+        if (n <= 0)
+            break;
+        body_data += n;
+        body_remaining -= n;
     }
 
     str_free(&buf);
