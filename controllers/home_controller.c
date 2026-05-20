@@ -17,6 +17,9 @@ ACTION(home_systems)
 {
     ViewData data[] = {
         {"title", "text", "Systems", NULL},
+        {"description", "text",
+         "c-copper, Cobre, Lunar, Axon — hand-written frameworks, language tooling, and gateways in C, Go, and C#.",
+         NULL},
         {NULL, NULL, NULL, NULL},
     };
     response_status(res, 200, "OK");
@@ -27,6 +30,9 @@ ACTION(home_gamedev)
 {
     ViewData data[] = {
         {"title", "text", "Gamedev", NULL},
+        {"description", "text",
+         "LitRPG action prototypes in Unity, BSP rendering research, planned SDL2 and Bevy work.",
+         NULL},
         {NULL, NULL, NULL, NULL},
     };
     response_status(res, 200, "OK");
@@ -37,6 +43,9 @@ ACTION(home_web)
 {
     ViewData data[] = {
         {"title", "text", "Web", NULL},
+        {"description", "text",
+         "Browser-side Lua via wasmoon. Per-route module loading, signal-based reactivity, no React, no virtual DOM.",
+         NULL},
         {NULL, NULL, NULL, NULL},
     };
     response_status(res, 200, "OK");
@@ -47,6 +56,9 @@ ACTION(home_ai)
 {
     ViewData data[] = {
         {"title", "text", "AI", NULL},
+        {"description", "text",
+         "Local-first AI tooling. OCR pipeline, RAG bot, multi-agent deliberation, terminal coding assistant — running against a local Ollama daemon.",
+         NULL},
         {NULL, NULL, NULL, NULL},
     };
     response_status(res, 200, "OK");
@@ -57,6 +69,9 @@ ACTION(home_workshop)
 {
     ViewData data[] = {
         {"title", "text", "Workshop", NULL},
+        {"description", "text",
+         "Flat index of everything I've built across systems, AI, web, gamedev, and tooling.",
+         NULL},
         {NULL, NULL, NULL, NULL},
     };
     response_status(res, 200, "OK");
@@ -67,6 +82,7 @@ ACTION(home_contact)
 {
     ViewData data[] = {
         {"title", "text", "Connect", NULL},
+        {"description", "text", "Get in touch with Alvaro Guzman.", NULL},
         {NULL, NULL, NULL, NULL},
     };
     response_status(res, 200, "OK");
