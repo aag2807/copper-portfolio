@@ -1,5 +1,6 @@
 #include "view.h"
 
+#include "csrf.h"
 #include "str.h"
 
 #include <stdio.h>
@@ -239,6 +240,23 @@ static StopTag render_span(const char** pp, String* out, ViewData* data, ViewDat
             while (*p && *p != '\n') p++;
             if (*p == '\n') p++;
             continue;
+        }
+
+        // @csrf — emit a hidden input carrying a freshly-signed CSRF token.
+        // Boundary check: must not be a prefix of a longer identifier (e.g. @csrfish).
+        if (p[0] == '@' && strncmp(p, "@csrf", 5) == 0)
+        {
+            char c = p[5];
+            int is_word_char = (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')
+                            || (c >= '0' && c <= '9') || c == '_';
+            if (!is_word_char)
+            {
+                char token[128];
+                csrf_token_make(token, sizeof(token));
+                str_appendf(out, "<input type=\"hidden\" name=\"csrf_token\" value=\"%s\" />", token);
+                p += 5;
+                continue;
+            }
         }
 
         str_append_bytes(out, p, 1);

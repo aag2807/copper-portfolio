@@ -1,3 +1,7 @@
+#include "src/csrf.h"
+#include "src/email.h"
+#include "src/env.h"
+#include "src/ratelimit.h"
 #include "src/server.h"
 #include "src/static.h"
 
@@ -11,6 +15,7 @@ extern void home_web(Request*, Response*, void*);
 extern void home_contact(Request*, Response*, void*);
 extern void home_counter(Request*, Response*, void*);
 extern void home_todolist(Request*, Response*, void*);
+extern void contact_submit(Request*, Response*, void*);
 
 static int logging_middleware(Request* req, Response* res, MiddlewareNode* self, Router* router)
 {
@@ -30,10 +35,17 @@ int main(int argc, char* argv[])
     printf(" ║       C Copper Web Framework v0.02       ║\n");
     printf(" ╚══════════════════════════════════════════╝\n\n");
 
+    env_load(".env");
+    email_init();
+    csrf_init();
+    ratelimit_init(5, 3600); // 5 mutating requests per IP per hour
+
     Server* server = server_create(port);
 
     server_use(server, logging_middleware, NULL);
     server_use(server, static_middleware, NULL);
+    server_use(server, ratelimit_middleware, NULL);
+    server_use(server, csrf_middleware, NULL);
 
     // HTML ROUTES
     server_get(server, "/", home_index);
@@ -44,9 +56,14 @@ int main(int argc, char* argv[])
     server_get(server, "/counter", home_counter);
     server_get(server, "/todos", home_todolist);
 
+    // API ROUTES
+    server_post(server, "/api/contact", contact_submit);
+
     server_start(server);
 
     server_destroy(server);
+    email_cleanup();
+    ratelimit_cleanup();
 
     return 0;
 }

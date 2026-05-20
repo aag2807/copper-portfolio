@@ -21,6 +21,7 @@ typedef struct
     } headers;
 
     String body;
+    String client_ip;
 
     struct
     {

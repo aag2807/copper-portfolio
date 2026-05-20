@@ -4,12 +4,12 @@ CFLAGS = -Wall -Wextra -g -O2 -Iinclude
 # Detect Windows (cmd.exe + mingw32-make sets OS=Windows_NT) vs POSIX.
 ifeq ($(OS),Windows_NT)
     EXE     := .exe
-    LDFLAGS := -lpthread -lws2_32
+    LDFLAGS := -lpthread -lws2_32 -lcurl -lcrypto
     RM      := del /Q /F
     FixPath  = $(subst /,\,$1)
 else
     EXE     :=
-    LDFLAGS := -lpthread
+    LDFLAGS := -lpthread -lcurl -lcrypto
     RM      := rm -f
     FixPath  = $1
 endif

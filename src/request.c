@@ -12,6 +12,7 @@ void request_init(Request* req, const char* raw)
     req->query = str_new();
     req->version = str_new();
     req->body = str_new();
+    req->client_ip = str_new();
 
     // Parse the request line: "GET /path?q=1 HTTP/1.1\r\n"
     const char* p = raw;
@@ -86,21 +87,21 @@ void request_init(Request* req, const char* raw)
         {
             p++;
         }
-        while (*p == ' ')
+        while (*p == ' ' || *p == '\t')
         {
-            p++; // skip leading space
+            p++; // skip leading whitespace
         }
         i = 0;
 
-        if (*p == '\r')
+        // Read the header value up to CRLF.
+        while (*p && *p != '\r' && *p != '\n' && i + 1 < (int)sizeof(val))
         {
-            p++;
+            val[i++] = *p++;
         }
+        val[i] = '\0';
 
-        if (*p == '\n')
-        {
-            p++;
-        }
+        if (*p == '\r') p++;
+        if (*p == '\n') p++;
 
         if (req->headers.count >= req->headers.cap)
         {
@@ -177,6 +178,7 @@ void request_cleanup(Request* req)
     str_free(&req->query);
     str_free(&req->version);
     str_free(&req->body);
+    str_free(&req->client_ip);
 
     for (int i = 0; i < req->headers.count; i++)
     {

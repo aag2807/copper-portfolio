@@ -1,9 +1,11 @@
 #include "server.h"
 
+#include <arpa/inet.h>
 #include <errno.h>
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #ifdef _WIN32
 #include <winsock2.h>
@@ -43,6 +45,32 @@ static void* handle_client(void* arg)
         // Parse into a request
         Request req;
         request_init(&req, buffer);
+
+        // Stamp the client's IP for downstream middleware (rate limiting, etc.)
+        char ip_buf[INET_ADDRSTRLEN];
+        const char* peer = inet_ntop(AF_INET, &job->client_addr.sin_addr, ip_buf, sizeof(ip_buf));
+        if (peer) str_append(&req.client_ip, peer);
+
+        // If the request arrived behind a trusted proxy, prefer X-Forwarded-For.
+        const char* xff = request_header(&req, "X-Forwarded-For");
+        if (xff && *xff)
+        {
+            const char* comma = strchr(xff, ',');
+            size_t n = comma ? (size_t)(comma - xff) : strlen(xff);
+            // Reset client_ip and append just the first hop.
+            str_free(&req.client_ip);
+            req.client_ip = str_new();
+            char first[64] = {0};
+            if (n >= sizeof(first)) n = sizeof(first) - 1;
+            memcpy(first, xff, n);
+            // strip whitespace
+            char* s = first;
+            while (*s == ' ' || *s == '\t') s++;
+            char* e = s + strlen(s);
+            while (e > s && (e[-1] == ' ' || e[-1] == '\t')) e--;
+            *e = '\0';
+            str_append(&req.client_ip, s);
+        }
 
         // Create a response
         Response res;
