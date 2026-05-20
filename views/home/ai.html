@@ -1,0 +1,211 @@
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+  <!-- Top hero — local-first AI stance -->
+  <div class="lg:col-span-12 bg-[#121214] border border-slate-800 rounded-lg p-5 flex flex-col lg:flex-row gap-6 items-start">
+    <div class="lg:max-w-xl">
+      <span class="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold block mb-1">Stack // Local Inference</span>
+      <h3 class="text-2xl font-bold text-slate-100 tracking-tight leading-tight">
+        AI tools, run against a daemon I control.
+      </h3>
+      <p class="text-xs text-slate-400 mt-2 leading-relaxed max-w-lg">
+        Three builds, all sitting on top of a local Ollama daemon. Embeddings come from <code class="text-emerald-400 font-mono">mxbai-embed-large</code>, chat from whichever model fits the task. No API keys checked into anything, no provider lock-in &mdash; the cloud bridge is opt-in via the <code class="text-emerald-400 font-mono">:cloud</code> suffix when a model is too heavy to host.
+      </p>
+    </div>
+    <div class="flex-1 grid grid-cols-3 gap-3 w-full lg:w-auto font-mono min-w-0">
+      <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded min-w-0">
+        <div class="text-[9px] uppercase tracking-wider text-slate-500 mb-1">runtime</div>
+        <div class="text-emerald-400 text-[11px] break-words">ollama // :11434</div>
+      </div>
+      <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded min-w-0">
+        <div class="text-[9px] uppercase tracking-wider text-slate-500 mb-1">embed</div>
+        <div class="text-emerald-400 text-[11px] break-words">mxbai-embed-large</div>
+      </div>
+      <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded min-w-0">
+        <div class="text-[9px] uppercase tracking-wider text-slate-500 mb-1">index</div>
+        <div class="text-emerald-400 text-[11px] break-words">sqlite-vec // vec0</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LHS — Project slots, zig-zag -->
+  <div class="lg:col-span-7 flex flex-col gap-4">
+
+    <div class="flex justify-between items-center text-xs font-mono">
+      <span class="text-slate-400 uppercase tracking-widest font-semibold">Active Builds</span>
+      <span class="text-[10px] text-slate-500">three // all local-inference</span>
+    </div>
+
+    <!-- Card 01 — left-image right-text — OCR INDEXER -->
+    <article class="grid grid-cols-1 sm:grid-cols-5 gap-4 bg-[#121214] border border-slate-800 rounded-lg overflow-hidden">
+      <div class="sm:col-span-2 aspect-video sm:aspect-auto bg-[#0A0A0B] relative overflow-hidden flex items-center justify-center min-h-[160px]">
+        <div class="absolute inset-0 opacity-[0.08] pointer-events-none" style="background-image:linear-gradient(to right, #10b981 1px, transparent 1px), linear-gradient(to bottom, #10b981 1px, transparent 1px); background-size: 24px 24px;"></div>
+        <div class="relative w-10 h-10 border-2 border-emerald-500 rotate-45 flex items-center justify-center">
+          <div class="w-2 h-2 bg-emerald-500 -rotate-45 glow-green"></div>
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-tr from-[#0A0A0B] via-transparent to-emerald-950/30 pointer-events-none"></div>
+        <div class="absolute top-2 left-2 px-2 py-0.5 bg-emerald-500 text-black text-[9px] font-mono uppercase tracking-wider rounded">slot_01</div>
+        <div class="absolute bottom-2 left-2 text-[9px] font-mono uppercase tracking-widest text-slate-500">awaiting_capture</div>
+      </div>
+      <div class="sm:col-span-3 p-5 flex flex-col justify-between">
+        <div>
+          <div class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest mb-1">[0x01]_DOC_OCR_INDEXER</div>
+          <h4 class="text-base font-bold text-slate-100 tracking-tight mb-2">Document OCR &amp; extraction pipeline</h4>
+          <p class="text-[11px] text-slate-400 leading-relaxed">
+            Ingests document scans, runs OCR, then hands the raw text to a local LLM that classifies the document type and pulls out the fields that actually matter &mdash; dates, parties, totals, identifiers. Output drops into a searchable store, not a wall of unstructured text.
+          </p>
+        </div>
+        <div class="mt-3 flex flex-wrap gap-1.5 font-mono text-[9px]">
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">OCR</span>
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">classifier</span>
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">structured extraction</span>
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">ollama</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 02 — right-image left-text (zig) — RAG BOT -->
+    <article class="grid grid-cols-1 sm:grid-cols-5 gap-4 bg-[#121214] border border-slate-800 rounded-lg overflow-hidden">
+      <div class="sm:col-span-3 p-5 flex flex-col justify-between order-2 sm:order-1">
+        <div>
+          <div class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest mb-1">[0x02]_RAG_RETRIEVAL_BOT</div>
+          <h4 class="text-base font-bold text-slate-100 tracking-tight mb-2">Retrieval-augmented chat, end to end</h4>
+          <p class="text-[11px] text-slate-400 leading-relaxed">
+            The unglamorous one. Embed a corpus, store the vectors, do a kNN lookup at query time, stitch the top chunks into the prompt, send it to the model. Built mostly to wire the moving parts together myself instead of trusting a framework &mdash; chunking, recall thresholds, and prompt budget all picked deliberately.
+          </p>
+        </div>
+        <div class="mt-3 flex flex-wrap gap-1.5 font-mono text-[9px]">
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">embeddings</span>
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">vector search</span>
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">prompt budget</span>
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">streaming</span>
+        </div>
+      </div>
+      <div class="sm:col-span-2 aspect-video sm:aspect-auto bg-[#0A0A0B] relative overflow-hidden flex items-center justify-center min-h-[160px] order-1 sm:order-2">
+        <div class="absolute inset-0 opacity-[0.08] pointer-events-none" style="background-image:linear-gradient(to right, #10b981 1px, transparent 1px), linear-gradient(to bottom, #10b981 1px, transparent 1px); background-size: 24px 24px;"></div>
+        <div class="relative w-10 h-10 border-2 border-emerald-500 rotate-45 flex items-center justify-center">
+          <div class="w-2 h-2 bg-emerald-500 -rotate-45 glow-green"></div>
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-tl from-[#0A0A0B] via-transparent to-emerald-950/30 pointer-events-none"></div>
+        <div class="absolute top-2 right-2 px-2 py-0.5 bg-emerald-500 text-black text-[9px] font-mono uppercase tracking-wider rounded">slot_02</div>
+        <div class="absolute bottom-2 right-2 text-[9px] font-mono uppercase tracking-widest text-slate-500">awaiting_capture</div>
+      </div>
+    </article>
+
+    <!-- Card 03 — left-image right-text — GO CLI -->
+    <article class="grid grid-cols-1 sm:grid-cols-5 gap-4 bg-[#121214] border border-slate-800 rounded-lg overflow-hidden">
+      <div class="sm:col-span-2 aspect-video sm:aspect-auto bg-[#0A0A0B] relative overflow-hidden flex items-center justify-center min-h-[160px]">
+        <div class="absolute inset-0 opacity-[0.08] pointer-events-none" style="background-image:linear-gradient(to right, #10b981 1px, transparent 1px), linear-gradient(to bottom, #10b981 1px, transparent 1px); background-size: 24px 24px;"></div>
+        <div class="relative w-10 h-10 border-2 border-emerald-500 rotate-45 flex items-center justify-center">
+          <div class="w-2 h-2 bg-emerald-500 -rotate-45 glow-green"></div>
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-tr from-[#0A0A0B] via-transparent to-emerald-950/30 pointer-events-none"></div>
+        <div class="absolute top-2 left-2 px-2 py-0.5 bg-emerald-500 text-black text-[9px] font-mono uppercase tracking-wider rounded">slot_03</div>
+        <div class="absolute bottom-2 left-2 text-[9px] font-mono uppercase tracking-widest text-slate-500">awaiting_capture</div>
+      </div>
+      <div class="sm:col-span-3 p-5 flex flex-col justify-between">
+        <div>
+          <div class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest mb-1">[0x03]_GO_CODING_CLI</div>
+          <h4 class="text-base font-bold text-slate-100 tracking-tight mb-2">Terminal coding assistant, in Go</h4>
+          <p class="text-[11px] text-slate-400 leading-relaxed">
+            A single Go binary that talks to the local Ollama daemon and answers from inside the shell. Streams tokens as they arrive, keeps a session buffer, and stays out of the way &mdash; no browser tab, no auth dance, no leaving the terminal to ask a small question.
+          </p>
+        </div>
+        <div class="mt-3 flex flex-wrap gap-1.5 font-mono text-[9px]">
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">go</span>
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">ollama</span>
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">streaming</span>
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">single binary</span>
+        </div>
+      </div>
+    </article>
+
+  </div>
+
+  <!-- RHS — Stack, snippet, posture -->
+  <div class="lg:col-span-5 flex flex-col gap-4">
+
+    <!-- Go snippet — ollama chat call -->
+    <div class="bg-[#121214] border border-slate-800 rounded-lg p-4 flex flex-col">
+      <div class="flex justify-between items-center mb-3">
+        <span class="text-xs font-mono uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 glow-green"></span>
+          cli/chat.go // stream loop
+        </span>
+        <span class="px-2 py-0.5 bg-emerald-950/30 border border-emerald-800 text-[10px] uppercase font-mono tracking-wider rounded text-emerald-300">go 1.22</span>
+      </div>
+      <pre class="bg-[#0A0A0B] text-slate-300 p-4 rounded border border-slate-800 font-mono text-[11px] leading-relaxed overflow-x-auto"><code><span class="text-slate-500">// stream chat tokens straight to stdout</span>
+<span class="text-sky-400">func</span> stream(ctx context.Context, prompt <span class="text-sky-400">string</span>) <span class="text-sky-400">error</span> {
+    body, _ := json.Marshal(map[<span class="text-sky-400">string</span>]any{
+        <span class="text-emerald-400">"model"</span>:  cfg.Model,
+        <span class="text-emerald-400">"prompt"</span>: prompt,
+        <span class="text-emerald-400">"stream"</span>: <span class="text-amber-400">true</span>,
+    })
+    req, _ := http.NewRequestWithContext(ctx, <span class="text-emerald-400">"POST"</span>,
+        cfg.Host+<span class="text-emerald-400">"/api/generate"</span>, bytes.NewReader(body))
+
+    res, err := http.DefaultClient.Do(req)
+    <span class="text-sky-400">if</span> err != <span class="text-rose-400">nil</span> { <span class="text-sky-400">return</span> err }
+    <span class="text-sky-400">defer</span> res.Body.Close()
+
+    dec := json.NewDecoder(res.Body)
+    <span class="text-sky-400">for</span> {
+        <span class="text-sky-400">var</span> chunk struct{ Response <span class="text-sky-400">string</span>; Done <span class="text-sky-400">bool</span> }
+        <span class="text-sky-400">if</span> err := dec.Decode(&amp;chunk); err != <span class="text-rose-400">nil</span> { <span class="text-sky-400">return</span> err }
+        fmt.Print(chunk.Response)
+        <span class="text-sky-400">if</span> chunk.Done { <span class="text-sky-400">return</span> <span class="text-rose-400">nil</span> }
+    }
+}</code></pre>
+    </div>
+
+    <!-- Stack list -->
+    <div class="bg-[#121214] border border-slate-800 rounded-lg p-5">
+      <div class="flex items-center gap-2 mb-4 border-b border-slate-800 pb-2.5">
+        <svg class="w-4 h-4 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        <span class="text-xs uppercase font-mono tracking-wider text-slate-300 font-bold">Shared Stack</span>
+      </div>
+      <ul class="divide-y divide-slate-800/70 font-mono text-[11px]">
+        <li class="py-2 flex justify-between items-center">
+          <span class="text-slate-300">ollama daemon</span>
+          <span class="text-emerald-400 text-[10px]">local + :cloud bridge</span>
+        </li>
+        <li class="py-2 flex justify-between items-center">
+          <span class="text-slate-300">mxbai-embed-large</span>
+          <span class="text-emerald-400 text-[10px]">1024-dim, L2-normalized</span>
+        </li>
+        <li class="py-2 flex justify-between items-center">
+          <span class="text-slate-300">sqlite-vec</span>
+          <span class="text-emerald-400 text-[10px]">vec0 virtual table</span>
+        </li>
+        <li class="py-2 flex justify-between items-center">
+          <span class="text-slate-300">go net/http</span>
+          <span class="text-emerald-400 text-[10px]">streaming json decoder</span>
+        </li>
+        <li class="py-2 flex justify-between items-center">
+          <span class="text-slate-300">python glue</span>
+          <span class="text-emerald-400 text-[10px]">ingest + write paths</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Posture -->
+    <div class="bg-[#121214] border border-slate-800 rounded-lg p-5">
+      <div class="text-xs font-mono uppercase tracking-wider text-slate-400 mb-3">Posture</div>
+      <div class="space-y-2 font-mono text-[11px]">
+        <div class="bg-[#0A0A0B] border border-slate-800 px-3 py-2 rounded flex items-center justify-between">
+          <code class="text-emerald-400">local_first</code>
+          <span class="text-[10px] text-slate-500">cloud is opt-in, not default</span>
+        </div>
+        <div class="bg-[#0A0A0B] border border-slate-800 px-3 py-2 rounded flex items-center justify-between">
+          <code class="text-emerald-400">no_framework_magic</code>
+          <span class="text-[10px] text-slate-500">wire the pieces by hand</span>
+        </div>
+        <div class="bg-[#0A0A0B] border border-slate-800 px-3 py-2 rounded flex items-center justify-between">
+          <code class="text-emerald-400">small_models_first</code>
+          <span class="text-[10px] text-slate-500">reach for big only when needed</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

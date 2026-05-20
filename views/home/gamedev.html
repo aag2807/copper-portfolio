@@ -11,18 +11,18 @@
         Built directly against the LÖVE callback surface — no wrapping engine, no entity component DSL. Update, draw, and input live in plain modules. Frame-paced sims, weak-key reactive primitives, and fixed-timestep physics, all in lua.
       </p>
     </div>
-    <div class="flex-1 grid grid-cols-3 gap-3 w-full lg:w-auto font-mono">
-      <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
-        <div class="text-[9px] uppercase tracking-wider text-slate-500 mb-1">love.update(dt)</div>
-        <div class="text-emerald-400 text-[11px]">fixed step</div>
+    <div class="flex-1 grid grid-cols-3 gap-3 w-full lg:w-auto font-mono min-w-0">
+      <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded min-w-0">
+        <div class="text-[9px] uppercase tracking-wider text-slate-500 mb-1 break-words">love.update(dt)</div>
+        <div class="text-emerald-400 text-[11px] break-words">fixed step</div>
       </div>
-      <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
-        <div class="text-[9px] uppercase tracking-wider text-slate-500 mb-1">love.draw()</div>
-        <div class="text-emerald-400 text-[11px]">canvas batched</div>
+      <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded min-w-0">
+        <div class="text-[9px] uppercase tracking-wider text-slate-500 mb-1 break-words">love.draw()</div>
+        <div class="text-emerald-400 text-[11px] break-words">canvas batched</div>
       </div>
-      <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
-        <div class="text-[9px] uppercase tracking-wider text-slate-500 mb-1">love.physics</div>
-        <div class="text-emerald-400 text-[11px]">box2d body sim</div>
+      <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded min-w-0">
+        <div class="text-[9px] uppercase tracking-wider text-slate-500 mb-1 break-words">love.physics</div>
+        <div class="text-emerald-400 text-[11px] break-words">box2d body sim</div>
       </div>
     </div>
   </div>

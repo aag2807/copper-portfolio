@@ -43,6 +43,16 @@ ACTION(home_web)
     render_view(res, "home/web.html", data);
 }
 
+ACTION(home_ai)
+{
+    ViewData data[] = {
+        {"title", "text", "AI", NULL},
+        {NULL, NULL, NULL, NULL},
+    };
+    response_status(res, 200, "OK");
+    render_view(res, "home/ai.html", data);
+}
+
 ACTION(home_contact)
 {
     ViewData data[] = {
