@@ -3,12 +3,12 @@
   <!-- Top hero strip -->
   <div class="lg:col-span-12 bg-[#121214] border border-slate-800 rounded-lg p-5 flex flex-col lg:flex-row gap-6 items-start">
     <div class="lg:max-w-xl">
-      <span class="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold block mb-1">Engine // LÖVE 11.5</span>
+      <span class="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold block mb-1">Lab // LÖVE 11.5</span>
       <h3 class="text-2xl font-bold text-slate-100 tracking-tight leading-tight">
         Lua, run from the metal of the game loop.
       </h3>
       <p class="text-xs text-slate-400 mt-2 leading-relaxed max-w-lg">
-        Built directly against the LÖVE callback surface — no wrapping engine, no entity component DSL. Update, draw, and input live in plain modules. Frame-paced sims, weak-key reactive primitives, and fixed-timestep physics, all in lua.
+        LÖVE is the prototyping bench — built directly against the callback surface, no wrapping engine, no entity component DSL. Productized work runs in Unity (Passages) and explorations sit in Rust/Bevy and SDL2/C++ below.
       </p>
     </div>
     <div class="flex-1 grid grid-cols-3 gap-3 w-full lg:w-auto font-mono min-w-0">
@@ -27,108 +27,107 @@
     </div>
   </div>
 
-  <!-- LHS — Project slots (zig-zag, not 3-col) -->
+  <!-- LHS — Real game projects -->
   <div class="lg:col-span-7 flex flex-col gap-4">
 
-    <!-- Coming soon placeholder (shown while real captures aren't ready) -->
-    <div class="relative bg-[#121214] border border-slate-800 rounded-lg p-8 min-h-[420px] flex flex-col items-center justify-center text-center overflow-hidden">
-      <!-- decorative grid background -->
-      <div class="absolute inset-0 opacity-[0.08] pointer-events-none" style="background-image:linear-gradient(to right, #10b981 1px, transparent 1px), linear-gradient(to bottom, #10b981 1px, transparent 1px); background-size: 32px 32px;"></div>
-      <!-- rotated emerald square -->
-      <div class="relative w-16 h-16 border-2 border-emerald-500 rotate-45 flex items-center justify-center mb-6">
-        <div class="w-4 h-4 bg-emerald-500 -rotate-45 glow-green"></div>
-      </div>
-      <div class="text-[10px] font-mono uppercase tracking-widest text-emerald-500 mb-2">[status] capture queue</div>
-      <h4 class="text-xl font-bold text-slate-100 tracking-tight mb-2">Live captures, coming soon.</h4>
-      <p class="text-[11px] text-slate-400 leading-relaxed max-w-md font-mono">
-        Project reels are being recorded against LÖVE 11.5 builds. This slot will swap in tile-prototype, physics sandbox, and shader-pass demos as each clip lands.
-      </p>
-      <div class="mt-6 flex items-center gap-4 text-[10px] font-mono">
-        <span class="flex items-center gap-1.5 text-slate-500">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 glow-green"></span>
-          recording
-        </span>
-        <span class="text-slate-700">|</span>
-        <span class="text-slate-500">ETA &middot; rolling</span>
-      </div>
-    </div>
-
-    <!-- Real project cards — gated until captures are ready. Flip to {{#if true}} or wire a real ViewData key. -->
-    {{#if false}}
     <div class="flex justify-between items-center text-xs font-mono">
-      <span class="text-slate-400 uppercase tracking-widest font-semibold">Active Builds</span>
-      <span class="text-[10px] text-slate-500">slot // placeholders below — drop real captures in</span>
+      <span class="text-slate-400 uppercase tracking-widest font-semibold">Active &amp; Past Builds</span>
+      <span class="text-[10px] text-slate-500">unity // c // rust+bevy // sdl2</span>
     </div>
 
-    <!-- Card 01 — left-image right-text -->
+    <!-- Passages — lead -->
     <article class="grid grid-cols-1 sm:grid-cols-5 gap-4 bg-[#121214] border border-slate-800 rounded-lg overflow-hidden">
-      <div class="sm:col-span-2 aspect-video sm:aspect-auto bg-[#0A0A0B] relative overflow-hidden">
-        <img src="https://picsum.photos/seed/love2d-tilemap/600/400" alt="prototype capture" class="w-full h-full object-cover opacity-70" />
+      <div class="sm:col-span-2 aspect-video sm:aspect-auto bg-[#0A0A0B] relative overflow-hidden flex items-center justify-center min-h-[200px]">
+        <div class="absolute inset-0 opacity-[0.08] pointer-events-none" style="background-image:linear-gradient(to right, #10b981 1px, transparent 1px), linear-gradient(to bottom, #10b981 1px, transparent 1px); background-size: 24px 24px;"></div>
+        <div class="relative flex flex-col items-center gap-2 font-mono text-emerald-500">
+          <div class="text-[10px] uppercase tracking-widest text-slate-500">resource</div>
+          <div class="flex gap-3 text-[11px]">
+            <span>vitality</span><span class="text-slate-700">/</span><span>essence</span>
+          </div>
+          <div class="text-[9px] uppercase tracking-widest text-slate-600 mt-2">dual-pool combat</div>
+        </div>
         <div class="absolute inset-0 bg-gradient-to-tr from-[#0A0A0B] via-transparent to-emerald-950/30 pointer-events-none"></div>
-        <div class="absolute top-2 left-2 px-2 py-0.5 bg-emerald-500 text-black text-[9px] font-mono uppercase tracking-wider rounded">slot_01</div>
+        <div class="absolute top-2 left-2 px-2 py-0.5 bg-amber-950/40 border border-amber-800 text-[9px] font-mono uppercase tracking-wider rounded text-amber-300">in_development</div>
+        <div class="absolute bottom-2 left-2 text-[9px] font-mono uppercase tracking-widest text-slate-600">pending_captures</div>
       </div>
       <div class="sm:col-span-3 p-5 flex flex-col justify-between">
         <div>
-          <div class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest mb-1">[0x01]_TILE_PROTOTYPE</div>
-          <h4 class="text-base font-bold text-slate-100 tracking-tight mb-2">Tile-based pathfinder sketch</h4>
+          <div class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest mb-1">[0x01]_PASSAGES</div>
+          <h4 class="text-base font-bold text-slate-100 tracking-tight mb-2">LitRPG-inspired third-person action RPG</h4>
           <p class="text-[11px] text-slate-400 leading-relaxed">
-            A* over weighted tile grids, mouse-driven goal selection, smoothed agent steering. Built on raw love.graphics with no rendering library. Replace this slot with real screen captures.
+            Combat blends FF12's Gambit system with the rule-driven party logic of .hack//GU. A dual-resource system (Vitality / Essence) governs both health and casting. The <span class="text-emerald-400">Attunement Scripts</span> editor lets the player wire per-companion behavior trees. Abilities authored as ScriptableObjects so designers iterate without recompiling.
           </p>
         </div>
         <div class="mt-3 flex flex-wrap gap-1.5 font-mono text-[9px]">
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">love.graphics</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">A*</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">love.mouse</span>
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">Unity</span>
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">C#</span>
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">gambit AI</span>
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">ScriptableObject</span>
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">dual-resource</span>
         </div>
       </div>
     </article>
 
-    <!-- Card 02 — right-image left-text (zig) -->
+    <!-- BSP renderer + 3D Unity shooter — research -->
     <article class="grid grid-cols-1 sm:grid-cols-5 gap-4 bg-[#121214] border border-slate-800 rounded-lg overflow-hidden">
       <div class="sm:col-span-3 p-5 flex flex-col justify-between order-2 sm:order-1">
         <div>
-          <div class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest mb-1">[0x02]_PHYSICS_SANDBOX</div>
-          <h4 class="text-base font-bold text-slate-100 tracking-tight mb-2">Box2D rigid body playground</h4>
+          <div class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest mb-1">[0x02]_BSP_RENDERER + 3D_SHOOTER</div>
+          <h4 class="text-base font-bold text-slate-100 tracking-tight mb-2">From-scratch BSP rendering + Unity shooter prototype</h4>
           <p class="text-[11px] text-slate-400 leading-relaxed">
-            love.physics shapes, joints, and contact callbacks wired to a step-debugger overlay. Tunable gravity, mass, restitution per body. Useful for tuning game-feel before locking down values.
+            A BSP renderer written from scratch in C as a graphics deep-dive &mdash; tree construction, polygon splitting, painter's-order traversal. Separately, a 3D shooter prototype in Unity to feel the C# tooling end of the same pipeline. Both research artifacts, not productized.
           </p>
         </div>
         <div class="mt-3 flex flex-wrap gap-1.5 font-mono text-[9px]">
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">love.physics</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">box2d</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">contact callbacks</span>
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">C</span>
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">Unity</span>
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">BSP</span>
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">renderer</span>
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">research</span>
         </div>
       </div>
-      <div class="sm:col-span-2 aspect-video sm:aspect-auto bg-[#0A0A0B] relative overflow-hidden order-1 sm:order-2">
-        <img src="https://picsum.photos/seed/love2d-physics/600/400" alt="prototype capture" class="w-full h-full object-cover opacity-70" />
-        <div class="absolute inset-0 bg-gradient-to-tl from-[#0A0A0B] via-transparent to-emerald-950/30 pointer-events-none"></div>
-        <div class="absolute top-2 right-2 px-2 py-0.5 bg-emerald-500 text-black text-[9px] font-mono uppercase tracking-wider rounded">slot_02</div>
+      <div class="sm:col-span-2 aspect-video sm:aspect-auto bg-[#0A0A0B] relative overflow-hidden flex items-center justify-center min-h-[160px] order-1 sm:order-2">
+        <div class="absolute inset-0 opacity-[0.05] pointer-events-none" style="background-image:linear-gradient(to right, #64748b 1px, transparent 1px), linear-gradient(to bottom, #64748b 1px, transparent 1px); background-size: 24px 24px;"></div>
+        <svg class="relative w-16 h-16 text-slate-400" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1">
+          <path d="M32 4 L60 18 L60 46 L32 60 L4 46 L4 18 Z"/>
+          <path d="M32 4 L32 60 M4 18 L60 46 M4 46 L60 18"/>
+        </svg>
+        <div class="absolute inset-0 bg-gradient-to-tl from-[#0A0A0B] via-transparent to-slate-900/40 pointer-events-none"></div>
+        <div class="absolute top-2 right-2 px-2 py-0.5 bg-slate-900 border border-slate-700 text-[9px] font-mono uppercase tracking-wider rounded text-slate-400">research</div>
       </div>
     </article>
 
-    <!-- Card 03 — left-image right-text -->
+    <!-- SDL2 → Bevy track — in_progress -->
     <article class="grid grid-cols-1 sm:grid-cols-5 gap-4 bg-[#121214] border border-slate-800 rounded-lg overflow-hidden">
-      <div class="sm:col-span-2 aspect-video sm:aspect-auto bg-[#0A0A0B] relative overflow-hidden">
-        <img src="https://picsum.photos/seed/love2d-shader/600/400" alt="prototype capture" class="w-full h-full object-cover opacity-70" />
+      <div class="sm:col-span-2 aspect-video sm:aspect-auto bg-[#0A0A0B] relative overflow-hidden flex items-center justify-center min-h-[160px]">
+        <div class="absolute inset-0 opacity-[0.08] pointer-events-none" style="background-image:linear-gradient(to right, #10b981 1px, transparent 1px), linear-gradient(to bottom, #10b981 1px, transparent 1px); background-size: 24px 24px;"></div>
+        <div class="relative font-mono text-emerald-500 text-[11px] uppercase tracking-widest leading-relaxed text-center">
+          <div>pong &rarr; breakout</div>
+          <div class="text-slate-700 my-1">&darr;</div>
+          <div>top-down shooter</div>
+          <div class="text-slate-700 my-1">&darr;</div>
+          <div class="text-amber-400">bevy</div>
+        </div>
         <div class="absolute inset-0 bg-gradient-to-tr from-[#0A0A0B] via-transparent to-emerald-950/30 pointer-events-none"></div>
-        <div class="absolute top-2 left-2 px-2 py-0.5 bg-emerald-500 text-black text-[9px] font-mono uppercase tracking-wider rounded">slot_03</div>
+        <div class="absolute top-2 left-2 px-2 py-0.5 bg-amber-950/40 border border-amber-800 border-dashed text-[9px] font-mono uppercase tracking-wider rounded text-amber-300">in_progress</div>
       </div>
       <div class="sm:col-span-3 p-5 flex flex-col justify-between">
         <div>
-          <div class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest mb-1">[0x03]_SHADER_PASS</div>
-          <h4 class="text-base font-bold text-slate-100 tracking-tight mb-2">GLSL post-processing chain</h4>
+          <div class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest mb-1">[0x03]_BEVY + SDL2 TRACK</div>
+          <h4 class="text-base font-bold text-slate-100 tracking-tight mb-2">Sequential learning ladder &mdash; SDL2 first, Bevy after</h4>
           <p class="text-[11px] text-slate-400 leading-relaxed">
-            Render-to-canvas pipeline running scanline, bloom, and chroma-aberration shaders on a final composite pass. The pixel-CRT look is one swappable .glsl away.
+            Sequential ladder, not a single project. SDL2/C++ for the fundamentals (Pong, then Breakout, then a top-down shooter), then graduate the same exercises into Rust + Bevy to feel ECS-first authoring against the same problems. In progress, not coming soon.
           </p>
         </div>
         <div class="mt-3 flex flex-wrap gap-1.5 font-mono text-[9px]">
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">love.graphics.newShader</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">GLSL</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">canvas chain</span>
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">Rust</span>
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">Bevy</span>
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">SDL2</span>
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">C++</span>
+          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">ECS</span>
         </div>
       </div>
     </article>
-    {{/if}}
   </div>
 
   <!-- RHS — Loop skeleton & capabilities -->
