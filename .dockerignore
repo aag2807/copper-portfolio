@@ -1,0 +1,26 @@
+# Source-only context — keep the build fast and reproducible.
+
+# VCS + editor state
+.git
+.gitignore
+.vscode
+.idea
+
+# Local secrets (mounted at runtime, never baked into images)
+.env
+.env.local
+
+# Host build artifacts (regenerated inside the image)
+server
+**/*.o
+node_modules
+public/framework
+public/lua
+
+# OS noise
+.DS_Store
+Thumbs.db
+
+# Local plans / scratch
+/tmp
+*.log

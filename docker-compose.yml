@@ -1,0 +1,19 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: c-copper:dev
+    container_name: c-copper
+    ports:
+      - "8080:8080"
+    volumes:
+      # Mount .env read-only so secrets stay out of the image.
+      - ./.env:/app/.env:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8080/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 3s
