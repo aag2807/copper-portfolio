@@ -41,27 +41,28 @@
     class="min-h-[100dvh] flex flex-col bg-[#0A0A0B] text-[#D1D1D1] font-sans selection:bg-emerald-500 selection:text-neutral-950"
     {{#if luaModule}}data-lua-module="{{luaModule}}"{{/if}}
   >
-    <header class="h-12 flex flex-row items-center justify-between gap-3 sm:gap-6 pl-4 pr-2 sm:px-6 border-b border-slate-800 bg-[#121214] sticky top-0 z-50">
-      <a href="/" class="flex items-center space-x-3 select-none group shrink-0">
-        <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full glow-green"></span>
-        <span class="font-mono text-xs tracking-widest text-slate-400 uppercase group-hover:text-white transition-colors">
-          <span class="hidden sm:inline">ALVARO_GUZMAN // SYSTEMS_PORTFOLIO</span>
-          <span class="sm:hidden">A_GUZMAN</span>
-        </span>
-      </a>
-      <div class="flex items-center min-w-0 flex-1 sm:flex-none sm:gap-8 justify-end">
-        <nav class="nav-scroll flex items-center gap-5 overflow-x-auto min-w-0 px-2 sm:px-0 sm:overflow-visible">
-          <a href="/"        class="shrink-0 text-xs font-mono uppercase tracking-tighter text-slate-400 hover:text-emerald-400 transition-colors">01_Home</a>
-          <a href="/systems" class="shrink-0 text-xs font-mono uppercase tracking-tighter text-slate-400 hover:text-emerald-400 transition-colors">02_Systems</a>
-          <a href="/gamedev" class="shrink-0 text-xs font-mono uppercase tracking-tighter text-slate-400 hover:text-emerald-400 transition-colors">03_Gamedev</a>
-          <a href="/web"     class="shrink-0 text-xs font-mono uppercase tracking-tighter text-slate-400 hover:text-emerald-400 transition-colors">04_Web</a>
-          <a href="/ai"       class="shrink-0 text-xs font-mono uppercase tracking-tighter text-slate-400 hover:text-emerald-400 transition-colors">05_AI</a>
-          <a href="/workshop" class="shrink-0 text-xs font-mono uppercase tracking-tighter text-slate-400 hover:text-emerald-400 transition-colors">06_Workshop</a>
-          <a href="/contact"  class="shrink-0 text-xs font-mono uppercase tracking-tighter text-slate-400 hover:text-emerald-400 transition-colors">07_Connect</a>
-        </nav>
-        <div class="hidden md:block h-4 w-px bg-slate-700"></div>
-        <span class="hidden md:inline text-[10px] font-mono text-slate-500 shrink-0">c-copper v0.02 // DO</span>
+    <header class="border-b border-slate-800 bg-[#121214] sticky top-0 z-50">
+      <!-- Row 1: identity + build tag -->
+      <div class="h-10 flex items-center justify-between gap-3 px-4 sm:px-6 border-b border-slate-800/60">
+        <a href="/" class="flex items-center space-x-3 select-none group shrink-0 min-w-0">
+          <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full glow-green shrink-0"></span>
+          <span class="font-mono text-xs tracking-widest text-slate-400 uppercase group-hover:text-white transition-colors truncate">
+            <span class="hidden xs:inline sm:inline">ALVARO_GUZMAN // SYSTEMS_PORTFOLIO</span>
+            <span class="sm:hidden">A_GUZMAN // PORTFOLIO</span>
+          </span>
+        </a>
+        <span class="text-[10px] font-mono text-slate-500 shrink-0">c-copper v0.03 // DO</span>
       </div>
+      <!-- Row 2: nav -->
+      <nav class="nav-scroll h-10 flex items-center gap-5 overflow-x-auto px-4 sm:px-6">
+        <a href="/"        class="shrink-0 text-xs font-mono uppercase tracking-tighter text-slate-400 hover:text-emerald-400 transition-colors">01_Home</a>
+        <a href="/systems" class="shrink-0 text-xs font-mono uppercase tracking-tighter text-slate-400 hover:text-emerald-400 transition-colors">02_Systems</a>
+        <a href="/gamedev" class="shrink-0 text-xs font-mono uppercase tracking-tighter text-slate-400 hover:text-emerald-400 transition-colors">03_Gamedev</a>
+        <a href="/web"     class="shrink-0 text-xs font-mono uppercase tracking-tighter text-slate-400 hover:text-emerald-400 transition-colors">04_Web</a>
+        <a href="/ai"       class="shrink-0 text-xs font-mono uppercase tracking-tighter text-slate-400 hover:text-emerald-400 transition-colors">05_AI</a>
+        <a href="/workshop" class="shrink-0 text-xs font-mono uppercase tracking-tighter text-slate-400 hover:text-emerald-400 transition-colors">06_Workshop</a>
+        <a href="/contact"  class="shrink-0 text-xs font-mono uppercase tracking-tighter text-slate-400 hover:text-emerald-400 transition-colors">07_Connect</a>
+      </nav>
     </header>
 
     <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 md:py-12 flex flex-col gap-8">

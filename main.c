@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
         port = atoi(argv[1]);
     printf("\n");
     printf(" ╔══════════════════════════════════════════╗\n");
-    printf(" ║       C Copper Web Framework v0.02       ║\n");
+    printf(" ║       C Copper Web Framework v0.03       ║\n");
     printf(" ╚══════════════════════════════════════════╝\n\n");
 
     env_load(".env");
