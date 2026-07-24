@@ -526,7 +526,7 @@
             focusInput() {
               if (window.getSelection && window.getSelection().toString())
                 return;
-              this.$refs.input && this.$refs.input.focus();
+              this.$refs.input && this.$refs.input.focus({ preventScroll: true });
             },
 
             boot() {
