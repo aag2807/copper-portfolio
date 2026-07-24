@@ -24,6 +24,81 @@
         50%      { opacity: 1;    filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.85)); }
       }
       .glow-green { animation: pulse-glow 3s infinite; }
+
+      /* ---- background depth: emerald wash + dot grid ---- */
+      html { scroll-behavior: smooth; }
+      @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+      body {
+        background-image:
+          radial-gradient(1100px 700px at 85% -10%, rgba(16, 185, 129, 0.055), transparent 60%),
+          radial-gradient(900px 600px at -15% 105%, rgba(16, 185, 129, 0.035), transparent 60%);
+        background-attachment: fixed;
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background-image: radial-gradient(rgba(148, 163, 184, 0.055) 1px, transparent 1px);
+        background-size: 26px 26px;
+        -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 0%, transparent 100%);
+                mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 0%, transparent 100%);
+      }
+      header, main, footer { position: relative; z-index: 1; }
+
+      /* ---- cursor spotlight (fine pointers only) ---- */
+      #cursor-glow {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        background: radial-gradient(560px circle at var(--cx, 50%) var(--cy, 50%), rgba(16, 185, 129, 0.065), transparent 70%);
+      }
+      @media (pointer: coarse), (prefers-reduced-motion: reduce) {
+        #cursor-glow { display: none; }
+      }
+
+      /* ---- card hover system: lift + emerald border glow ---- */
+      main [class~="rounded-lg"][class~="border-slate-800"] {
+        transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+      }
+      main [class~="rounded-lg"][class~="border-slate-800"]:hover {
+        border-color: rgba(16, 185, 129, 0.3);
+        box-shadow:
+          0 10px 34px -14px rgba(16, 185, 129, 0.14),
+          0 6px 22px -10px rgba(0, 0, 0, 0.65);
+      }
+      @media (prefers-reduced-motion: no-preference) {
+        main [class~="rounded-lg"][class~="border-slate-800"]:hover { transform: translateY(-2px); }
+      }
+
+      /* ---- sibling dimming on list hover ---- */
+      .dim-list > * { transition: opacity 0.3s ease; }
+      .dim-list:hover > *:not(:hover) { opacity: 0.55; }
+      .dim-list > *:hover { background: rgba(16, 185, 129, 0.035); }
+
+      /* ---- scroll reveals (JS-gated, motion-safe) ---- */
+      @media (prefers-reduced-motion: no-preference) {
+        .js .rv { opacity: 0; transform: translateY(14px); transition: opacity 0.6s ease, transform 0.6s ease; transition-delay: var(--rvd, 0ms); }
+        .js .rv.rv-in { opacity: 1; transform: none; }
+      }
+
+      /* ---- interactive polish ---- */
+      :focus-visible { outline: 2px solid rgba(16, 185, 129, 0.6); outline-offset: 2px; }
+      main a:active, main button:active { transform: translateY(1px); }
+      nav a[aria-current="page"] { color: rgb(52 211 153); }
+      nav a { position: relative; }
+      nav a[aria-current="page"]::after {
+        content: "";
+        position: absolute;
+        left: 0; right: 0; bottom: -11px;
+        height: 2px;
+        background: rgb(16 185 129);
+        box-shadow: 0 0 8px rgba(16, 185, 129, 0.7);
+      }
       .nav-scroll { scrollbar-width: none; -ms-overflow-style: none; }
       .nav-scroll::-webkit-scrollbar { display: none; }
       .nav-scroll {
@@ -41,7 +116,8 @@
     class="min-h-[100dvh] flex flex-col bg-[#0A0A0B] text-[#D1D1D1] font-sans selection:bg-emerald-500 selection:text-neutral-950"
     {{#if luaModule}}data-lua-module="{{luaModule}}"{{/if}}
   >
-    <header class="border-b border-slate-800 bg-[#121214] sticky top-0 z-50">
+    <div id="cursor-glow" aria-hidden="true"></div>
+    <header class="border-b border-slate-800 bg-[#121214]/85 backdrop-blur-md sticky top-0 z-50">
       <!-- Row 1: identity + build tag -->
       <div class="h-10 flex items-center justify-between gap-3 px-4 sm:px-6 border-b border-slate-800/60">
         <a href="/" class="flex items-center space-x-3 select-none group shrink-0 min-w-0">
@@ -85,5 +161,48 @@
         </div>
       </div>
     </footer>
+
+    <script>
+      (function () {
+        document.documentElement.classList.add("js");
+
+        // cursor spotlight
+        var glow = document.getElementById("cursor-glow");
+        var raf = null;
+        window.addEventListener("mousemove", function (e) {
+          if (raf) return;
+          raf = requestAnimationFrame(function () {
+            glow.style.setProperty("--cx", e.clientX + "px");
+            glow.style.setProperty("--cy", e.clientY + "px");
+            glow.style.opacity = "1";
+            raf = null;
+          });
+        }, { passive: true });
+
+        // current-page nav indicator
+        var path = location.pathname;
+        document.querySelectorAll("nav a").forEach(function (a) {
+          if (a.getAttribute("href") === path) a.setAttribute("aria-current", "page");
+        });
+
+        // staggered scroll reveals
+        var sections = document.querySelectorAll("main > *");
+        if ("IntersectionObserver" in window && sections.length) {
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (en) {
+              if (en.isIntersecting) {
+                en.target.classList.add("rv-in");
+                io.unobserve(en.target);
+              }
+            });
+          }, { rootMargin: "0px 0px -8% 0px" });
+          sections.forEach(function (el, i) {
+            el.classList.add("rv");
+            el.style.setProperty("--rvd", (i % 5) * 70 + "ms");
+            io.observe(el);
+          });
+        }
+      })();
+    </script>
   </body>
 </html>

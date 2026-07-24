@@ -472,6 +472,9 @@
           ></span>
           READY &mdash; type 'help'
         </span>
+        <span class="hidden sm:inline-flex items-center gap-1.5 text-[10px] font-mono text-slate-500 ml-3">
+          press <kbd class="px-1.5 py-0.5 bg-[#121214] border border-slate-700 rounded text-slate-300">/</kbd> to focus
+        </span>
       </div>
       <div
         x-data="terminal()"
@@ -547,7 +550,15 @@
               this.println(
                 "<span class=\"text-emerald-400\">interactive shell &mdash; type 'help' for commands</span>",
               );
-              this.$nextTick(() => this.focusInput());
+              window.addEventListener("keydown", (e) => {
+                const t = e.target;
+                const typing = t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable);
+                if (e.key === "/" && !typing && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                  e.preventDefault();
+                  this.$refs.input.focus();
+                  this.$refs.scroller.scrollIntoView({ block: "center" });
+                }
+              });
             },
 
             run() {
