@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+/* class sources: server templates + browser-side lua/js modules */
+@source "../views";
+@source "../js";
+
+@theme {
+  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.85; filter: drop-shadow(0 0 2px rgba(16, 185, 129, 0.45)); }
+  50%      { opacity: 1;    filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.85)); }
+}
+.glow-green { animation: pulse-glow 3s infinite; }
+
+/* ---- background depth: emerald wash + dot grid ---- */
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background-image:
+    radial-gradient(1100px 700px at 85% -10%, rgba(16, 185, 129, 0.055), transparent 60%),
+    radial-gradient(900px 600px at -15% 105%, rgba(16, 185, 129, 0.035), transparent 60%);
+  background-attachment: fixed;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(148, 163, 184, 0.055) 1px, transparent 1px);
+  background-size: 26px 26px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 0%, transparent 100%);
+          mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 0%, transparent 100%);
+}
+header, main, footer { position: relative; z-index: 1; }
+
+/* ---- cursor spotlight (fine pointers only) ---- */
+#cursor-glow {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  background: radial-gradient(560px circle at var(--cx, 50%) var(--cy, 50%), rgba(16, 185, 129, 0.065), transparent 70%);
+}
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  #cursor-glow { display: none; }
+}
+
+/* ---- card hover system: lift + emerald border glow ---- */
+main [class~="rounded-lg"][class~="border-slate-800"] {
+  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+main [class~="rounded-lg"][class~="border-slate-800"]:hover {
+  border-color: rgba(16, 185, 129, 0.3);
+  box-shadow:
+    0 10px 34px -14px rgba(16, 185, 129, 0.14),
+    0 6px 22px -10px rgba(0, 0, 0, 0.65);
+}
+@media (prefers-reduced-motion: no-preference) {
+  main [class~="rounded-lg"][class~="border-slate-800"]:hover { transform: translateY(-2px); }
+}
+
+/* ---- sibling dimming on list hover ---- */
+.dim-list > * { transition: opacity 0.3s ease; }
+.dim-list:hover > *:not(:hover) { opacity: 0.55; }
+.dim-list > *:hover { background: rgba(16, 185, 129, 0.035); }
+
+/* ---- scroll reveals (JS-gated, motion-safe) ---- */
+@media (prefers-reduced-motion: no-preference) {
+  .js .rv { opacity: 0; transform: translateY(14px); transition: opacity 0.6s ease, transform 0.6s ease; transition-delay: var(--rvd, 0ms); }
+  .js .rv.rv-in { opacity: 1; transform: none; }
+}
+
+/* ---- interactive polish ---- */
+:focus-visible { outline: 2px solid rgba(16, 185, 129, 0.6); outline-offset: 2px; }
+main a:active, main button:active { transform: translateY(1px); }
+nav a[aria-current="page"] { color: rgb(52 211 153); }
+nav a { position: relative; }
+nav a[aria-current="page"]::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -11px;
+  height: 2px;
+  background: rgb(16 185 129);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.7);
+}
+
+/* ---- nav scroll mask (mobile) ---- */
+.nav-scroll { scrollbar-width: none; -ms-overflow-style: none; }
+.nav-scroll::-webkit-scrollbar { display: none; }
+.nav-scroll {
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 12px, #000 calc(100% - 12px), transparent 100%);
+          mask-image: linear-gradient(to right, transparent 0, #000 12px, #000 calc(100% - 12px), transparent 100%);
+}
+@media (min-width: 640px) {
+  .nav-scroll { -webkit-mask-image: none; mask-image: none; }
+}

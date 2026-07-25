@@ -26,7 +26,7 @@ RUN npm ci --no-audit --no-fund
 COPY . .
 
 # Produce public/framework/lua-framework.js + public/lua/*.lua, then the C binary.
-RUN npx webpack && make
+RUN npm run build && make
 
 # ---------- runtime stage ----------
 # Minimal image: just the C binary, views, public assets, and the libcurl runtime.
