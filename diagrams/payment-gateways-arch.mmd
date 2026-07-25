@@ -1,0 +1,20 @@
+flowchart TD
+  checkout["checkout (Angular / Ionic)"] --> orders["orders API (.NET)"]
+  orders --> fraud["fraud pipeline"]
+  fraud --> orch["payment orchestrator"]
+  orch --> sm["transaction state machine — idempotency keys, audit"]
+
+  sm --> a1["adapter 01"]
+  sm --> a2["adapter 02"]
+  sm --> a3["adapter 03"]
+  sm --> an["adapter 60+"]
+
+  a1 --> prov["payment provider APIs (multi-region)"]
+  a2 --> prov
+  a3 --> prov
+  an --> prov
+
+  prov --> hooks["webhooks"]
+  hooks --> verify["verify"]
+  verify --> rec["reconcile"]
+  rec --> sm

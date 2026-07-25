@@ -1,0 +1,19 @@
+flowchart TD
+  client([client]) --> acc["accept()"]
+  acc --> thr["pthread dispatch"]
+  thr --> parser["request parser"]
+  parser --> chain
+
+  subgraph chain["middleware chain (linked list)"]
+    direction LR
+    log["logging"] --> stat["static/*"]
+    stat --> rate["rate-limit"]
+    rate --> csrf["csrf"]
+  end
+
+  stat -.->|"/static/app.css"| pub["public/ file"]
+  chain --> router["router — strcmp / {param} bind"]
+  router --> ctrl["controller ACTION"]
+  ctrl --> view["view engine — 2-pass render"]
+  view --> layout["layout.html body slot"]
+  layout --> flush["response_flush() → write()"]

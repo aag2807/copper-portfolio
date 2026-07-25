@@ -1,0 +1,20 @@
+flowchart TD
+  apps["internal apps"] --> gw
+
+  subgraph boundary["on-prem boundary — egress to public AI endpoints: none"]
+    gw["gateway API (C#/.NET)"] --> auth["auth / audit / quotas"]
+    gw --> router["model router"]
+    router --> provA["provider A (local)"]
+    router --> provB["provider B (local)"]
+    gw --> rag
+
+    subgraph rag["RAG pipeline"]
+      direction LR
+      chunk["chunk"] --> embed["embed"]
+      embed --> vec["vector search"]
+      vec --> prompt["prompt assembly"]
+    end
+
+    rag --> model["model"]
+    gw --> agents["agent orchestrator — multi-step, bounded, fully logged"]
+  end
