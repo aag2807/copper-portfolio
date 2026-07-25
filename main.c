@@ -26,6 +26,8 @@ extern void redirect_gamedev(Request*, Response*, void*);
 extern void redirect_ai(Request*, Response*, void*);
 
 extern void projects_show(Request*, Response*, void*);
+extern void writing_index(Request*, Response*, void*);
+extern void writing_show(Request*, Response*, void*);
 
 static int logging_middleware(Request* req, Response* res, MiddlewareNode* self, Router* router)
 {
@@ -66,6 +68,7 @@ int main(int argc, char* argv[])
     server_get(server, "/work/gamedev", work_gamedev);
     server_get(server, "/contact", home_contact);
     server_get(server, "/workshop", home_workshop);
+    server_get(server, "/writing", writing_index);
     server_get(server, "/counter", home_counter);
     server_get(server, "/todos", home_todolist);
 
@@ -77,6 +80,7 @@ int main(int argc, char* argv[])
 
     // Param routes last
     server_get(server, "/projects/{slug}", projects_show);
+    server_get(server, "/writing/{slug}", writing_show);
 
     // API ROUTES
     server_post(server, "/api/contact", contact_submit);

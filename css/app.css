@@ -91,6 +91,25 @@ nav a[aria-current="page"]::after {
 }
 .subnav a[aria-current="page"]::after { bottom: -9px; }
 
+/* ---- generated article styling (markdown pipeline) ---- */
+.prose-article { color: rgb(148 163 184); font-size: 0.875rem; line-height: 1.75; }
+.prose-article h2 { color: rgb(241 245 249); font-size: 1.25rem; font-weight: 700; letter-spacing: -0.01em; margin: 2rem 0 0.75rem; }
+.prose-article h3 { color: rgb(226 232 240); font-size: 1.05rem; font-weight: 600; margin: 1.5rem 0 0.5rem; }
+.prose-article p { margin-bottom: 1rem; }
+.prose-article a { color: rgb(52 211 153); text-decoration: underline; text-underline-offset: 3px; }
+.prose-article a:hover { color: rgb(110 231 183); }
+.prose-article strong { color: rgb(226 232 240); font-weight: 600; }
+.prose-article ul, .prose-article ol { margin: 0 0 1rem 1.25rem; }
+.prose-article ul { list-style: disc; }
+.prose-article ol { list-style: decimal; }
+.prose-article li { margin-bottom: 0.35rem; }
+.prose-article li::marker { color: rgb(16 185 129); }
+.prose-article code { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 0.8em; color: rgb(52 211 153); background: #0A0A0B; border: 1px solid rgb(30 41 59); border-radius: 4px; padding: 0.1em 0.35em; }
+.prose-article pre { background: #0A0A0B; border: 1px solid rgb(30 41 59); border-radius: 8px; padding: 1rem; overflow-x: auto; margin-bottom: 1rem; }
+.prose-article pre code { border: none; background: transparent; padding: 0; color: rgb(203 213 225); font-size: 0.78rem; line-height: 1.6; }
+.prose-article blockquote { border-left: 2px solid rgb(16 185 129); padding-left: 1rem; color: rgb(100 116 139); font-style: italic; margin-bottom: 1rem; }
+.prose-article hr { border: 0; border-top: 1px solid rgb(30 41 59); margin: 2rem 0; }
+
 /* ---- nav scroll mask (mobile) ---- */
 .nav-scroll { scrollbar-width: none; -ms-overflow-style: none; }
 .nav-scroll::-webkit-scrollbar { display: none; }
