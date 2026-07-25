@@ -1,0 +1,101 @@
+<!-- Breadcrumb -->
+<div class="text-[11px] font-mono text-slate-500">
+  <a href="/work/fintech-ai" class="text-emerald-400 hover:text-emerald-300 transition-colors">&larr; ~/work/fintech-ai</a>
+  <span class="mx-2">/</span><span>case_study</span>
+</div>
+
+<!-- Header -->
+<div class="bg-[#121214] border border-slate-800 rounded-lg p-6 lg:p-8">
+  <div class="flex items-center justify-between mb-2">
+    <span class="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold">Case_Study // [AI][02]</span>
+    <span class="px-2 py-0.5 bg-sky-950/40 border border-sky-800 text-[9px] font-mono uppercase tracking-wider rounded text-sky-300">shipped &mdash; professional work</span>
+  </div>
+  <h2 class="text-2xl sm:text-3xl font-bold text-slate-100 tracking-tight leading-tight mb-3">Sixty payment providers, one checkout.</h2>
+  <p class="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-2xl">
+    Integrated, maintained, and scaled 60+ third-party payment provider APIs behind a single e-commerce
+    checkout &mdash; transaction processing and fraud handling across multiple regions and regulatory regimes.
+    Employer and client names withheld; specifics available under NDA.
+  </p>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <div class="bg-[#121214] border border-slate-800 rounded-lg p-6">
+    <h3 class="text-xs font-mono uppercase tracking-widest text-emerald-400 font-bold mb-3">01 // Problem</h3>
+    <p class="text-[11px] text-slate-400 leading-relaxed mb-2">
+      Every payment provider believes it is the standard. Sixty of them means sixty auth schemes, sixty
+      webhook formats, sixty failure vocabularies, and sixty ideas about idempotency &mdash; feeding one
+      checkout that must never double-charge, silently fail, or leak a card number.
+    </p>
+    <p class="text-[11px] text-slate-400 leading-relaxed">
+      The work: make provider count an operational detail. Adding gateway #61 should be routine engineering,
+      not a project.
+    </p>
+  </div>
+
+  <div class="bg-[#121214] border border-slate-800 rounded-lg p-6">
+    <h3 class="text-xs font-mono uppercase tracking-widest text-emerald-400 font-bold mb-3">02 // Decisions</h3>
+    <ul class="text-[11px] text-slate-400 leading-relaxed space-y-2">
+      <li><span class="text-slate-200 font-semibold">Provider adapter contract:</span> each gateway implements one normalized interface (authorize, capture, refund, webhook-verify); quirks live inside the adapter, never in checkout logic.</li>
+      <li><span class="text-slate-200 font-semibold">State machine over status strings.</span> Transactions move through explicit states with audited transitions &mdash; reconciliation reads the machine, not provider payloads.</li>
+      <li><span class="text-slate-200 font-semibold">Idempotency keys everywhere:</span> retries and duplicate webhooks are absorbed, not double-processed.</li>
+      <li><span class="text-slate-200 font-semibold">Fraud checks as a pipeline stage</span> ahead of capture, tuned per region.</li>
+      <li><span class="text-slate-200 font-semibold">Checkout UX owned end to end</span> (Angular + Ionic mobile): optimization work contributed to a measured 15% conversion-rate increase.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Architecture -->
+<div class="bg-[#121214] border border-slate-800 rounded-lg p-6">
+  <h3 class="text-xs font-mono uppercase tracking-widest text-emerald-400 font-bold mb-3">03 // Architecture (sanitized)</h3>
+  <pre class="font-mono text-[10px] sm:text-[11px] leading-relaxed text-slate-300 bg-[#0A0A0B] border border-slate-800 rounded p-4 overflow-x-auto">
+ checkout (Angular / Ionic)
+        │
+        ▼
+ orders API (.NET) ──▶ fraud pipeline ──▶ payment orchestrator
+                                              │
+                                    transaction state machine
+                                    (idempotency keys, audit)
+                                              │
+                    ┌─────────────┬───────────┼───────────┬─────────────┐
+                    ▼             ▼           ▼           ▼             ▼
+                adapter 01    adapter 02  adapter 03     ...       adapter 60+
+                (auth quirks, webhook formats, retry rules — contained)
+                    │             │           │           │             │
+                    ▼             ▼           ▼           ▼             ▼
+                              payment provider APIs (multi-region)
+                                              │
+                                     webhooks ──▶ verify ──▶ reconcile</pre>
+</div>
+
+<!-- Numbers -->
+<div class="bg-[#121214] border border-slate-800 rounded-lg p-6">
+  <h3 class="text-xs font-mono uppercase tracking-widest text-emerald-400 font-bold mb-3">04 // Numbers</h3>
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono mb-3">
+    <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
+      <div class="text-lg font-bold text-emerald-400 tracking-tight">60+</div>
+      <div class="text-[9px] uppercase tracking-wider text-slate-500 mt-1">provider integrations</div>
+    </div>
+    <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
+      <div class="text-lg font-bold text-emerald-400 tracking-tight">+15%</div>
+      <div class="text-[9px] uppercase tracking-wider text-slate-500 mt-1">conversion-rate lift</div>
+    </div>
+    <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
+      <div class="text-lg font-bold text-emerald-400 tracking-tight">multi</div>
+      <div class="text-[9px] uppercase tracking-wider text-slate-500 mt-1">regions &amp; regimes</div>
+    </div>
+    <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
+      <div class="text-lg font-bold text-emerald-400 tracking-tight">2yr+</div>
+      <div class="text-[9px] uppercase tracking-wider text-slate-500 mt-1">owned in production</div>
+    </div>
+  </div>
+  <p class="text-[10px] font-mono text-slate-500 leading-relaxed">
+    Volume figures belong to the client. The transferable claim: payment integrations at this count are an
+    architecture problem, not a coding problem &mdash; and the adapter/state-machine shape above is what kept
+    #60 as boring as #6.
+  </p>
+</div>
+
+<div class="flex items-center gap-4 text-[11px] font-mono">
+  <a href="/projects/llm-gateway" class="text-emerald-400 hover:text-emerald-300 transition-colors">next case study: LLM gateway&rarr;</a>
+  <a href="/work/fintech-ai" class="text-slate-500 hover:text-emerald-400 transition-colors">back to ~/work/fintech-ai</a>
+</div>

@@ -89,6 +89,7 @@ nav a[aria-current="page"]::after {
   background: rgb(16 185 129);
   box-shadow: 0 0 8px rgba(16, 185, 129, 0.7);
 }
+.subnav a[aria-current="page"]::after { bottom: -9px; }
 
 /* ---- nav scroll mask (mobile) ---- */
 .nav-scroll { scrollbar-width: none; -ms-overflow-style: none; }

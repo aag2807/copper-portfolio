@@ -1,0 +1,126 @@
+<!-- Breadcrumb -->
+<div class="text-[11px] font-mono text-slate-500">
+  <a href="/work/systems" class="text-emerald-400 hover:text-emerald-300 transition-colors">&larr; ~/work/systems</a>
+  <span class="mx-2">/</span><span>case_study</span>
+</div>
+
+<!-- Header -->
+<div class="bg-[#121214] border border-slate-800 rounded-lg p-6 lg:p-8">
+  <div class="flex items-center justify-between mb-2">
+    <span class="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold">Case_Study // [SYS][00]</span>
+    <span class="px-2 py-0.5 bg-emerald-950/40 border border-emerald-800 text-[9px] font-mono uppercase tracking-wider rounded text-emerald-300">live &mdash; serving this page</span>
+  </div>
+  <h2 class="text-2xl sm:text-3xl font-bold text-slate-100 tracking-tight leading-tight mb-3">c-copper: a web framework in C, from the socket up.</h2>
+  <p class="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-2xl">
+    The page you're reading was routed, rendered, and sent by ~1,600 lines of C99 with zero runtime dependencies.
+    Not because C is the right tool for a portfolio &mdash; because owning every layer from <code class="text-emerald-400 font-mono">accept()</code>
+    to template interpolation is the most honest way to show what "full stack" means.
+  </p>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <!-- Problem -->
+  <div class="bg-[#121214] border border-slate-800 rounded-lg p-6">
+    <h3 class="text-xs font-mono uppercase tracking-widest text-emerald-400 font-bold mb-3">01 // Problem</h3>
+    <p class="text-[11px] text-slate-400 leading-relaxed mb-2">
+      Every framework hides the interesting parts. After years of shipping on .NET and Angular, the question was:
+      can I build the whole request lifecycle myself &mdash; socket loop, thread dispatch, routing, middleware,
+      templating, static files &mdash; small enough to hold in one head, robust enough to run in production on Cloud Run?
+    </p>
+    <p class="text-[11px] text-slate-400 leading-relaxed">
+      Constraints: C99 + pthreads only. No libevent, no framework, no runtime dependencies. Every byte of the
+      HTTP response is assembled by code in this repo.
+    </p>
+  </div>
+
+  <!-- Decisions -->
+  <div class="bg-[#121214] border border-slate-800 rounded-lg p-6">
+    <h3 class="text-xs font-mono uppercase tracking-widest text-emerald-400 font-bold mb-3">02 // Decisions</h3>
+    <ul class="text-[11px] text-slate-400 leading-relaxed space-y-2">
+      <li><span class="text-slate-200 font-semibold">Thread-per-request over an event loop.</span> Simpler invariants, no callback state machines; throughput ceiling accepted consciously (measured below).</li>
+      <li><span class="text-slate-200 font-semibold">Linked-list middleware chain</span> (logging &rarr; static &rarr; rate-limit &rarr; CSRF &rarr; router) &mdash; each layer can short-circuit.</li>
+      <li><span class="text-slate-200 font-semibold">Handlebars-style templates</span> with &#123;&#123;key&#125;&#125;, #if, #each and a two-pass layout render &mdash; enough for real pages, nothing speculative.</li>
+      <li><span class="text-slate-200 font-semibold">strtok_r pattern matching</span> for routes with <code class="text-emerald-400 font-mono">{param}</code> binding &mdash; thread-safe, first-match-wins.</li>
+      <li><span class="text-slate-200 font-semibold">Build-time assets:</span> Tailwind compiled to a static 40KB file; browser interactivity is Lua compiled to WASM, loaded per route.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Architecture -->
+<div class="bg-[#121214] border border-slate-800 rounded-lg p-6">
+  <h3 class="text-xs font-mono uppercase tracking-widest text-emerald-400 font-bold mb-3">03 // Architecture</h3>
+  <pre class="font-mono text-[10px] sm:text-[11px] leading-relaxed text-slate-300 bg-[#0A0A0B] border border-slate-800 rounded p-4 overflow-x-auto">
+ client ──▶ accept() ──▶ pthread ──▶ request parser
+                                        │
+              ┌─────────────────────────┘
+              ▼
+   middleware chain (linked list)
+   ┌──────────┬──────────┬────────────┬────────┐
+   │ logging  │ static/* │ rate-limit │  csrf  │
+   └──────────┴────┬─────┴────────────┴───┬────┘
+                   │ /static/app.css      │
+                   ▼                      ▼
+             public/ file          router (strcmp / {param})
+                                          │
+                                          ▼
+                                   controller ACTION
+                                          │
+                                          ▼
+                              view engine (2-pass render)
+                              view.html ──▶ layout.html &#123;&#123;body&#125;&#125;
+                                          │
+                                          ▼
+                              response_flush() ──▶ write()</pre>
+</div>
+
+<!-- Numbers -->
+<div class="bg-[#121214] border border-slate-800 rounded-lg p-6">
+  <h3 class="text-xs font-mono uppercase tracking-widest text-emerald-400 font-bold mb-3">04 // Numbers</h3>
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono mb-4">
+    <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
+      <div class="text-lg font-bold text-emerald-400 tracking-tight">~1,900/s</div>
+      <div class="text-[9px] uppercase tracking-wider text-slate-500 mt-1">dynamic renders (full template)</div>
+    </div>
+    <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
+      <div class="text-lg font-bold text-emerald-400 tracking-tight">~3,700/s</div>
+      <div class="text-[9px] uppercase tracking-wider text-slate-500 mt-1">static file responses</div>
+    </div>
+    <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
+      <div class="text-lg font-bold text-emerald-400 tracking-tight">23ms / 65ms</div>
+      <div class="text-[9px] uppercase tracking-wider text-slate-500 mt-1">p50 / p99 dynamic latency</div>
+    </div>
+    <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
+      <div class="text-lg font-bold text-emerald-400 tracking-tight">0</div>
+      <div class="text-[9px] uppercase tracking-wider text-slate-500 mt-1">runtime dependencies</div>
+    </div>
+  </div>
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono mb-4">
+    <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
+      <div class="text-lg font-bold text-emerald-400 tracking-tight">1,559</div>
+      <div class="text-[9px] uppercase tracking-wider text-slate-500 mt-1">lines of C, framework core</div>
+    </div>
+    <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
+      <div class="text-lg font-bold text-emerald-400 tracking-tight">15</div>
+      <div class="text-[9px] uppercase tracking-wider text-slate-500 mt-1">http routes registered</div>
+    </div>
+    <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
+      <div class="text-lg font-bold text-emerald-400 tracking-tight">~190KB</div>
+      <div class="text-[9px] uppercase tracking-wider text-slate-500 mt-1">stripped server binary</div>
+    </div>
+    <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
+      <div class="text-lg font-bold text-emerald-400 tracking-tight">40KB</div>
+      <div class="text-[9px] uppercase tracking-wider text-slate-500 mt-1">total CSS shipped</div>
+    </div>
+  </div>
+  <p class="text-[10px] font-mono text-slate-500 leading-relaxed">
+    Benchmark: hey, 50 concurrent connections, 10s runs (median of 3), Intel N100 (4 cores) under WSL2 &mdash;
+    laptop-class hardware, not the Cloud Run deployment. Numbers are for honesty, not bragging: a
+    thread-per-request C server on a small box outruns what this site will ever need.
+  </p>
+</div>
+
+<!-- Footer links -->
+<div class="flex items-center gap-4 text-[11px] font-mono">
+  <a href="https://github.com/aag2807/copper-portfolio" target="_blank" rel="noreferrer" class="text-emerald-400 hover:text-emerald-300 transition-colors">src&rarr; github.com/aag2807/copper-portfolio</a>
+  <a href="/work/systems" class="text-slate-500 hover:text-emerald-400 transition-colors">back to ~/work/systems</a>
+</div>

@@ -67,6 +67,14 @@ void response_redirect(Response* res, const char* url)
     response_header(res, "Location", url);
 }
 
+void response_redirect_permanent(Response* res, const char* url)
+{
+    res->status_code = 301;
+    str_free(&res->status_text);
+    res->status_text = str_from("Moved Permanently");
+    response_header(res, "Location", url);
+}
+
 void response_flush(Response* res, int fd)
 {
     // Build the headers as a single buffer (status line + headers + blank line).

@@ -1,0 +1,101 @@
+<!-- Breadcrumb -->
+<div class="text-[11px] font-mono text-slate-500">
+  <a href="/work/fintech-ai" class="text-emerald-400 hover:text-emerald-300 transition-colors">&larr; ~/work/fintech-ai</a>
+  <span class="mx-2">/</span><span>case_study</span>
+</div>
+
+<!-- Header -->
+<div class="bg-[#121214] border border-slate-800 rounded-lg p-6 lg:p-8">
+  <div class="flex items-center justify-between mb-2">
+    <span class="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold">Case_Study // [AI][01]</span>
+    <span class="px-2 py-0.5 bg-emerald-950/40 border border-emerald-800 text-[9px] font-mono uppercase tracking-wider rounded text-emerald-300">active &mdash; professional work</span>
+  </div>
+  <h2 class="text-2xl sm:text-3xl font-bold text-slate-100 tracking-tight leading-tight mb-3">An AI gateway banks can actually run.</h2>
+  <p class="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-2xl">
+    On-premise LLM platform for financial institutions, architected in C#/.NET. Multi-provider model routing,
+    RAG pipelines with vector search, and multi-agent orchestration &mdash; with zero external data egress.
+    Employer and client names withheld; specifics available under NDA.
+  </p>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <div class="bg-[#121214] border border-slate-800 rounded-lg p-6">
+    <h3 class="text-xs font-mono uppercase tracking-widest text-emerald-400 font-bold mb-3">01 // Problem</h3>
+    <p class="text-[11px] text-slate-400 leading-relaxed mb-2">
+      Banks want LLM capability &mdash; document understanding, retrieval-augmented answers, agent workflows &mdash;
+      but regulation and risk mean customer data cannot leave the building. Public-cloud AI APIs are a
+      non-starter; every byte must stay on infrastructure the institution controls.
+    </p>
+    <p class="text-[11px] text-slate-400 leading-relaxed">
+      The gateway's job: give internal teams one API surface for AI capability, run entirely on-premise,
+      with the same reliability bar as any other core-banking dependency.
+    </p>
+  </div>
+
+  <div class="bg-[#121214] border border-slate-800 rounded-lg p-6">
+    <h3 class="text-xs font-mono uppercase tracking-widest text-emerald-400 font-bold mb-3">02 // Decisions</h3>
+    <ul class="text-[11px] text-slate-400 leading-relaxed space-y-2">
+      <li><span class="text-slate-200 font-semibold">Provider abstraction first.</span> Models change monthly; the routing layer normalizes providers behind one contract so swapping engines is config, not code.</li>
+      <li><span class="text-slate-200 font-semibold">RAG as a pipeline, not a library call.</span> Chunking, embedding, vector search, and prompt assembly are explicit stages &mdash; each one tunable and auditable.</li>
+      <li><span class="text-slate-200 font-semibold">Multi-agent orchestration</span> for workflows where one model call isn't enough &mdash; deliberate, bounded, logged.</li>
+      <li><span class="text-slate-200 font-semibold">Zero egress as an architectural property,</span> not a policy document: the deployment has no route to external AI endpoints.</li>
+      <li><span class="text-slate-200 font-semibold">C#/.NET</span> because it's what the institution's teams can operate, extend, and audit.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Architecture -->
+<div class="bg-[#121214] border border-slate-800 rounded-lg p-6">
+  <h3 class="text-xs font-mono uppercase tracking-widest text-emerald-400 font-bold mb-3">03 // Architecture (sanitized)</h3>
+  <pre class="font-mono text-[10px] sm:text-[11px] leading-relaxed text-slate-300 bg-[#0A0A0B] border border-slate-800 rounded p-4 overflow-x-auto">
+                    ┌───────────────────────────── on-prem boundary ─┐
+ internal apps ──▶  │  gateway API (C#/.NET)                         │
+                    │      │                                         │
+                    │      ├─▶ auth / audit / quotas                 │
+                    │      │                                         │
+                    │      ├─▶ model router ──▶ provider A (local)   │
+                    │      │                ──▶ provider B (local)   │
+                    │      │                                         │
+                    │      ├─▶ RAG pipeline                          │
+                    │      │     chunk ─▶ embed ─▶ vector search     │
+                    │      │     ─▶ prompt assembly ─▶ model         │
+                    │      │                                         │
+                    │      └─▶ agent orchestrator (multi-step,       │
+                    │            bounded, fully logged)              │
+                    │                                                │
+                    │  egress to public AI endpoints: none           │
+                    └────────────────────────────────────────────────┘</pre>
+</div>
+
+<!-- Numbers -->
+<div class="bg-[#121214] border border-slate-800 rounded-lg p-6">
+  <h3 class="text-xs font-mono uppercase tracking-widest text-emerald-400 font-bold mb-3">04 // Properties</h3>
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono mb-3">
+    <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
+      <div class="text-lg font-bold text-emerald-400 tracking-tight">0 bytes</div>
+      <div class="text-[9px] uppercase tracking-wider text-slate-500 mt-1">external data egress</div>
+    </div>
+    <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
+      <div class="text-lg font-bold text-emerald-400 tracking-tight">multi</div>
+      <div class="text-[9px] uppercase tracking-wider text-slate-500 mt-1">providers behind one API</div>
+    </div>
+    <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
+      <div class="text-lg font-bold text-emerald-400 tracking-tight">RAG</div>
+      <div class="text-[9px] uppercase tracking-wider text-slate-500 mt-1">vector search + retrieval</div>
+    </div>
+    <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
+      <div class="text-lg font-bold text-emerald-400 tracking-tight">full</div>
+      <div class="text-[9px] uppercase tracking-wider text-slate-500 mt-1">audit trail per request</div>
+    </div>
+  </div>
+  <p class="text-[10px] font-mono text-slate-500 leading-relaxed">
+    Throughput and deployment specifics are the client's to share, not mine. The personal-lab equivalents of every
+    moving part here &mdash; RAG bot, embeddings store, agent deliberation &mdash; run on my own hardware and are
+    documented on the <a href="/work/fintech-ai" class="text-emerald-400 hover:text-emerald-300">fintech-ai page</a>.
+  </p>
+</div>
+
+<div class="flex items-center gap-4 text-[11px] font-mono">
+  <a href="/projects/payment-gateways" class="text-emerald-400 hover:text-emerald-300 transition-colors">next case study: payment gateways&rarr;</a>
+  <a href="/work/fintech-ai" class="text-slate-500 hover:text-emerald-400 transition-colors">back to ~/work/fintech-ai</a>
+</div>

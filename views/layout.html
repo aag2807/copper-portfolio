@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{title}} — Alvaro Guzman</title>
-    <meta name="description" content="{{#if description}}{{description}}{{else}}Alvaro Guzman — software engineer from the Dominican Republic. Portfolio served from a hand-written C MVC framework with a wasmoon-driven Lua runtime in the browser.{{/if}}" />
+    <meta name="description" content="{{#if description}}{{description}}{{else}}Alvaro Guzman — senior fullstack engineer for fintech and core banking. .NET, Angular, applied AI/LLM. This portfolio is served from a hand-written C MVC framework with a Lua runtime in the browser.{{/if}}" />
     <meta name="author" content="Alvaro Guzman" />
     <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
     {{#if path}}<link rel="canonical" href="https://alvaro-guzman.com{{path}}" />{{/if}}
@@ -13,12 +13,12 @@
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Alvaro Guzman" />
     <meta property="og:title" content="{{title}} — Alvaro Guzman" />
-    <meta property="og:description" content="{{#if description}}{{description}}{{else}}Senior software engineer — fintech, systems, applied AI. Portfolio served from a hand-written C MVC framework with a wasmoon-driven Lua runtime in the browser.{{/if}}" />
+    <meta property="og:description" content="{{#if description}}{{description}}{{else}}Senior fullstack engineer — .NET, Angular, applied AI/LLM for fintech and core banking. Portfolio served from a hand-written C MVC framework with a Lua runtime in the browser.{{/if}}" />
     {{#if path}}<meta property="og:url" content="https://alvaro-guzman.com{{path}}" />{{/if}}
     <meta property="og:image" content="https://alvaro-guzman.com/static/og.png" />
     <meta property="og:image:width" content="2400" />
     <meta property="og:image:height" content="1260" />
-    <meta property="og:image:alt" content="Alvaro Guzman — systems portfolio. Built the stack from scratch: C web framework, Lua-in-browser runtime." />
+    <meta property="og:image:alt" content="Alvaro Guzman — senior fullstack engineer, fintech and applied AI. Built the stack from scratch: C web framework, Lua-in-browser runtime." />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -37,26 +37,37 @@
     <div id="cursor-glow" aria-hidden="true"></div>
     <header class="border-b border-slate-800 bg-[#121214]/85 backdrop-blur-md sticky top-0 z-50">
       <!-- Row 1: identity + build tag -->
-      <div class="h-10 flex items-center justify-between gap-3 px-4 sm:px-6 border-b border-slate-800/60">
-        <a href="/" class="flex items-center space-x-3 select-none group shrink-0 min-w-0">
-          <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full glow-green shrink-0"></span>
-          <span class="font-mono text-xs tracking-widest text-slate-400 uppercase group-hover:text-white transition-colors truncate">
-            <span class="hidden xs:inline sm:inline">ALVARO_GUZMAN // SYSTEMS_PORTFOLIO</span>
-            <span class="sm:hidden">A_GUZMAN // PORTFOLIO</span>
-          </span>
-        </a>
-        <span class="text-[10px] font-mono text-slate-500 shrink-0">c-copper v0.03 // DO</span>
+      <div class="border-b border-slate-800/60">
+        <div class="max-w-7xl mx-auto w-full h-10 flex items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
+          <a href="/" class="flex items-center space-x-3 select-none group shrink-0 min-w-0">
+            <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full glow-green shrink-0"></span>
+            <span class="font-mono text-xs tracking-widest text-slate-400 uppercase group-hover:text-white transition-colors truncate">
+              <span class="hidden xs:inline sm:inline">ALVARO_GUZMAN // SYSTEMS_PORTFOLIO</span>
+              <span class="sm:hidden">A_GUZMAN // PORTFOLIO</span>
+            </span>
+          </a>
+          <span class="text-[10px] font-mono text-slate-500 shrink-0">c-copper v0.03 // DO</span>
+        </div>
       </div>
       <!-- Row 2: nav -->
-      <nav class="nav-scroll h-10 flex items-center gap-5 overflow-x-auto px-4 sm:px-6">
-        <a href="/"        class="shrink-0 text-xs font-mono uppercase tracking-tighter text-slate-400 hover:text-emerald-400 transition-colors">01_Home</a>
-        <a href="/systems" class="shrink-0 text-xs font-mono uppercase tracking-tighter text-slate-400 hover:text-emerald-400 transition-colors">02_Systems</a>
-        <a href="/gamedev" class="shrink-0 text-xs font-mono uppercase tracking-tighter text-slate-400 hover:text-emerald-400 transition-colors">03_Gamedev</a>
-        <a href="/web"     class="shrink-0 text-xs font-mono uppercase tracking-tighter text-slate-400 hover:text-emerald-400 transition-colors">04_Web</a>
-        <a href="/ai"       class="shrink-0 text-xs font-mono uppercase tracking-tighter text-slate-400 hover:text-emerald-400 transition-colors">05_AI</a>
-        <a href="/workshop" class="shrink-0 text-xs font-mono uppercase tracking-tighter text-slate-400 hover:text-emerald-400 transition-colors">06_Workshop</a>
-        <a href="/contact"  class="shrink-0 text-xs font-mono uppercase tracking-tighter text-slate-400 hover:text-emerald-400 transition-colors">07_Connect</a>
+      <nav class="nav-scroll max-w-7xl mx-auto w-full h-10 flex items-center gap-5 overflow-x-auto px-4 sm:px-6 lg:px-8">
+        <a href="/"         class="shrink-0 text-xs font-mono uppercase tracking-tighter text-slate-400 hover:text-emerald-400 transition-colors">01_Home</a>
+        <a href="/work"     class="shrink-0 text-xs font-mono uppercase tracking-tighter text-slate-400 hover:text-emerald-400 transition-colors">02_Work</a>
+        <a href="/workshop" class="shrink-0 text-xs font-mono uppercase tracking-tighter text-slate-400 hover:text-emerald-400 transition-colors">03_Workshop</a>
+        <a href="/contact"  class="shrink-0 text-xs font-mono uppercase tracking-tighter text-slate-400 hover:text-emerald-400 transition-colors">04_Connect</a>
       </nav>
+      {{#if worknav}}
+      <!-- Row 3: /work sub-nav -->
+      <div class="border-t border-slate-800/60 bg-[#0E0E10]/80">
+        <nav class="subnav nav-scroll max-w-7xl mx-auto w-full h-9 flex items-center gap-4 overflow-x-auto px-4 sm:px-6 lg:px-8 font-mono text-[11px]">
+          <span class="text-slate-600 select-none shrink-0">~/work $</span>
+          <a href="/work/fintech-ai" class="shrink-0 text-slate-400 hover:text-emerald-400 transition-colors">fintech-ai</a>
+          <a href="/work/systems"    class="shrink-0 text-slate-400 hover:text-emerald-400 transition-colors">systems</a>
+          <a href="/work/web"        class="shrink-0 text-slate-400 hover:text-emerald-400 transition-colors">web</a>
+          <a href="/work/gamedev"    class="shrink-0 text-slate-400 hover:text-emerald-400 transition-colors">gamedev</a>
+        </nav>
+      </div>
+      {{/if}}
     </header>
 
     <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 md:py-12 flex flex-col gap-8">
@@ -97,9 +108,14 @@
           });
         }, { passive: true });
 
-        // current-page nav indicator
+        // current-page nav indicator: prefix match on top nav, exact on sub-nav
         var path = location.pathname;
-        document.querySelectorAll("nav a").forEach(function (a) {
+        document.querySelectorAll("header nav:not(.subnav) a").forEach(function (a) {
+          var href = a.getAttribute("href");
+          var active = href === "/" ? path === "/" : (path === href || path.indexOf(href + "/") === 0);
+          if (active) a.setAttribute("aria-current", "page");
+        });
+        document.querySelectorAll("header .subnav a").forEach(function (a) {
           if (a.getAttribute("href") === path) a.setAttribute("aria-current", "page");
         });
 

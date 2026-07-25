@@ -6,68 +6,15 @@
 ACTION(home_index)
 {
     ViewData data[] = {
-        {"title", "text", "Home", NULL},
+        {"title", "text", "Senior Fullstack Engineer — Fintech · .NET · AI", NULL},
+        {"description", "text",
+         "Alvaro Guzman — senior fullstack engineer for fintech and core banking. .NET, Angular, applied AI/LLM. 60+ payment integrations, on-prem LLM gateway work, and a portfolio served by a hand-written C framework.",
+         NULL},
         {"path", "text", str_cstr(&req->path), NULL},
         {NULL, NULL, NULL, NULL},
     };
     response_status(res, 200, "OK");
     render_view(res, "home/index.html", data);
-}
-
-ACTION(home_systems)
-{
-    ViewData data[] = {
-        {"title", "text", "Systems", NULL},
-        {"path", "text", str_cstr(&req->path), NULL},
-        {"description", "text",
-         "c-copper, Cobre, Lunar, Axon — hand-written frameworks, language tooling, and gateways in C, Go, and C#.",
-         NULL},
-        {NULL, NULL, NULL, NULL},
-    };
-    response_status(res, 200, "OK");
-    render_view(res, "home/systems.html", data);
-}
-
-ACTION(home_gamedev)
-{
-    ViewData data[] = {
-        {"title", "text", "Gamedev", NULL},
-        {"path", "text", str_cstr(&req->path), NULL},
-        {"description", "text",
-         "LitRPG action prototypes in Unity, BSP rendering research, planned SDL2 and Bevy work.",
-         NULL},
-        {NULL, NULL, NULL, NULL},
-    };
-    response_status(res, 200, "OK");
-    render_view(res, "home/gamedev.html", data);
-}
-
-ACTION(home_web)
-{
-    ViewData data[] = {
-        {"title", "text", "Web", NULL},
-        {"path", "text", str_cstr(&req->path), NULL},
-        {"description", "text",
-         "Browser-side Lua via wasmoon. Per-route module loading, signal-based reactivity, no React, no virtual DOM.",
-         NULL},
-        {NULL, NULL, NULL, NULL},
-    };
-    response_status(res, 200, "OK");
-    render_view(res, "home/web.html", data);
-}
-
-ACTION(home_ai)
-{
-    ViewData data[] = {
-        {"title", "text", "AI", NULL},
-        {"path", "text", str_cstr(&req->path), NULL},
-        {"description", "text",
-         "Local-first AI tooling. OCR pipeline, RAG bot, multi-agent deliberation, terminal coding assistant — running against a local Ollama daemon.",
-         NULL},
-        {NULL, NULL, NULL, NULL},
-    };
-    response_status(res, 200, "OK");
-    render_view(res, "home/ai.html", data);
 }
 
 ACTION(home_workshop)

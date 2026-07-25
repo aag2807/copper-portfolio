@@ -9,15 +9,23 @@
 #include <stdlib.h>
 
 extern void home_index(Request*, Response*, void*);
-extern void home_systems(Request*, Response*, void*);
-extern void home_gamedev(Request*, Response*, void*);
-extern void home_web(Request*, Response*, void*);
 extern void home_contact(Request*, Response*, void*);
-extern void home_ai(Request*, Response*, void*);
 extern void home_workshop(Request*, Response*, void*);
 extern void home_counter(Request*, Response*, void*);
 extern void home_todolist(Request*, Response*, void*);
 extern void contact_submit(Request*, Response*, void*);
+
+extern void work_index(Request*, Response*, void*);
+extern void work_fintech_ai(Request*, Response*, void*);
+extern void work_systems(Request*, Response*, void*);
+extern void work_web(Request*, Response*, void*);
+extern void work_gamedev(Request*, Response*, void*);
+extern void redirect_systems(Request*, Response*, void*);
+extern void redirect_web(Request*, Response*, void*);
+extern void redirect_gamedev(Request*, Response*, void*);
+extern void redirect_ai(Request*, Response*, void*);
+
+extern void projects_show(Request*, Response*, void*);
 
 static int logging_middleware(Request* req, Response* res, MiddlewareNode* self, Router* router)
 {
@@ -49,16 +57,26 @@ int main(int argc, char* argv[])
     server_use(server, ratelimit_middleware, NULL);
     server_use(server, csrf_middleware, NULL);
 
-    // HTML ROUTES
+    // HTML ROUTES (literals first — router is first-match-wins)
     server_get(server, "/", home_index);
-    server_get(server, "/systems", home_systems);
-    server_get(server, "/gamedev", home_gamedev);
-    server_get(server, "/web", home_web);
+    server_get(server, "/work", work_index);
+    server_get(server, "/work/fintech-ai", work_fintech_ai);
+    server_get(server, "/work/systems", work_systems);
+    server_get(server, "/work/web", work_web);
+    server_get(server, "/work/gamedev", work_gamedev);
     server_get(server, "/contact", home_contact);
-    server_get(server, "/ai", home_ai);
     server_get(server, "/workshop", home_workshop);
     server_get(server, "/counter", home_counter);
     server_get(server, "/todos", home_todolist);
+
+    // 301s from pre-restructure URLs
+    server_get(server, "/systems", redirect_systems);
+    server_get(server, "/gamedev", redirect_gamedev);
+    server_get(server, "/web", redirect_web);
+    server_get(server, "/ai", redirect_ai);
+
+    // Param routes last
+    server_get(server, "/projects/{slug}", projects_show);
 
     // API ROUTES
     server_post(server, "/api/contact", contact_submit);
