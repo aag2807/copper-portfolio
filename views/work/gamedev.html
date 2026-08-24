@@ -1,176 +1,89 @@
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-  <!-- Top hero strip -->
-  <div class="lg:col-span-12 bg-[#121214] border border-slate-800 rounded-lg p-5 flex flex-col lg:flex-row gap-6 items-start">
-    <div class="lg:max-w-xl">
-      <span class="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold block mb-1">Lab // LÖVE 11.5</span>
-      <h3 class="text-2xl font-bold text-slate-100 tracking-tight leading-tight">
-        Lua, run from the metal of the game loop.
-      </h3>
-      <p class="text-xs text-slate-400 mt-2 leading-relaxed max-w-lg">
-        LÖVE is the prototyping bench — built directly against the callback surface, no wrapping engine, no entity component DSL. Productized work runs in Unity (Passages) and explorations sit in Rust/Bevy and SDL2/C++ below.
-      </p>
+<!-- Hero -->
+<section class="pt-12 pb-10 lg:pt-[66px] border-b border-rule">
+  <a href="/work" class="mono-sm tracking-[.14em] hover:text-accent transition-colors">← 02_WORK</a>
+  <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] gap-8 lg:gap-12 items-end mt-7">
+    <div>
+      <div class="eyebrow text-accent mb-5">[0x04] GAMEDEV // LÖVE 11.5 · UNITY · BEVY</div>
+      <h1 class="display max-w-[20ch]">Lua, run from the metal of the game loop.</h1>
     </div>
-    <div class="flex-1 grid grid-cols-3 gap-3 w-full lg:w-auto font-mono min-w-0">
-      <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded min-w-0">
-        <div class="text-[9px] uppercase tracking-wider text-slate-500 mb-1 break-words">love.update(dt)</div>
-        <div class="text-emerald-400 text-[11px] break-words">fixed step</div>
+    <p class="lede-muted">
+      LÖVE is the prototyping bench — built directly against the callback surface, no wrapping engine, no entity
+      component DSL. Productized work runs in Unity; explorations sit in Rust/Bevy and SDL2/C++.
+    </p>
+  </div>
+  <div class="rule-grid grid-cols-1 sm:grid-cols-3 mt-11">
+    <div class="p-5"><div class="label mb-2 normal-case">love.update(dt)</div><div class="font-mono text-[13px] text-accent">fixed step</div></div>
+    <div class="p-5"><div class="label mb-2 normal-case">love.draw()</div><div class="font-mono text-[13px] text-accent">canvas batched</div></div>
+    <div class="p-5"><div class="label mb-2 normal-case">love.physics</div><div class="font-mono text-[13px] text-accent">box2d body sim</div></div>
+  </div>
+</section>
+
+<!-- Builds -->
+<section class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.45fr)] gap-8 lg:gap-14 py-12 lg:py-[60px] border-b border-rule">
+  <div><div class="label sec-label">01 // ACTIVE_AND_PAST_BUILDS</div></div>
+  <div class="flex flex-col gap-8">
+    <div class="ruled">
+      <div class="flex items-baseline justify-between gap-3">
+        <div class="flex items-baseline gap-3.5"><span class="font-mono text-[11px] tracking-[.12em] text-accent">[0x01]</span><h3 class="h4">Passages — LitRPG-inspired third-person action RPG</h3></div>
+        <span class="label st-wip shrink-0">IN_DEV</span>
       </div>
-      <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded min-w-0">
-        <div class="text-[9px] uppercase tracking-wider text-slate-500 mb-1 break-words">love.draw()</div>
-        <div class="text-emerald-400 text-[11px] break-words">canvas batched</div>
+      <p class="body-muted mt-3.5 max-w-[60ch]">Combat blends FF12's Gambit system with the rule-driven party logic of .hack//GU. A dual-resource system (Vitality / Essence) governs both health and casting. The <span class="text-ink">Attunement Scripts</span> editor lets the player wire per-companion behavior trees. Abilities authored as ScriptableObjects so designers iterate without recompiling.</p>
+      <div class="flex flex-wrap gap-1.5 mt-4"><span class="tag tag-sm">Unity</span><span class="tag tag-sm">C#</span><span class="tag tag-sm">gambit AI</span><span class="tag tag-sm">ScriptableObject</span><span class="tag tag-sm">dual-resource</span></div>
+    </div>
+    <div class="ruled">
+      <div class="flex items-baseline justify-between gap-3">
+        <div class="flex items-baseline gap-3.5"><span class="font-mono text-[11px] tracking-[.12em] text-accent">[0x02]</span><h3 class="h4">From-scratch BSP renderer + Unity shooter prototype</h3></div>
+        <span class="label st-off shrink-0">RESEARCH</span>
       </div>
-      <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded min-w-0">
-        <div class="text-[9px] uppercase tracking-wider text-slate-500 mb-1 break-words">love.physics</div>
-        <div class="text-emerald-400 text-[11px] break-words">box2d body sim</div>
+      <p class="body-muted mt-3.5 max-w-[60ch]">A BSP renderer written from scratch in C as a graphics deep-dive — tree construction, polygon splitting, painter's-order traversal. Separately, a 3D shooter prototype in Unity to feel the C# tooling end of the same pipeline. Both research artifacts, not productized.</p>
+      <div class="flex flex-wrap gap-1.5 mt-4"><span class="tag tag-sm">C</span><span class="tag tag-sm">Unity</span><span class="tag tag-sm">BSP</span><span class="tag tag-sm">renderer</span><span class="tag tag-sm">research</span></div>
+    </div>
+    <div class="ruled">
+      <div class="flex items-baseline justify-between gap-3">
+        <div class="flex items-baseline gap-3.5"><span class="font-mono text-[11px] tracking-[.12em] text-accent">[0x03]</span><h3 class="h4">Bevy + SDL2 track — SDL2 first, Bevy after</h3></div>
+        <span class="label st-wip shrink-0">IN_PROG</span>
       </div>
+      <p class="body-muted mt-3.5 max-w-[60ch]">Sequential ladder, not a single project. SDL2/C++ for the fundamentals (Pong, then Breakout, then a top-down shooter), then graduate the same exercises into Rust + Bevy to feel ECS-first authoring against the same problems.</p>
+      <div class="font-mono text-[11px] tracking-[.12em] uppercase text-muted mt-4">pong → breakout → top-down shooter → <span class="text-copper">bevy</span></div>
+      <div class="flex flex-wrap gap-1.5 mt-4"><span class="tag tag-sm">Rust</span><span class="tag tag-sm">Bevy</span><span class="tag tag-sm">SDL2</span><span class="tag tag-sm">C++</span><span class="tag tag-sm">ECS</span></div>
     </div>
   </div>
+</section>
 
-  <!-- LHS — Real game projects -->
-  <div class="lg:col-span-7 flex flex-col gap-4">
-
-    <div class="flex justify-between items-center text-xs font-mono">
-      <span class="text-slate-400 uppercase tracking-widest font-semibold">Active &amp; Past Builds</span>
-      <span class="text-[10px] text-slate-500">unity // c // rust+bevy // sdl2</span>
+<!-- Loop skeleton -->
+<section class="rule-grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] my-12 lg:my-[60px]">
+  <div class="p-7 lg:p-[34px_30px] flex flex-col">
+    <div class="label">02 // LOOP_SKELETON</div>
+    <h3 class="h3 mt-[18px] max-w-[22ch]">Fixed timestep, honestly.</h3>
+    <p class="body-muted mt-4 max-w-[42ch]">Accumulate real time, step the world in constant slices, draw whatever is current. Deterministic under load, and the bug that only appears on fast machines goes away.</p>
+    <div class="mt-6 flex flex-col">
+      <div class="kv"><span>love.graphics</span><span>canvases, batches, shaders</span></div>
+      <div class="kv"><span>love.physics</span><span>box2d bodies, joints</span></div>
+      <div class="kv"><span>love.audio</span><span>positional sources</span></div>
+      <div class="kv"><span>love.keyboard</span><span>edge + held detection</span></div>
+      <div class="kv"><span>conf.lua</span><span>window + module flags</span></div>
     </div>
-
-    <!-- Passages — lead -->
-    <article class="grid grid-cols-1 sm:grid-cols-5 gap-4 bg-[#121214] border border-slate-800 rounded-lg overflow-hidden">
-      <div class="sm:col-span-2 aspect-video sm:aspect-auto bg-[#0A0A0B] relative overflow-hidden flex items-center justify-center min-h-[200px]">
-        <div class="absolute inset-0 opacity-[0.08] pointer-events-none" style="background-image:linear-gradient(to right, #10b981 1px, transparent 1px), linear-gradient(to bottom, #10b981 1px, transparent 1px); background-size: 24px 24px;"></div>
-        <div class="relative flex flex-col items-center gap-2 font-mono text-emerald-500">
-          <div class="text-[10px] uppercase tracking-widest text-slate-500">resource</div>
-          <div class="flex gap-3 text-[11px]">
-            <span>vitality</span><span class="text-slate-700">/</span><span>essence</span>
-          </div>
-          <div class="text-[9px] uppercase tracking-widest text-slate-600 mt-2">dual-pool combat</div>
-        </div>
-        <div class="absolute inset-0 bg-gradient-to-tr from-[#0A0A0B] via-transparent to-emerald-950/30 pointer-events-none"></div>
-        <div class="absolute top-2 left-2 px-2 py-0.5 bg-amber-950/40 border border-amber-800 text-[9px] font-mono uppercase tracking-wider rounded text-amber-300">in_development</div>
-        <div class="absolute bottom-2 left-2 text-[9px] font-mono uppercase tracking-widest text-slate-600">pending_captures</div>
-      </div>
-      <div class="sm:col-span-3 p-5 flex flex-col justify-between">
-        <div>
-          <div class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest mb-1">[0x01]_PASSAGES</div>
-          <h4 class="text-base font-bold text-slate-100 tracking-tight mb-2">LitRPG-inspired third-person action RPG</h4>
-          <p class="text-[11px] text-slate-400 leading-relaxed">
-            Combat blends FF12's Gambit system with the rule-driven party logic of .hack//GU. A dual-resource system (Vitality / Essence) governs both health and casting. The <span class="text-emerald-400">Attunement Scripts</span> editor lets the player wire per-companion behavior trees. Abilities authored as ScriptableObjects so designers iterate without recompiling.
-          </p>
-        </div>
-        <div class="mt-3 flex flex-wrap gap-1.5 font-mono text-[9px]">
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">Unity</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">C#</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">gambit AI</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">ScriptableObject</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">dual-resource</span>
-        </div>
-      </div>
-    </article>
-
-    <!-- BSP renderer + 3D Unity shooter — research -->
-    <article class="grid grid-cols-1 sm:grid-cols-5 gap-4 bg-[#121214] border border-slate-800 rounded-lg overflow-hidden">
-      <div class="sm:col-span-3 p-5 flex flex-col justify-between order-2 sm:order-1">
-        <div>
-          <div class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest mb-1">[0x02]_BSP_RENDERER + 3D_SHOOTER</div>
-          <h4 class="text-base font-bold text-slate-100 tracking-tight mb-2">From-scratch BSP rendering + Unity shooter prototype</h4>
-          <p class="text-[11px] text-slate-400 leading-relaxed">
-            A BSP renderer written from scratch in C as a graphics deep-dive &mdash; tree construction, polygon splitting, painter's-order traversal. Separately, a 3D shooter prototype in Unity to feel the C# tooling end of the same pipeline. Both research artifacts, not productized.
-          </p>
-        </div>
-        <div class="mt-3 flex flex-wrap gap-1.5 font-mono text-[9px]">
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">C</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">Unity</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">BSP</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">renderer</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">research</span>
-        </div>
-      </div>
-      <div class="sm:col-span-2 aspect-video sm:aspect-auto bg-[#0A0A0B] relative overflow-hidden flex items-center justify-center min-h-[160px] order-1 sm:order-2">
-        <div class="absolute inset-0 opacity-[0.05] pointer-events-none" style="background-image:linear-gradient(to right, #64748b 1px, transparent 1px), linear-gradient(to bottom, #64748b 1px, transparent 1px); background-size: 24px 24px;"></div>
-        <svg class="relative w-16 h-16 text-slate-400" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1">
-          <path d="M32 4 L60 18 L60 46 L32 60 L4 46 L4 18 Z"/>
-          <path d="M32 4 L32 60 M4 18 L60 46 M4 46 L60 18"/>
-        </svg>
-        <div class="absolute inset-0 bg-gradient-to-tl from-[#0A0A0B] via-transparent to-slate-900/40 pointer-events-none"></div>
-        <div class="absolute top-2 right-2 px-2 py-0.5 bg-slate-900 border border-slate-700 text-[9px] font-mono uppercase tracking-wider rounded text-slate-400">research</div>
-      </div>
-    </article>
-
-    <!-- SDL2 → Bevy track — in_progress -->
-    <article class="grid grid-cols-1 sm:grid-cols-5 gap-4 bg-[#121214] border border-slate-800 rounded-lg overflow-hidden">
-      <div class="sm:col-span-2 aspect-video sm:aspect-auto bg-[#0A0A0B] relative overflow-hidden flex items-center justify-center min-h-[160px]">
-        <div class="absolute inset-0 opacity-[0.08] pointer-events-none" style="background-image:linear-gradient(to right, #10b981 1px, transparent 1px), linear-gradient(to bottom, #10b981 1px, transparent 1px); background-size: 24px 24px;"></div>
-        <div class="relative font-mono text-emerald-500 text-[11px] uppercase tracking-widest leading-relaxed text-center">
-          <div>pong &rarr; breakout</div>
-          <div class="text-slate-700 my-1">&darr;</div>
-          <div>top-down shooter</div>
-          <div class="text-slate-700 my-1">&darr;</div>
-          <div class="text-amber-400">bevy</div>
-        </div>
-        <div class="absolute inset-0 bg-gradient-to-tr from-[#0A0A0B] via-transparent to-emerald-950/30 pointer-events-none"></div>
-        <div class="absolute top-2 left-2 px-2 py-0.5 bg-amber-950/40 border border-amber-800 border-dashed text-[9px] font-mono uppercase tracking-wider rounded text-amber-300">in_progress</div>
-      </div>
-      <div class="sm:col-span-3 p-5 flex flex-col justify-between">
-        <div>
-          <div class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest mb-1">[0x03]_BEVY + SDL2 TRACK</div>
-          <h4 class="text-base font-bold text-slate-100 tracking-tight mb-2">Sequential learning ladder &mdash; SDL2 first, Bevy after</h4>
-          <p class="text-[11px] text-slate-400 leading-relaxed">
-            Sequential ladder, not a single project. SDL2/C++ for the fundamentals (Pong, then Breakout, then a top-down shooter), then graduate the same exercises into Rust + Bevy to feel ECS-first authoring against the same problems. Active track.
-          </p>
-        </div>
-        <div class="mt-3 flex flex-wrap gap-1.5 font-mono text-[9px]">
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">Rust</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">Bevy</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">SDL2</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">C++</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">ECS</span>
-        </div>
-      </div>
-    </article>
   </div>
+  <pre class="code"><span class="k">function</span> <span class="f">love.load</span>()
+    world = love.physics.newWorld(<span class="n">0</span>, <span class="n">9.81</span>*<span class="n">64</span>)
+    player = entities.spawn(<span class="s">"player"</span>, <span class="n">100</span>, <span class="n">100</span>)
+<span class="k">end</span>
 
-  <!-- RHS — Loop skeleton & capabilities -->
-  <div class="lg:col-span-5 flex flex-col gap-4">
-    <div class="bg-[#121214] border border-slate-800 rounded-lg p-5">
-      <div class="text-xs font-mono uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-1.5">
-        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 glow-green"></span>
-        love2d_loop.lua
-      </div>
-      <pre class="bg-[#0A0A0B] text-slate-300 p-4 rounded border border-slate-800 font-mono text-[11px] leading-relaxed overflow-x-auto"><code><span class="text-sky-400">function</span> love.load()
-    world = love.physics.newWorld(<span class="text-amber-400">0</span>, <span class="text-amber-400">9.81</span>*<span class="text-amber-400">64</span>)
-    player = entities.spawn(<span class="text-emerald-400">"player"</span>, <span class="text-amber-400">100</span>, <span class="text-amber-400">100</span>)
-<span class="text-sky-400">end</span>
-
-<span class="text-sky-400">function</span> love.update(dt)
+<span class="k">function</span> <span class="f">love.update</span>(dt)
     accumulator = accumulator + dt
-    <span class="text-sky-400">while</span> accumulator &gt;= STEP <span class="text-sky-400">do</span>
+    <span class="k">while</span> accumulator &gt;= STEP <span class="k">do</span>
         world:update(STEP)
         input.poll()
         ai.tick(STEP)
         accumulator = accumulator - STEP
-    <span class="text-sky-400">end</span>
-<span class="text-sky-400">end</span>
+    <span class="k">end</span>
+<span class="k">end</span>
 
-<span class="text-sky-400">function</span> love.draw()
+<span class="k">function</span> <span class="f">love.draw</span>()
     camera:attach()
     tilemap:draw()
     entities:draw()
     camera:detach()
     hud:draw()
-<span class="text-sky-400">end</span></code></pre>
-    </div>
-
-    <div class="bg-[#121214] border border-slate-800 rounded-lg p-5">
-      <div class="text-xs font-mono uppercase tracking-wider text-slate-400 mb-3">Subsystem coverage</div>
-      <ul class="divide-y divide-slate-800/70 font-mono text-[11px]">
-        <li class="py-2 flex justify-between items-center"><span class="text-slate-300">love.graphics</span><span class="text-emerald-400 text-[10px]">canvases, batches, shaders</span></li>
-        <li class="py-2 flex justify-between items-center"><span class="text-slate-300">love.physics</span><span class="text-emerald-400 text-[10px]">box2d bodies, joints</span></li>
-        <li class="py-2 flex justify-between items-center"><span class="text-slate-300">love.audio</span><span class="text-emerald-400 text-[10px]">positional sources</span></li>
-        <li class="py-2 flex justify-between items-center"><span class="text-slate-300">love.keyboard</span><span class="text-emerald-400 text-[10px]">edge + held detection</span></li>
-        <li class="py-2 flex justify-between items-center"><span class="text-slate-300">conf.lua</span><span class="text-emerald-400 text-[10px]">window + module flags</span></li>
-      </ul>
-    </div>
-  </div>
-
-</div>
+<span class="k">end</span></pre>
+</section>

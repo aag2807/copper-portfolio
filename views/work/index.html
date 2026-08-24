@@ -1,67 +1,55 @@
-<!-- Hub header -->
-<div class="bg-[#121214] border border-slate-800 rounded-lg p-6 lg:p-8">
-  <span class="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold block mb-2">$ cd ~/work</span>
-  <h2 class="text-2xl sm:text-3xl font-bold text-slate-100 tracking-tight leading-tight mb-3">
-    One engineer, four domains.
-  </h2>
-  <p class="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-2xl">
-    The day job is senior fullstack engineering for fintech and core banking &mdash; .NET, Angular, and applied AI/LLM
-    work in regulated environments. The rest is what keeps the skills sharp: hand-written frameworks, language tooling,
-    browser runtimes, and game loops. Pick a domain.
+<!-- Hero -->
+<section class="pt-12 pb-10 lg:pt-[72px] lg:pb-11 grid grid-cols-1 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] gap-8 lg:gap-12 items-end border-b border-rule">
+  <div>
+    <div class="eyebrow mb-6">02_WORK // CASE_INDEX</div>
+    <h1 class="display max-w-[18ch]">Four modules, one system.</h1>
+  </div>
+  <p class="lede-muted">
+    The day job is senior fullstack engineering for fintech and core banking. The rest keeps the skills sharp:
+    hand-written frameworks, language tooling, browser runtimes, game loops. Regulated work is described at the
+    level of detail my NDAs allow.
   </p>
-</div>
+</section>
 
-<!-- Domain cards -->
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-  <a href="/work/fintech-ai" class="group block bg-[#121214] border border-slate-800 rounded-lg p-6">
-    <div class="flex items-center justify-between mb-3">
-      <span class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest">[0x01]</span>
-      <span class="px-2 py-0.5 bg-emerald-950/40 border border-emerald-800 text-[9px] font-mono uppercase tracking-wider rounded text-emerald-300">day job</span>
+<!-- Index rows -->
+<section class="mb-14">
+  <a href="/work/fintech-ai" class="row grid grid-cols-[auto_minmax(0,1fr)] md:grid-cols-[96px_minmax(0,1.15fr)_minmax(0,1fr)_120px] gap-x-6 gap-y-3 md:gap-8 items-center py-8 md:py-[34px]">
+    <div class="font-mono text-[11px] tracking-[.14em] text-accent">[0x01]</div>
+    <div>
+      <div class="eyebrow tracking-[.12em] mb-2.5">AI_FINTECH · DAY JOB</div>
+      <div class="text-[26px] md:text-[30px] leading-[1.1] tracking-[-.025em] font-semibold">Fintech &amp; applied AI</div>
     </div>
-    <h3 class="text-lg font-bold text-slate-100 tracking-tight group-hover:text-emerald-400 transition-colors mb-2">Fintech &amp; AI</h3>
-    <p class="text-[11px] text-slate-400 leading-relaxed mb-3">
-      On-prem LLM gateway for banking, 60+ payment integrations, RAG pipelines, multi-agent orchestration &mdash;
-      applied AI where the data can't leave the building.
-    </p>
-    <span class="text-[10px] font-mono text-slate-500">C# &middot; .NET &middot; Angular &middot; Rust &middot; RAG</span>
+    <div class="col-span-2 md:col-span-1 body-muted">On-prem LLM gateway for banking, 60+ payment-gateway integrations, RAG pipelines, multi-agent orchestration — applied AI where the data can't leave the building.</div>
+    <div class="col-span-2 md:col-span-1 mono-sm tracking-[.1em] md:text-right leading-[1.8]">2 case studies<br /><span class="text-accent">READ →</span></div>
   </a>
 
-  <a href="/work/systems" class="group block bg-[#121214] border border-slate-800 rounded-lg p-6">
-    <div class="flex items-center justify-between mb-3">
-      <span class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest">[0x02]</span>
-      <span class="px-2 py-0.5 bg-emerald-950/40 border border-emerald-800 text-[9px] font-mono uppercase tracking-wider rounded text-emerald-300">live</span>
+  <a href="/work/systems" class="row grid grid-cols-[auto_minmax(0,1fr)] md:grid-cols-[96px_minmax(0,1.15fr)_minmax(0,1fr)_120px] gap-x-6 gap-y-3 md:gap-8 items-center py-8 md:py-[34px]">
+    <div class="font-mono text-[11px] tracking-[.14em] text-accent">[0x02]</div>
+    <div>
+      <div class="eyebrow tracking-[.12em] mb-2.5">SYSTEMS · LIVE</div>
+      <div class="text-[26px] md:text-[30px] leading-[1.1] tracking-[-.025em] font-semibold">c-copper: a web framework in C</div>
     </div>
-    <h3 class="text-lg font-bold text-slate-100 tracking-tight group-hover:text-emerald-400 transition-colors mb-2">Systems &amp; Languages</h3>
-    <p class="text-[11px] text-slate-400 leading-relaxed mb-3">
-      c-copper (the C framework serving this page), the Lunar TypeScript-for-Lua compiler, and the Cobre
-      successor framework. From-scratch is the point.
-    </p>
-    <span class="text-[10px] font-mono text-slate-500">C99 &middot; Go &middot; compilers &middot; zero deps</span>
+    <div class="col-span-2 md:col-span-1 body-muted">HTTP server, route table, middleware chain and template engine in 1,559 lines of C99 — serving this page. Plus Lunar (TypeScript-for-Lua, in Go) and Cobre, the successor framework.</div>
+    <div class="col-span-2 md:col-span-1 mono-sm tracking-[.1em] md:text-right leading-[1.8]">4 projects<br /><span class="text-accent">READ →</span></div>
   </a>
 
-  <a href="/work/web" class="group block bg-[#121214] border border-slate-800 rounded-lg p-6">
-    <div class="flex items-center justify-between mb-3">
-      <span class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest">[0x03]</span>
-      <span class="px-2 py-0.5 bg-emerald-950/40 border border-emerald-800 text-[9px] font-mono uppercase tracking-wider rounded text-emerald-300">live</span>
+  <a href="/work/web" class="row grid grid-cols-[auto_minmax(0,1fr)] md:grid-cols-[96px_minmax(0,1.15fr)_minmax(0,1fr)_120px] gap-x-6 gap-y-3 md:gap-8 items-center py-8 md:py-[34px]">
+    <div class="font-mono text-[11px] tracking-[.14em] text-accent">[0x03]</div>
+    <div>
+      <div class="eyebrow tracking-[.12em] mb-2.5">WEB · LIVE</div>
+      <div class="text-[26px] md:text-[30px] leading-[1.1] tracking-[-.025em] font-semibold">Lua in the browser</div>
     </div>
-    <h3 class="text-lg font-bold text-slate-100 tracking-tight group-hover:text-emerald-400 transition-colors mb-2">Web</h3>
-    <p class="text-[11px] text-slate-400 leading-relaxed mb-3">
-      The wasmoon bridge running this site's frontend &mdash; Lua in the browser, signals, no React &mdash; plus
-      shipped Angular/.NET builds like a realtime SignalR sprint board.
-    </p>
-    <span class="text-[10px] font-mono text-slate-500">Lua&rarr;WASM &middot; Angular &middot; SignalR &middot; D3</span>
+    <div class="col-span-2 md:col-span-1 body-muted">Lua 5.4 compiled to WASM via wasmoon, signal-based reactivity, per-route module loading, no virtual DOM — plus shipped Angular/.NET builds like a realtime SignalR sprint board.</div>
+    <div class="col-span-2 md:col-span-1 mono-sm tracking-[.1em] md:text-right leading-[1.8]">3 projects<br /><span class="text-accent">READ →</span></div>
   </a>
 
-  <a href="/work/gamedev" class="group block bg-[#121214] border border-slate-800 rounded-lg p-6">
-    <div class="flex items-center justify-between mb-3">
-      <span class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest">[0x04]</span>
-      <span class="px-2 py-0.5 bg-amber-950/40 border border-amber-800 text-[9px] font-mono uppercase tracking-wider rounded text-amber-300">in_dev</span>
+  <a href="/work/gamedev" class="row grid grid-cols-[auto_minmax(0,1fr)] md:grid-cols-[96px_minmax(0,1.15fr)_minmax(0,1fr)_120px] gap-x-6 gap-y-3 md:gap-8 items-center py-8 md:py-[34px]">
+    <div class="font-mono text-[11px] tracking-[.14em] text-accent">[0x04]</div>
+    <div>
+      <div class="eyebrow tracking-[.12em] mb-2.5">GAMEDEV · IN_DEV</div>
+      <div class="text-[26px] md:text-[30px] leading-[1.1] tracking-[-.025em] font-semibold">Game loops, from the metal</div>
     </div>
-    <h3 class="text-lg font-bold text-slate-100 tracking-tight group-hover:text-emerald-400 transition-colors mb-2">Gamedev</h3>
-    <p class="text-[11px] text-slate-400 leading-relaxed mb-3">
-      Passages, a gambit-driven action RPG in Unity; LÖVE 11.5 prototypes against the raw callback surface;
-      an SDL2&rarr;Bevy ECS learning ladder.
-    </p>
-    <span class="text-[10px] font-mono text-slate-500">Unity/C# &middot; LÖVE &middot; Rust/Bevy &middot; SDL2</span>
+    <div class="col-span-2 md:col-span-1 body-muted">Passages, a gambit-driven action RPG in Unity; LÖVE 11.5 prototypes written straight against love.update; an SDL2 → Bevy ECS learning ladder.</div>
+    <div class="col-span-2 md:col-span-1 mono-sm tracking-[.1em] md:text-right leading-[1.8]">3 projects<br /><span class="text-accent">READ →</span></div>
   </a>
-</div>
+</section>

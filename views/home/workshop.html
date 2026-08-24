@@ -1,211 +1,172 @@
-<div class="flex flex-col gap-6">
+<!-- Hero -->
+<section class="pt-12 pb-10 lg:pt-[72px] grid grid-cols-1 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] gap-8 lg:gap-12 items-end border-b border-rule">
+  <div>
+    <div class="eyebrow mb-6">03_WORKSHOP // EVERYTHING_BUILT</div>
+    <h1 class="display max-w-[16ch]">Everything I've built, across domains.</h1>
+  </div>
+  <p class="lede-muted max-w-[42ch]">
+    Some shipped, some active, some research, some archived. The site you're on is one entry.
+    Status is the truth, not the heading above each block.
+  </p>
+</section>
 
-  <!-- Header strip -->
-  <div class="bg-[#121214] border border-slate-800 rounded-lg p-5 flex flex-col lg:flex-row gap-6 items-start">
-    <div class="lg:max-w-xl">
-      <span class="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold block mb-1">$ ls -la ~/projects</span>
-      <h3 class="text-2xl font-bold text-slate-100 tracking-tight leading-tight">
-        Everything I've built, across domains.
-      </h3>
-      <p class="text-xs text-slate-400 mt-2 leading-relaxed max-w-lg">
-        Some shipped, some active, some research, some archived. The site you're on is one entry. Hex index resets per domain; status is the truth, not the heading above each block.
-      </p>
-    </div>
-    <!-- Status legend -->
-    <div class="flex-1 grid grid-cols-2 sm:grid-cols-4 gap-2 w-full font-mono text-[9px] min-w-0">
-      <span class="px-2 py-1 bg-emerald-950/40 border border-emerald-800 rounded text-emerald-300 uppercase tracking-wider text-center">live</span>
-      <span class="px-2 py-1 bg-emerald-950/40 border border-emerald-800 rounded text-emerald-300 uppercase tracking-wider text-center">active</span>
-      <span class="px-2 py-1 bg-sky-950/40 border border-sky-800 rounded text-sky-300 uppercase tracking-wider text-center">shipped</span>
-      <span class="px-2 py-1 bg-amber-950/40 border border-amber-800 rounded text-amber-300 uppercase tracking-wider text-center">in_dev</span>
-      <span class="px-2 py-1 bg-amber-950/40 border border-amber-800 border-dashed rounded text-amber-300 uppercase tracking-wider text-center">in_prog</span>
-      <span class="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-slate-400 uppercase tracking-wider text-center">research</span>
-      <span class="px-2 py-1 bg-slate-900 border border-slate-700 border-dashed rounded text-slate-500 uppercase tracking-wider text-center">planned</span>
-      <span class="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-slate-500 uppercase tracking-wider text-center opacity-70">archived</span>
+<!-- Featured live demo -->
+<section class="border border-rule bg-card mt-11 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
+  <div class="p-7 lg:p-[34px_30px] flex flex-col">
+    <div class="label text-accent">FEATURED // LIVE</div>
+    <h2 class="mt-[18px] text-[32px] leading-[1.12] tracking-[-.03em] font-semibold max-w-[22ch]">Counter demo, driven by Lua in WASM</h2>
+    <p class="mt-4 text-[16px] leading-[1.6] text-muted max-w-[44ch]">
+      Click state held in a Lua signal, DOM updated through a hyperscript helper. Roughly the smallest honest proof
+      that the runtime works.
+    </p>
+    <div class="flex flex-wrap gap-2.5 mt-auto pt-7">
+      <a href="/counter" class="btn btn-sm btn-ink">Run demo</a>
+      <a href="/todos" class="btn btn-sm btn-ghost">Todos demo →</a>
+      <a href="https://github.com/aag2807/copper-portfolio" target="_blank" rel="noreferrer" class="btn btn-sm btn-ghost">Read source →</a>
     </div>
   </div>
+  <pre class="code code-sm border-t lg:border-t-0 lg:border-l border-rule"><span class="c">-- pages/counter.lua</span>
+<span class="k">local</span> h = require(<span class="s">"h"</span>).h
+<span class="k">local</span> reactive = require(<span class="s">"reactive"</span>)
 
-  <!-- FINTECH / PROFESSIONAL -->
-  <section class="bg-[#121214] border border-slate-800 rounded-lg overflow-hidden">
-    <header class="flex items-center justify-between px-5 py-3 bg-[#0E0E10] border-b border-slate-800">
-      <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold">// FINTECH &middot; PROFESSIONAL</span>
-      <span class="text-[9px] font-mono text-slate-500">2 entries</span>
-    </header>
-    <ul class="dim-list divide-y divide-slate-800/70 font-mono text-[11px]">
-      <li class="grid grid-cols-12 gap-3 items-center px-5 py-3 hover:bg-emerald-500/5 transition-colors">
-        <span class="col-span-1 text-slate-500 text-[10px]">[00]</span>
-        <a href="/work/fintech-ai" class="col-span-8 sm:col-span-3 text-slate-100 font-semibold hover:text-emerald-400 transition-colors truncate">On-Prem LLM Gateway</a>
-        <span class="hidden sm:block sm:col-span-5 text-slate-500 text-[10px] truncate">C#/.NET &middot; RAG &middot; multi-agent &middot; zero egress</span>
-        <span class="col-span-2 px-2 py-0.5 bg-emerald-950/40 border border-emerald-800 rounded text-emerald-300 text-[9px] uppercase tracking-wider text-center">active</span>
-        <a href="/projects/llm-gateway" class="col-span-1 text-right text-emerald-400 hover:text-emerald-300 text-[10px]">case&rarr;</a>
-      </li>
-      <li class="grid grid-cols-12 gap-3 items-center px-5 py-3 hover:bg-emerald-500/5 transition-colors">
-        <span class="col-span-1 text-slate-500 text-[10px]">[01]</span>
-        <a href="/work/fintech-ai" class="col-span-8 sm:col-span-3 text-slate-100 font-semibold hover:text-emerald-400 transition-colors truncate">Payment Gateway Rails</a>
-        <span class="hidden sm:block sm:col-span-5 text-slate-500 text-[10px] truncate">Angular &middot; .NET &middot; 60+ providers &middot; +15% conversion</span>
-        <span class="col-span-2 px-2 py-0.5 bg-sky-950/40 border border-sky-800 rounded text-sky-300 text-[9px] uppercase tracking-wider text-center">shipped</span>
-        <a href="/projects/payment-gateways" class="col-span-1 text-right text-emerald-400 hover:text-emerald-300 text-[10px]">case&rarr;</a>
-      </li>
-    </ul>
-  </section>
+<span class="k">local</span> count, setCount = reactive.signal(<span class="n">0</span>)
+
+<span class="k">local</span> root = h(<span class="s">"div"</span>, {},
+    h(<span class="s">"p"</span>, {}, <span class="k">function</span>()
+        <span class="k">return</span> <span class="s">"count = "</span> .. count()
+    <span class="k">end</span>),
+    h(<span class="s">"button"</span>, {
+        onClick = <span class="k">function</span>() setCount(count() + <span class="n">1</span>) <span class="k">end</span>,
+    }, <span class="s">"increment"</span>)
+)
+
+dom.mount(root, <span class="s">"#app"</span>)</pre>
+</section>
+
+<!-- Legend -->
+<div class="flex flex-wrap items-center gap-x-5 gap-y-2 mt-6 mb-1 px-1 label">
+  <span>STATUS —</span>
+  <span class="st-live">LIVE / ACTIVE / SHIPPED</span>
+  <span class="st-wip">IN_DEV / IN_PROG / ONGOING</span>
+  <span class="st-off">RESEARCH / ARCHIVED</span>
+</div>
+
+<!-- Entries -->
+<section class="rule-grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 mt-4">
+  <!-- FINTECH -->
+  <a href="/projects/llm-gateway" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
+    <div class="flex items-center justify-between gap-3 label"><span>FINTECH // [00]</span><span class="st-live">ACTIVE</span></div>
+    <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">On-prem LLM gateway</div>
+    <div class="text-[14.5px] leading-[1.55] text-muted">On-premise AI platform for banking: multi-provider routing, RAG pipelines, multi-agent orchestration, zero data egress. Case study →</div>
+    <div class="mt-auto pt-4 label tracking-[.1em]">c# · .net · rag · multi-agent</div>
+  </a>
+  <a href="/projects/payment-gateways" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
+    <div class="flex items-center justify-between gap-3 label"><span>FINTECH // [01]</span><span class="st-live">SHIPPED</span></div>
+    <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">Payment gateway rails</div>
+    <div class="text-[14.5px] leading-[1.55] text-muted">60+ third-party payment providers behind one checkout — adapters, transaction state machine, fraud pipeline. +15% conversion. Case study →</div>
+    <div class="mt-auto pt-4 label tracking-[.1em]">angular · .net · 60+ providers</div>
+  </a>
 
   <!-- SYSTEMS -->
-  <section class="bg-[#121214] border border-slate-800 rounded-lg overflow-hidden">
-    <header class="flex items-center justify-between px-5 py-3 bg-[#0E0E10] border-b border-slate-800">
-      <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold">// SYSTEMS &middot; FRAMEWORKS &middot; LANGUAGES</span>
-      <span class="text-[9px] font-mono text-slate-500">4 entries</span>
-    </header>
-    <ul class="dim-list divide-y divide-slate-800/70 font-mono text-[11px]">
-      <li class="grid grid-cols-12 gap-3 items-center px-5 py-3 hover:bg-emerald-500/5 transition-colors">
-        <span class="col-span-1 text-slate-500 text-[10px]">[00]</span>
-        <a href="/work/systems" class="col-span-8 sm:col-span-3 text-slate-100 font-semibold hover:text-emerald-400 transition-colors truncate">c-copper</a>
-        <span class="hidden sm:block sm:col-span-5 text-slate-500 text-[10px] truncate">C99 &middot; pthreads &middot; no deps</span>
-        <span class="col-span-2 px-2 py-0.5 bg-emerald-950/40 border border-emerald-800 rounded text-emerald-300 text-[9px] uppercase tracking-wider text-center">live</span>
-        <a href="/projects/c-copper" class="col-span-1 text-right text-emerald-400 hover:text-emerald-300 text-[10px]">case&rarr;</a>
-      </li>
-      <li class="grid grid-cols-12 gap-3 items-center px-5 py-3 hover:bg-emerald-500/5 transition-colors">
-        <span class="col-span-1 text-slate-500 text-[10px]">[01]</span>
-        <a href="/work/systems" class="col-span-8 sm:col-span-3 text-slate-100 font-semibold hover:text-emerald-400 transition-colors truncate">Lunar</a>
-        <span class="hidden sm:block sm:col-span-5 text-slate-500 text-[10px] truncate">Go &middot; compiler &middot; LSP &middot; bundler</span>
-        <span class="col-span-2 px-2 py-0.5 bg-emerald-950/40 border border-emerald-800 rounded text-emerald-300 text-[9px] uppercase tracking-wider text-center">active</span>
-        <a href="https://github.com/aag2807/lunar" target="_blank" rel="noreferrer" class="col-span-1 text-right text-emerald-400 hover:text-emerald-300 text-[10px]">src&rarr;</a>
-      </li>
-      <li class="grid grid-cols-12 gap-3 items-center px-5 py-3 hover:bg-emerald-500/5 transition-colors">
-        <span class="col-span-1 text-slate-500 text-[10px]">[02]</span>
-        <a href="/work/systems" class="col-span-8 sm:col-span-3 text-slate-100 font-semibold hover:text-emerald-400 transition-colors truncate">Cobre</a>
-        <span class="hidden sm:block sm:col-span-5 text-slate-500 text-[10px] truncate">C &middot; .cob &rarr; .so transpiler &middot; arena</span>
-        <span class="col-span-2 px-2 py-0.5 bg-amber-950/40 border border-amber-800 rounded text-amber-300 text-[9px] uppercase tracking-wider text-center">in_dev</span>
-        <span class="col-span-1 text-right text-slate-600 text-[10px]">&mdash;</span>
-      </li>
-      <li class="grid grid-cols-12 gap-3 items-center px-5 py-3 hover:bg-emerald-500/5 transition-colors opacity-70">
-        <span class="col-span-1 text-slate-500 text-[10px]">[03]</span>
-        <a href="/work/systems" class="col-span-8 sm:col-span-3 text-slate-300 font-semibold hover:text-emerald-400 transition-colors truncate">Axon</a>
-        <span class="hidden sm:block sm:col-span-5 text-slate-600 text-[10px] truncate">C# &middot; self-hosted LLM gateway, archived</span>
-        <span class="col-span-2 px-2 py-0.5 bg-slate-900 border border-slate-700 rounded text-slate-500 text-[9px] uppercase tracking-wider text-center">archived</span>
-        <span class="col-span-1 text-right text-slate-600 text-[10px]">&mdash;</span>
-      </li>
-    </ul>
-  </section>
+  <a href="/projects/c-copper" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
+    <div class="flex items-center justify-between gap-3 label"><span>SYSTEMS // [00]</span><span class="st-live">LIVE</span></div>
+    <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">c-copper</div>
+    <div class="text-[14.5px] leading-[1.55] text-muted">The hand-written C MVC framework serving this page. Socket loop, pthread dispatch, pattern router, middleware chain, template engine. Case study →</div>
+    <div class="mt-auto pt-4 label tracking-[.1em]">c99 · pthreads · no deps</div>
+  </a>
+  <a href="https://github.com/aag2807/lunar" target="_blank" rel="noreferrer" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
+    <div class="flex items-center justify-between gap-3 label"><span>SYSTEMS // [01]</span><span class="st-live">ACTIVE</span></div>
+    <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">Lunar</div>
+    <div class="text-[14.5px] leading-[1.55] text-muted">Statically-typed superset of Lua: compiler, LSP, bundler, and test framework, all in Go. TypeScript-for-Lua, end to end. Source →</div>
+    <div class="mt-auto pt-4 label tracking-[.1em]">go · compiler · lsp · bundler</div>
+  </a>
+  <a href="/work/systems" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
+    <div class="flex items-center justify-between gap-3 label"><span>SYSTEMS // [02]</span><span class="st-wip">IN_DEV</span></div>
+    <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">Cobre</div>
+    <div class="text-[14.5px] leading-[1.55] text-muted">Razor-pages-inspired web framework in C. <span class="font-mono text-[.9em]">.cob</span> transpiles to C, compiles to <span class="font-mono text-[.9em]">.so</span>, hot-loads. Arena allocator, TOML config.</div>
+    <div class="mt-auto pt-4 label tracking-[.1em]">c · transpiler · arena</div>
+  </a>
+  <a href="/work/systems" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px] opacity-75 hover:opacity-100 transition-opacity">
+    <div class="flex items-center justify-between gap-3 label"><span>SYSTEMS // [03]</span><span class="st-off">ARCHIVED</span></div>
+    <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">Axon</div>
+    <div class="text-[14.5px] leading-[1.55] text-muted">First pass at an on-premise LLM gateway in C#. Routing, request shaping, prompt template layering. Stays in the archive.</div>
+    <div class="mt-auto pt-4 label tracking-[.1em]">c# · llm gateway</div>
+  </a>
 
   <!-- AI -->
-  <section class="bg-[#121214] border border-slate-800 rounded-lg overflow-hidden">
-    <header class="flex items-center justify-between px-5 py-3 bg-[#0E0E10] border-b border-slate-800">
-      <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold">// AI &middot; APPLIED LLM</span>
-      <span class="text-[9px] font-mono text-slate-500">4 entries</span>
-    </header>
-    <ul class="dim-list divide-y divide-slate-800/70 font-mono text-[11px]">
-      <li class="grid grid-cols-12 gap-3 items-center px-5 py-3 hover:bg-emerald-500/5 transition-colors">
-        <span class="col-span-1 text-slate-500 text-[10px]">[01]</span>
-        <a href="/work/fintech-ai" class="col-span-8 sm:col-span-3 text-slate-100 font-semibold hover:text-emerald-400 transition-colors truncate">The Council</a>
-        <span class="hidden sm:block sm:col-span-5 text-slate-500 text-[10px] truncate">React &middot; 4 personas + arbiter &middot; SVG avatars</span>
-        <span class="col-span-2 px-2 py-0.5 bg-sky-950/40 border border-sky-800 rounded text-sky-300 text-[9px] uppercase tracking-wider text-center">shipped</span>
-        <span class="col-span-1 text-right text-slate-600 text-[10px]">&mdash;</span>
-      </li>
-      <li class="grid grid-cols-12 gap-3 items-center px-5 py-3 hover:bg-emerald-500/5 transition-colors">
-        <span class="col-span-1 text-slate-500 text-[10px]">[02]</span>
-        <a href="/work/fintech-ai" class="col-span-8 sm:col-span-3 text-slate-100 font-semibold hover:text-emerald-400 transition-colors truncate">Doc OCR Indexer</a>
-        <span class="hidden sm:block sm:col-span-5 text-slate-500 text-[10px] truncate">Python &middot; ollama &middot; mxbai-embed-large</span>
-        <span class="col-span-2 px-2 py-0.5 bg-emerald-950/40 border border-emerald-800 rounded text-emerald-300 text-[9px] uppercase tracking-wider text-center">active</span>
-        <span class="col-span-1 text-right text-slate-600 text-[10px]">&mdash;</span>
-      </li>
-      <li class="grid grid-cols-12 gap-3 items-center px-5 py-3 hover:bg-emerald-500/5 transition-colors">
-        <span class="col-span-1 text-slate-500 text-[10px]">[03]</span>
-        <a href="/work/fintech-ai" class="col-span-8 sm:col-span-3 text-slate-100 font-semibold hover:text-emerald-400 transition-colors truncate">RAG Retrieval Bot</a>
-        <span class="hidden sm:block sm:col-span-5 text-slate-500 text-[10px] truncate">Python &middot; sqlite-vec &middot; ollama</span>
-        <span class="col-span-2 px-2 py-0.5 bg-emerald-950/40 border border-emerald-800 rounded text-emerald-300 text-[9px] uppercase tracking-wider text-center">active</span>
-        <span class="col-span-1 text-right text-slate-600 text-[10px]">&mdash;</span>
-      </li>
-      <li class="grid grid-cols-12 gap-3 items-center px-5 py-3 hover:bg-emerald-500/5 transition-colors">
-        <span class="col-span-1 text-slate-500 text-[10px]">[04]</span>
-        <a href="/work/fintech-ai" class="col-span-8 sm:col-span-3 text-slate-100 font-semibold hover:text-emerald-400 transition-colors truncate">Go Coding CLI</a>
-        <span class="hidden sm:block sm:col-span-5 text-slate-500 text-[10px] truncate">Go &middot; ollama &middot; streaming terminal asst</span>
-        <span class="col-span-2 px-2 py-0.5 bg-emerald-950/40 border border-emerald-800 rounded text-emerald-300 text-[9px] uppercase tracking-wider text-center">active</span>
-        <span class="col-span-1 text-right text-slate-600 text-[10px]">&mdash;</span>
-      </li>
-    </ul>
-  </section>
+  <a href="/work/fintech-ai" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
+    <div class="flex items-center justify-between gap-3 label"><span>AI // [01]</span><span class="st-live">SHIPPED</span></div>
+    <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">The Council</div>
+    <div class="text-[14.5px] leading-[1.55] text-muted">Four Claude personas argue a question in parallel; an Arbiter synthesizes one answer. Built to see if forced disagreement beats asking one model twice.</div>
+    <div class="mt-auto pt-4 label tracking-[.1em]">react · 4 personas + arbiter</div>
+  </a>
+  <a href="/work/fintech-ai" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
+    <div class="flex items-center justify-between gap-3 label"><span>AI // [02]</span><span class="st-live">ACTIVE</span></div>
+    <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">Doc OCR Indexer</div>
+    <div class="text-[14.5px] leading-[1.55] text-muted">OCR pipeline that hands raw text to a local LLM for classification and field extraction — dates, parties, totals — into a searchable store.</div>
+    <div class="mt-auto pt-4 label tracking-[.1em]">python · ollama · mxbai-embed-large</div>
+  </a>
+  <a href="/work/fintech-ai" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
+    <div class="flex items-center justify-between gap-3 label"><span>AI // [03]</span><span class="st-live">ACTIVE</span></div>
+    <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">RAG Retrieval Bot</div>
+    <div class="text-[14.5px] leading-[1.55] text-muted">Retrieval-augmented chat, end to end. Embed, store, kNN, stitch top chunks into the prompt — every stage wired by hand, no framework.</div>
+    <div class="mt-auto pt-4 label tracking-[.1em]">python · sqlite-vec · ollama</div>
+  </a>
+  <a href="/work/fintech-ai" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
+    <div class="flex items-center justify-between gap-3 label"><span>AI // [04]</span><span class="st-live">ACTIVE</span></div>
+    <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">Go Coding CLI</div>
+    <div class="text-[14.5px] leading-[1.55] text-muted">Single Go binary talking to the local Ollama daemon from inside the shell. Streams tokens, keeps a session buffer, stays out of the way.</div>
+    <div class="mt-auto pt-4 label tracking-[.1em]">go · ollama · streaming</div>
+  </a>
 
   <!-- WEB -->
-  <section class="bg-[#121214] border border-slate-800 rounded-lg overflow-hidden">
-    <header class="flex items-center justify-between px-5 py-3 bg-[#0E0E10] border-b border-slate-800">
-      <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold">// WEB</span>
-      <span class="text-[9px] font-mono text-slate-500">3 entries</span>
-    </header>
-    <ul class="dim-list divide-y divide-slate-800/70 font-mono text-[11px]">
-      <li class="grid grid-cols-12 gap-3 items-center px-5 py-3 hover:bg-emerald-500/5 transition-colors">
-        <span class="col-span-1 text-slate-500 text-[10px]">[00]</span>
-        <a href="/work/web" class="col-span-8 sm:col-span-3 text-slate-100 font-semibold hover:text-emerald-400 transition-colors truncate">wasmoon-bridge</a>
-        <span class="hidden sm:block sm:col-span-5 text-slate-500 text-[10px] truncate">Lua 5.4 &rarr; WASM &middot; hyperscript &middot; signals &middot; this site</span>
-        <span class="col-span-2 px-2 py-0.5 bg-emerald-950/40 border border-emerald-800 rounded text-emerald-300 text-[9px] uppercase tracking-wider text-center">live</span>
-        <a href="/work/web" class="col-span-1 text-right text-emerald-400 hover:text-emerald-300 text-[10px]">view&rarr;</a>
-      </li>
-      <li class="grid grid-cols-12 gap-3 items-center px-5 py-3 hover:bg-emerald-500/5 transition-colors">
-        <span class="col-span-1 text-slate-500 text-[10px]">[01]</span>
-        <a href="/work/web" class="col-span-8 sm:col-span-3 text-slate-100 font-semibold hover:text-emerald-400 transition-colors truncate">Scrum Dashboard</a>
-        <span class="hidden sm:block sm:col-span-5 text-slate-500 text-[10px] truncate">Angular &middot; .NET &middot; SignalR &middot; D3 &middot; OpenRouter</span>
-        <span class="col-span-2 px-2 py-0.5 bg-sky-950/40 border border-sky-800 rounded text-sky-300 text-[9px] uppercase tracking-wider text-center">shipped</span>
-        <span class="col-span-1 text-right text-slate-600 text-[10px]">&mdash;</span>
-      </li>
-      <li class="grid grid-cols-12 gap-3 items-center px-5 py-3 hover:bg-emerald-500/5 transition-colors">
-        <span class="col-span-1 text-slate-500 text-[10px]">[02]</span>
-        <a href="/work/web" class="col-span-8 sm:col-span-3 text-slate-100 font-semibold hover:text-emerald-400 transition-colors truncate">Enterprise Web Work</a>
-        <span class="hidden sm:block sm:col-span-5 text-slate-500 text-[10px] truncate">Angular &middot; .NET &middot; WordPress &middot; 60+ payment APIs</span>
-        <span class="col-span-2 px-2 py-0.5 bg-emerald-950/40 border border-emerald-800 rounded text-emerald-300 text-[9px] uppercase tracking-wider text-center">ongoing</span>
-        <span class="col-span-1 text-right text-slate-600 text-[10px]">NDA</span>
-      </li>
-    </ul>
-  </section>
+  <a href="/work/web" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
+    <div class="flex items-center justify-between gap-3 label"><span>WEB // [00]</span><span class="st-live">LIVE</span></div>
+    <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">wasmoon-bridge</div>
+    <div class="text-[14.5px] leading-[1.55] text-muted">Browser-side Lua runtime, mounted per route. Signals + hyperscript in ~180 lines of Lua; pages without a module ship zero wasmoon. Powers this site.</div>
+    <div class="mt-auto pt-4 label tracking-[.1em]">lua 5.4 → wasm · signals</div>
+  </a>
+  <a href="/work/web" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
+    <div class="flex items-center justify-between gap-3 label"><span>WEB // [01]</span><span class="st-live">SHIPPED</span></div>
+    <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">Scrum Dashboard</div>
+    <div class="text-[14.5px] leading-[1.55] text-muted">Real-time sprint board over Jira Cloud. SignalR delta updates, a D3 force graph of backlog clusters, an OpenRouter-backed assistant inline.</div>
+    <div class="mt-auto pt-4 label tracking-[.1em]">angular · .net · signalr · d3</div>
+  </a>
+  <a href="/work/web" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
+    <div class="flex items-center justify-between gap-3 label"><span>WEB // [02]</span><span class="st-wip">ONGOING · NDA</span></div>
+    <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">Enterprise Web Work</div>
+    <div class="text-[14.5px] leading-[1.55] text-muted">Angular and .NET inside banking environments; multilingual WordPress at enterprise scale with custom plugins and legacy integrations. Walkthrough under NDA.</div>
+    <div class="mt-auto pt-4 label tracking-[.1em]">angular · .net · wordpress</div>
+  </a>
 
   <!-- GAMEDEV -->
-  <section class="bg-[#121214] border border-slate-800 rounded-lg overflow-hidden">
-    <header class="flex items-center justify-between px-5 py-3 bg-[#0E0E10] border-b border-slate-800">
-      <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold">// GAMEDEV</span>
-      <span class="text-[9px] font-mono text-slate-500">3 entries</span>
-    </header>
-    <ul class="dim-list divide-y divide-slate-800/70 font-mono text-[11px]">
-      <li class="grid grid-cols-12 gap-3 items-center px-5 py-3 hover:bg-emerald-500/5 transition-colors">
-        <span class="col-span-1 text-slate-500 text-[10px]">[00]</span>
-        <a href="/work/gamedev" class="col-span-8 sm:col-span-3 text-slate-100 font-semibold hover:text-emerald-400 transition-colors truncate">Passages</a>
-        <span class="hidden sm:block sm:col-span-5 text-slate-500 text-[10px] truncate">Unity &middot; C# &middot; LitRPG action RPG &middot; gambit AI</span>
-        <span class="col-span-2 px-2 py-0.5 bg-amber-950/40 border border-amber-800 rounded text-amber-300 text-[9px] uppercase tracking-wider text-center">in_dev</span>
-        <span class="col-span-1 text-right text-slate-600 text-[10px]">&mdash;</span>
-      </li>
-      <li class="grid grid-cols-12 gap-3 items-center px-5 py-3 hover:bg-emerald-500/5 transition-colors">
-        <span class="col-span-1 text-slate-500 text-[10px]">[01]</span>
-        <a href="/work/gamedev" class="col-span-8 sm:col-span-3 text-slate-100 font-semibold hover:text-emerald-400 transition-colors truncate">Bevy + SDL2 Track</a>
-        <span class="hidden sm:block sm:col-span-5 text-slate-500 text-[10px] truncate">Rust &middot; Bevy &middot; SDL2 &middot; C++ &middot; ECS learning ladder</span>
-        <span class="col-span-2 px-2 py-0.5 bg-amber-950/40 border border-amber-800 border-dashed rounded text-amber-300 text-[9px] uppercase tracking-wider text-center">in_prog</span>
-        <span class="col-span-1 text-right text-slate-600 text-[10px]">&mdash;</span>
-      </li>
-      <li class="grid grid-cols-12 gap-3 items-center px-5 py-3 hover:bg-emerald-500/5 transition-colors">
-        <span class="col-span-1 text-slate-500 text-[10px]">[02]</span>
-        <a href="/work/gamedev" class="col-span-8 sm:col-span-3 text-slate-100 font-semibold hover:text-emerald-400 transition-colors truncate">BSP Renderer + Unity Shooter</a>
-        <span class="hidden sm:block sm:col-span-5 text-slate-500 text-[10px] truncate">C &middot; Unity &middot; from-scratch BSP &middot; deep-dive</span>
-        <span class="col-span-2 px-2 py-0.5 bg-slate-900 border border-slate-700 rounded text-slate-400 text-[9px] uppercase tracking-wider text-center">research</span>
-        <span class="col-span-1 text-right text-slate-600 text-[10px]">&mdash;</span>
-      </li>
-    </ul>
-  </section>
+  <a href="/work/gamedev" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
+    <div class="flex items-center justify-between gap-3 label"><span>GAMEDEV // [00]</span><span class="st-wip">IN_DEV</span></div>
+    <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">Passages</div>
+    <div class="text-[14.5px] leading-[1.55] text-muted">LitRPG-inspired third-person action RPG. FF12-style gambits, dual Vitality/Essence resources, a behavior-tree editor for companions.</div>
+    <div class="mt-auto pt-4 label tracking-[.1em]">unity · c# · gambit ai</div>
+  </a>
+  <a href="/work/gamedev" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
+    <div class="flex items-center justify-between gap-3 label"><span>GAMEDEV // [01]</span><span class="st-wip">IN_PROG</span></div>
+    <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">Bevy + SDL2 Track</div>
+    <div class="text-[14.5px] leading-[1.55] text-muted">Sequential learning ladder: SDL2/C++ fundamentals (Pong → Breakout → top-down shooter), then the same exercises rebuilt ECS-first in Rust + Bevy.</div>
+    <div class="mt-auto pt-4 label tracking-[.1em]">rust · bevy · sdl2 · c++</div>
+  </a>
+  <a href="/work/gamedev" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
+    <div class="flex items-center justify-between gap-3 label"><span>GAMEDEV // [02]</span><span class="st-off">RESEARCH</span></div>
+    <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">BSP Renderer + Unity Shooter</div>
+    <div class="text-[14.5px] leading-[1.55] text-muted">From-scratch BSP renderer in C — tree construction, polygon splitting, painter's-order traversal — plus a Unity shooter prototype on the C# side.</div>
+    <div class="mt-auto pt-4 label tracking-[.1em]">c · unity · bsp</div>
+  </a>
 
   <!-- TOOLING -->
-  <section class="bg-[#121214] border border-slate-800 rounded-lg overflow-hidden">
-    <header class="flex items-center justify-between px-5 py-3 bg-[#0E0E10] border-b border-slate-800">
-      <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold">// TOOLING</span>
-      <span class="text-[9px] font-mono text-slate-500">1 entry</span>
-    </header>
-    <ul class="dim-list divide-y divide-slate-800/70 font-mono text-[11px]">
-      <li class="grid grid-cols-12 gap-3 items-center px-5 py-3 hover:bg-emerald-500/5 transition-colors">
-        <span class="col-span-1 text-slate-500 text-[10px]">[00]</span>
-        <span class="col-span-8 sm:col-span-3 text-slate-100 font-semibold truncate">AI CLI Skills System</span>
-        <span class="hidden sm:block sm:col-span-5 text-slate-500 text-[10px] truncate">bash &middot; markdown &middot; Angular/.NET/React SKILL.md</span>
-        <span class="col-span-2 px-2 py-0.5 bg-emerald-950/40 border border-emerald-800 rounded text-emerald-300 text-[9px] uppercase tracking-wider text-center">active</span>
-        <span class="col-span-1 text-right text-slate-600 text-[10px]">&mdash;</span>
-      </li>
-    </ul>
-  </section>
-
-  <!-- Footer note -->
-  <div class="text-[10px] font-mono text-slate-600 text-right px-1">
-    17 entries &middot; updated continuously &middot; site you're on is entry [WEB][00]
+  <div class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
+    <div class="flex items-center justify-between gap-3 label"><span>TOOLING // [00]</span><span class="st-live">ACTIVE</span></div>
+    <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">AI CLI Skills System</div>
+    <div class="text-[14.5px] leading-[1.55] text-muted">Reusable SKILL.md playbooks for Angular, .NET, and React work inside AI coding CLIs — bash + markdown, versioned with the projects that use them.</div>
+    <div class="mt-auto pt-4 label tracking-[.1em]">bash · markdown · skill.md</div>
   </div>
+  <div class="hidden sm:block xl:block !bg-paper" aria-hidden="true"></div>
+</section>
 
-</div>
+<div class="mono-sm text-right mt-4 mb-14 px-1">17 entries · updated continuously · the site you're on is entry WEB // [00]</div>

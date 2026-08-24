@@ -3,6 +3,8 @@ slug: building-c-copper
 title: Building c-copper: what a web framework in C teaches you
 description: Why I wrote the framework serving this page in C99 with zero dependencies, the decisions that mattered, and what the numbers say.
 date: 2026-07-25
+tag: SYSTEMS
+tags: C99, MVC, pthreads, wasmoon
 ---
 
 The page you're reading was routed, rendered, and delivered by roughly 1,600 lines of C99 I wrote myself. No nginx in front doing the real work, no framework underneath, no runtime dependencies at all — `accept()` to template interpolation, every byte assembled by code in one repo.

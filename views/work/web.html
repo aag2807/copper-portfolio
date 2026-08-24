@@ -1,202 +1,119 @@
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-  <!-- Top hero — architecture explainer -->
-  <div class="lg:col-span-12 bg-[#121214] border border-slate-800 rounded-lg p-5 flex flex-col gap-4">
-    <div class="flex flex-col lg:flex-row gap-6 items-start">
-      <div class="lg:max-w-xl">
-        <span class="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold block mb-1">Browser Runtime</span>
-        <h3 class="text-2xl font-bold text-slate-100 tracking-tight leading-tight">Lua, in the browser, mounted per route.</h3>
-        <p class="text-xs text-slate-400 mt-2 leading-relaxed max-w-lg">
-          The page you're reading is served by the C MVC framework. Pages that need interactivity declare a <code class="text-emerald-400 font-mono">data-lua-module</code> attribute on the body. A wasmoon-compiled Lua engine boots in the browser, fetches only that module, and runs it. No virtual DOM, no React. Signals + hyperscript, ~180 lines of lua.
-        </p>
-      </div>
-      <div class="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-2 w-full font-mono text-[10px]">
-        <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
-          <div class="text-slate-500 uppercase tracking-wider mb-1">[01] server</div>
-          <div class="text-emerald-400 leading-snug">stamps body<br/>data-lua-module="..."</div>
-        </div>
-        <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
-          <div class="text-slate-500 uppercase tracking-wider mb-1">[02] boot.js</div>
-          <div class="text-emerald-400 leading-snug">reads attr,<br/>mounts library + page</div>
-        </div>
-        <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
-          <div class="text-slate-500 uppercase tracking-wider mb-1">[03] wasmoon</div>
-          <div class="text-emerald-400 leading-snug">lua.doFile()<br/>renders into #app</div>
-        </div>
-      </div>
+<!-- Hero -->
+<section class="pt-12 pb-10 lg:pt-[66px] border-b border-rule">
+  <a href="/work" class="mono-sm tracking-[.14em] hover:text-accent transition-colors">← 02_WORK</a>
+  <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] gap-8 lg:gap-12 items-end mt-7">
+    <div>
+      <div class="eyebrow text-accent mb-5">[0x03] WEB // BROWSER_RUNTIME</div>
+      <h1 class="display max-w-[20ch]">Lua, in the browser, mounted per route.</h1>
     </div>
+    <p class="lede-muted">
+      Pages that need interactivity declare a <code class="ic">data-lua-module</code> attribute on the body. A
+      wasmoon-compiled Lua engine boots, fetches only that module, and runs it. No virtual DOM, no React — signals +
+      hyperscript in ~180 lines of Lua.
+    </p>
   </div>
+  <div class="rule-grid grid-cols-1 sm:grid-cols-3 mt-11">
+    <div class="p-5"><div class="label mb-2">[01] SERVER</div><div class="font-mono text-[13px] text-accent leading-[1.6]">stamps body<br />data-lua-module="..."</div></div>
+    <div class="p-5"><div class="label mb-2">[02] BOOT.JS</div><div class="font-mono text-[13px] text-accent leading-[1.6]">reads attr,<br />mounts library + page</div></div>
+    <div class="p-5"><div class="label mb-2">[03] WASMOON</div><div class="font-mono text-[13px] text-accent leading-[1.6]">lua.doFile()<br />renders into #app</div></div>
+  </div>
+</section>
 
-  <!-- LHS — Live demos -->
-  <div class="lg:col-span-8 flex flex-col gap-4">
-    <div class="flex justify-between items-center text-xs font-mono">
-      <span class="text-slate-400 uppercase tracking-widest font-semibold">Live Demos</span>
-      <span class="text-emerald-500 flex items-center gap-1">
-        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 glow-green"></span> wasmoon online
-      </span>
-    </div>
+<!-- Live demos -->
+<section class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.45fr)] gap-8 lg:gap-14 py-12 lg:py-[60px] border-b border-rule">
+  <div>
+    <div class="label sec-label flex items-center gap-2">01 // LIVE_DEMOS <span class="w-1.5 h-1.5 rounded-full bg-accent"></span></div>
+  </div>
+  <div class="flex flex-col gap-6">
+    <a href="/counter" class="rule-grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] group">
+      <div class="p-6 flex flex-col">
+        <div class="label text-accent">[demo_01]</div>
+        <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-3">Reactive counter</div>
+        <p class="text-[14.5px] leading-[1.55] text-muted mt-2.5">A single signal driving a text node and two button handlers. The whole demo is ~20 lines of Lua.</p>
+        <span class="btn btn-sm btn-ink self-start mt-auto group-hover:bg-accent group-hover:border-accent">Run demo →</span>
+      </div>
+      <pre class="code code-sm"><span class="c">-- pages/counter.lua</span>
+<span class="k">local</span> count, setCount = reactive.signal(<span class="n">0</span>)
 
-    <!-- Counter demo card -->
-    <a href="/counter" class="block group bg-[#121214] border border-slate-800 hover:border-emerald-500/40 rounded-lg overflow-hidden transition-colors">
-      <div class="grid grid-cols-1 sm:grid-cols-5">
-        <div class="sm:col-span-2 p-6 flex flex-col justify-center bg-[#0E0E10]">
-          <div class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest mb-1">[demo_01]</div>
-          <h4 class="text-base font-bold text-slate-100 tracking-tight mb-2">Reactive counter</h4>
-          <p class="text-[11px] text-slate-400 leading-relaxed mb-4">A single signal driving a text node and two button handlers. The whole demo is ~20 lines of lua.</p>
-          <span class="self-start px-3 py-1 bg-emerald-600 group-hover:bg-emerald-500 text-neutral-950 font-bold font-mono text-[10px] uppercase tracking-wider rounded transition-all">Run demo &rarr;</span>
-        </div>
-        <div class="sm:col-span-3 bg-[#0A0A0B] p-6 flex items-center justify-center border-t sm:border-t-0 sm:border-l border-slate-800">
-          <pre class="font-mono text-[11px] leading-snug text-slate-300 w-full overflow-x-auto"><code><span class="text-slate-500">-- pages/counter.lua</span>
-<span class="text-sky-400">local</span> count, setCount = reactive.signal(<span class="text-amber-400">0</span>)
-
-<span class="text-sky-400">local</span> root = h(<span class="text-emerald-400">"div"</span>, {},
-    h(<span class="text-emerald-400">"p"</span>, {}, <span class="text-sky-400">function</span>()
-        <span class="text-sky-400">return</span> <span class="text-emerald-400">"Count: "</span>..count()
-    <span class="text-sky-400">end</span>),
-    h(<span class="text-emerald-400">"button"</span>, {
-        onClick = <span class="text-sky-400">function</span>() setCount(count()+<span class="text-amber-400">1</span>) <span class="text-sky-400">end</span>,
-    }, <span class="text-emerald-400">"+"</span>)
+<span class="k">local</span> root = h(<span class="s">"div"</span>, {},
+    h(<span class="s">"p"</span>, {}, <span class="k">function</span>()
+        <span class="k">return</span> <span class="s">"Count: "</span>..count()
+    <span class="k">end</span>),
+    h(<span class="s">"button"</span>, {
+        onClick = <span class="k">function</span>() setCount(count()+<span class="n">1</span>) <span class="k">end</span>,
+    }, <span class="s">"+"</span>)
 )
 
-dom.mount(root, <span class="text-emerald-400">"#app"</span>)</code></pre>
-        </div>
-      </div>
+dom.mount(root, <span class="s">"#app"</span>)</pre>
     </a>
-
-    <!-- Todos demo card -->
-    <a href="/todos" class="block group bg-[#121214] border border-slate-800 hover:border-emerald-500/40 rounded-lg overflow-hidden transition-colors">
-      <div class="grid grid-cols-1 sm:grid-cols-5">
-        <div class="sm:col-span-3 bg-[#0A0A0B] p-6 flex items-center justify-center border-b sm:border-b-0 sm:border-r border-slate-800 order-2 sm:order-1">
-          <pre class="font-mono text-[11px] leading-snug text-slate-300 w-full overflow-x-auto"><code><span class="text-slate-500">-- pages/todolist.lua</span>
-<span class="text-sky-400">local</span> items, setItems = reactive.signal({})
-<span class="text-sky-400">local</span> draft, setDraft = reactive.signal(<span class="text-emerald-400">""</span>)
-
-reactive.effect(<span class="text-sky-400">function</span>()
-    list.innerHTML = <span class="text-emerald-400">""</span>
-    <span class="text-sky-400">for</span> _, v <span class="text-sky-400">in</span> ipairs(items()) <span class="text-sky-400">do</span>
-        dom.append(list, h(<span class="text-emerald-400">"li"</span>, {}, v))
-    <span class="text-sky-400">end</span>
-<span class="text-sky-400">end</span>)</code></pre>
-        </div>
-        <div class="sm:col-span-2 p-6 flex flex-col justify-center bg-[#0E0E10] order-1 sm:order-2">
-          <div class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest mb-1">[demo_02]</div>
-          <h4 class="text-base font-bold text-slate-100 tracking-tight mb-2">Mutable list with effect</h4>
-          <p class="text-[11px] text-slate-400 leading-relaxed mb-4">A reactive.effect re-renders the list whenever the signal changes. Input wired via dom.on event bridging.</p>
-          <span class="self-start px-3 py-1 bg-emerald-600 group-hover:bg-emerald-500 text-neutral-950 font-bold font-mono text-[10px] uppercase tracking-wider rounded transition-all">Run demo &rarr;</span>
-        </div>
+    <a href="/todos" class="rule-grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] group">
+      <div class="p-6 flex flex-col">
+        <div class="label text-accent">[demo_02]</div>
+        <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-3">Mutable list with effect</div>
+        <p class="text-[14.5px] leading-[1.55] text-muted mt-2.5">A reactive.effect re-renders the list whenever the signal changes. Input wired via dom.on event bridging.</p>
+        <span class="btn btn-sm btn-ink self-start mt-auto group-hover:bg-accent group-hover:border-accent">Run demo →</span>
       </div>
+      <pre class="code code-sm"><span class="c">-- pages/todolist.lua</span>
+<span class="k">local</span> items, setItems = reactive.signal({})
+<span class="k">local</span> draft, setDraft = reactive.signal(<span class="s">""</span>)
+
+reactive.effect(<span class="k">function</span>()
+    list.innerHTML = <span class="s">""</span>
+    <span class="k">for</span> _, v <span class="k">in</span> ipairs(items()) <span class="k">do</span>
+        dom.append(list, h(<span class="s">"li"</span>, {}, v))
+    <span class="k">end</span>
+<span class="k">end</span>)</pre>
     </a>
   </div>
+</section>
 
-  <!-- RHS — runtime facts -->
-  <div class="lg:col-span-4 flex flex-col gap-4">
-    <div class="bg-[#121214] border border-slate-800 rounded-lg p-5">
-      <div class="text-xs font-mono uppercase tracking-wider text-slate-400 mb-3">Runtime topology</div>
-      <ul class="divide-y divide-slate-800/70 font-mono text-[11px]">
-        <li class="py-2 flex justify-between items-center"><span class="text-slate-300">wasmoon</span><span class="text-emerald-400 text-[10px]">Lua 5.4 → WASM</span></li>
-        <li class="py-2 flex justify-between items-center"><span class="text-slate-300">reactive.lua</span><span class="text-emerald-400 text-[10px]">signal / effect / computed</span></li>
-        <li class="py-2 flex justify-between items-center"><span class="text-slate-300">h.lua</span><span class="text-emerald-400 text-[10px]">hyperscript dom builder</span></li>
-        <li class="py-2 flex justify-between items-center"><span class="text-slate-300">manifest.json</span><span class="text-emerald-400 text-[10px]">library mount list</span></li>
-        <li class="py-2 flex justify-between items-center"><span class="text-slate-300">pages/*.lua</span><span class="text-emerald-400 text-[10px]">fetched on demand</span></li>
-      </ul>
-    </div>
-
-    <div class="bg-[#121214] border border-slate-800 rounded-lg p-5">
-      <div class="text-xs font-mono uppercase tracking-wider text-slate-400 mb-3">Page weight, this route</div>
-      <div class="space-y-3 font-mono text-[11px]">
-        <div class="flex justify-between items-end">
-          <span class="text-slate-400">lua-framework.js</span>
-          <span class="text-emerald-400">~168 KiB</span>
-        </div>
-        <div class="flex justify-between items-end">
-          <span class="text-slate-400">3× library .lua</span>
-          <span class="text-emerald-400">~2 KiB</span>
-        </div>
-        <div class="flex justify-between items-end">
-          <span class="text-slate-400">page module .lua</span>
-          <span class="text-emerald-400">~0.6 KiB</span>
-        </div>
-        <div class="flex justify-between items-end border-t border-slate-800 pt-2">
-          <span class="text-slate-300 font-semibold">non-lua routes</span>
-          <span class="text-emerald-400 font-semibold">0 bytes</span>
-        </div>
+<!-- Runtime facts -->
+<section class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.45fr)] gap-8 lg:gap-14 py-12 lg:py-[60px] border-b border-rule">
+  <div><div class="label sec-label">02 // RUNTIME_TOPOLOGY</div></div>
+  <div>
+    <h2 class="h3 max-w-[26ch]">Pages without a module ship zero wasmoon.</h2>
+    <p class="mt-5 text-[17px] leading-[1.65] text-muted max-w-[62ch]">
+      boot.js returns early when the body carries no <code class="ic">data-lua-module</code>. The framework JS is
+      fetched once per origin and cached; every page module after that is under a kilobyte.
+    </p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-7">
+      <div class="flex flex-col">
+        <div class="kv"><span>wasmoon</span><span>Lua 5.4 → WASM</span></div>
+        <div class="kv"><span>reactive.lua</span><span>signal / effect / computed</span></div>
+        <div class="kv"><span>h.lua</span><span>hyperscript dom builder</span></div>
+        <div class="kv"><span>manifest.json</span><span>library mount list</span></div>
+        <div class="kv"><span>pages/*.lua</span><span>fetched on demand</span></div>
       </div>
-    </div>
-
-    <div class="bg-[#121214] border border-slate-800 rounded-lg p-5">
-      <div class="text-[10px] font-mono text-slate-500 uppercase mb-2 tracking-widest">Design note</div>
-      <p class="text-[11px] text-slate-400 leading-relaxed">
-        The page weight line above is real. Pages without <code class="text-emerald-400">data-lua-module</code> ship zero wasmoon — boot.js returns early. The framework JS is only fetched once per origin and cached.
-      </p>
+      <div class="flex flex-col">
+        <div class="kv"><span>lua-framework.js</span><span class="text-accent">~168 KiB</span></div>
+        <div class="kv"><span>3× library .lua</span><span class="text-accent">~2 KiB</span></div>
+        <div class="kv"><span>page module .lua</span><span class="text-accent">~0.6 KiB</span></div>
+        <div class="kv"><span class="!text-ink font-semibold">non-lua routes</span><span class="text-accent font-semibold">0 bytes</span></div>
+      </div>
     </div>
   </div>
+</section>
 
-  <!-- Selected Web Builds — professional / shipped work -->
-  <div class="lg:col-span-12 flex flex-col gap-4 pt-4 border-t border-slate-800">
-    <div class="flex justify-between items-center text-xs font-mono">
-      <span class="text-slate-400 uppercase tracking-widest font-semibold">Selected Web Builds</span>
-      <span class="text-[10px] text-slate-500">shipped // angular + .net // commercial</span>
+<!-- Selected web builds -->
+<section class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.45fr)] gap-8 lg:gap-14 py-12 lg:py-[60px] border-b border-rule">
+  <div><div class="label sec-label">03 // SELECTED_WEB_BUILDS</div></div>
+  <div class="flex flex-col gap-8">
+    <div class="ruled">
+      <div class="flex items-baseline justify-between gap-3">
+        <div class="flex items-baseline gap-3.5"><span class="font-mono text-[11px] tracking-[.12em] text-accent">[build_01]</span><h3 class="h4">Real-time sprint board with AI assist</h3></div>
+        <span class="label st-live shrink-0">SHIPPED</span>
+      </div>
+      <p class="body-muted mt-3.5 max-w-[60ch]">Live sprint board over Jira Cloud. SignalR streams delta updates so the board reacts the instant tickets move. A D3 force graph lays out tag-association clusters across the backlog. An OpenRouter-backed chat assistant answers sprint-state questions inline.</p>
+      <div class="flex flex-wrap gap-1.5 mt-4"><span class="tag tag-sm">Angular</span><span class="tag tag-sm">.NET</span><span class="tag tag-sm">SignalR</span><span class="tag tag-sm">D3</span><span class="tag tag-sm">Jira Cloud</span><span class="tag tag-sm">OpenRouter</span></div>
     </div>
-
-    <!-- Scrum dashboard -->
-    <article class="grid grid-cols-1 sm:grid-cols-5 gap-4 bg-[#121214] border border-slate-800 rounded-lg overflow-hidden">
-      <div class="sm:col-span-2 aspect-video sm:aspect-auto bg-[#0A0A0B] relative overflow-hidden flex items-center justify-center min-h-[160px]">
-        <div class="absolute inset-0 opacity-[0.08] pointer-events-none" style="background-image:linear-gradient(to right, #10b981 1px, transparent 1px), linear-gradient(to bottom, #10b981 1px, transparent 1px); background-size: 24px 24px;"></div>
-        <svg class="relative w-16 h-16 text-emerald-500" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.25">
-          <circle cx="14" cy="14" r="3"/><circle cx="50" cy="14" r="3"/>
-          <circle cx="32" cy="32" r="3"/>
-          <circle cx="14" cy="50" r="3"/><circle cx="50" cy="50" r="3"/>
-          <path d="M14 14 L32 32 L50 14 M14 50 L32 32 L50 50 M14 14 L14 50 M50 14 L50 50"/>
-        </svg>
-        <div class="absolute inset-0 bg-gradient-to-tr from-[#0A0A0B] via-transparent to-emerald-950/30 pointer-events-none"></div>
-        <div class="absolute top-2 left-2 px-2 py-0.5 bg-sky-950/40 border border-sky-800 text-[9px] font-mono uppercase tracking-wider rounded text-sky-300">shipped</div>
+    <div class="ruled">
+      <div class="flex items-baseline justify-between gap-3">
+        <div class="flex items-baseline gap-3.5"><span class="font-mono text-[11px] tracking-[.12em] text-accent">[build_02]</span><h3 class="h4">Fintech, banking, and multilingual WordPress at scale</h3></div>
+        <span class="label st-wip shrink-0">ONGOING · NDA</span>
       </div>
-      <div class="sm:col-span-3 p-5 flex flex-col justify-between">
-        <div>
-          <div class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest mb-1">[build_01]_SCRUM_DASHBOARD</div>
-          <h4 class="text-base font-bold text-slate-100 tracking-tight mb-2">Real-time sprint board with AI assist</h4>
-          <p class="text-[11px] text-slate-400 leading-relaxed">
-            Live sprint board over Jira Cloud. SignalR streams delta updates so the board reacts the instant tickets move. A D3 force graph lays out tag-association clusters across the backlog. An OpenRouter-backed chat assistant answers sprint-state questions inline.
-          </p>
-        </div>
-        <div class="mt-3 flex flex-wrap gap-1.5 font-mono text-[9px]">
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">Angular</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">.NET</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">SignalR</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">D3</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">Jira Cloud</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">OpenRouter</span>
-        </div>
-      </div>
-    </article>
-
-    <!-- Enterprise client work — abstracted -->
-    <article class="grid grid-cols-1 sm:grid-cols-5 gap-4 bg-[#121214] border border-slate-800 rounded-lg overflow-hidden">
-      <div class="sm:col-span-3 p-5 flex flex-col justify-between order-2 sm:order-1">
-        <div>
-          <div class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest mb-1">[build_02]_ENTERPRISE_CLIENT_WORK</div>
-          <h4 class="text-base font-bold text-slate-100 tracking-tight mb-2">Fintech, banking, and multilingual WordPress at scale</h4>
-          <p class="text-[11px] text-slate-400 leading-relaxed">
-            Angular and .NET applications inside banking environments. Over sixty payment-API integrations spanning fintech rails. Multilingual WordPress at enterprise scale &mdash; localized content, custom plugins, integrations against legacy systems. Client names withheld; happy to walk through any of it under NDA.
-          </p>
-        </div>
-        <div class="mt-3 flex flex-wrap gap-1.5 font-mono text-[9px]">
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">Angular</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">.NET</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">WordPress</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">payment APIs</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">i18n</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">banking</span>
-        </div>
-      </div>
-      <div class="sm:col-span-2 aspect-video sm:aspect-auto bg-[#0A0A0B] relative overflow-hidden flex items-center justify-center min-h-[160px] order-1 sm:order-2">
-        <div class="absolute inset-0 opacity-[0.08] pointer-events-none" style="background-image:linear-gradient(to right, #10b981 1px, transparent 1px), linear-gradient(to bottom, #10b981 1px, transparent 1px); background-size: 24px 24px;"></div>
-        <div class="relative font-mono text-emerald-500 text-3xl tracking-tighter font-bold">60+</div>
-        <div class="absolute bottom-3 font-mono text-[9px] text-slate-500 uppercase tracking-widest">payment APIs integrated</div>
-        <div class="absolute inset-0 bg-gradient-to-tl from-[#0A0A0B] via-transparent to-emerald-950/30 pointer-events-none"></div>
-        <div class="absolute top-2 right-2 px-2 py-0.5 bg-emerald-950/40 border border-emerald-800 text-[9px] font-mono uppercase tracking-wider rounded text-emerald-300">ongoing</div>
-      </div>
-    </article>
+      <p class="body-muted mt-3.5 max-w-[60ch]">Angular and .NET applications inside banking environments. Over sixty payment-API integrations spanning fintech rails. Multilingual WordPress at enterprise scale — localized content, custom plugins, integrations against legacy systems. Client names withheld; happy to walk through any of it under NDA.</p>
+      <div class="flex flex-wrap gap-1.5 mt-4"><span class="tag tag-sm">Angular</span><span class="tag tag-sm">.NET</span><span class="tag tag-sm">WordPress</span><span class="tag tag-sm">payment APIs</span><span class="tag tag-sm">i18n</span><span class="tag tag-sm">banking</span></div>
+    </div>
   </div>
-
-</div>
+</section>
+<div class="pb-14"></div>

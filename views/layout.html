@@ -8,7 +8,7 @@
     <meta name="author" content="Alvaro Guzman" />
     <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
     {{#if path}}<link rel="canonical" href="https://alvaro-guzman.com{{path}}" />{{/if}}
-    <meta name="theme-color" content="#0A0A0B" />
+    <meta name="theme-color" content="#e9ecef" />
     <!-- social sharing -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Alvaro Guzman" />
@@ -23,7 +23,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/static/app.css" />
@@ -31,85 +31,57 @@
     <script defer src="/static/framework/lua-framework.js"></script>
   </head>
   <body
-    class="min-h-[100dvh] flex flex-col bg-[#0A0A0B] text-[#D1D1D1] font-sans selection:bg-emerald-500 selection:text-neutral-950"
+    class="min-h-[100dvh] flex flex-col bg-paper text-ink font-sans"
     {{#if luaModule}}data-lua-module="{{luaModule}}"{{/if}}
   >
-    <div id="cursor-glow" aria-hidden="true"></div>
-    <header class="border-b border-slate-800 bg-[#121214]/85 backdrop-blur-md sticky top-0 z-50">
-      <!-- Row 1: identity + build tag -->
-      <div class="border-b border-slate-800/60">
-        <div class="max-w-7xl mx-auto w-full h-10 flex items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
-          <a href="/" class="flex items-center space-x-3 select-none group shrink-0 min-w-0">
-            <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full glow-green shrink-0"></span>
-            <span class="font-mono text-xs tracking-widest text-slate-400 uppercase group-hover:text-white transition-colors truncate">
-              <span class="hidden xs:inline sm:inline">ALVARO_GUZMAN // SYSTEMS_PORTFOLIO</span>
-              <span class="sm:hidden">A_GUZMAN // PORTFOLIO</span>
-            </span>
-          </a>
-          <span class="text-[10px] font-mono text-slate-500 shrink-0">c-copper v0.03 // DO</span>
+    <header class="sticky top-0 z-50 border-b border-rule bg-paper/92 backdrop-blur-md">
+      <div class="max-w-[1280px] mx-auto w-full px-5 sm:px-8 flex flex-col md:flex-row md:items-center md:justify-between md:gap-6 md:py-5">
+        <!-- identity row (own row on phones) -->
+        <div class="flex items-center md:items-baseline justify-between md:justify-start gap-3.5 h-11 md:h-auto shrink-0">
+          <a href="/" class="font-mono text-[13px] tracking-[.14em] font-semibold hover:text-accent transition-colors">A_GUZMAN</a>
+          <span class="font-mono text-[11px] tracking-[.1em] text-copper">c-copper v0.03</span>
         </div>
+        <!-- nav row (full-width scroll strip on phones, inline on desktop) -->
+        <nav class="topnav nav-scroll -mx-5 px-5 sm:-mx-8 sm:px-8 md:mx-0 md:px-0 border-t border-rule/70 md:border-t-0 flex items-stretch md:items-center gap-5 sm:gap-[22px] overflow-x-auto font-mono text-[12px] tracking-[.08em] text-muted min-w-0 h-11 md:h-auto">
+          <a href="/"         class="shrink-0 flex items-center hover:text-accent transition-colors">01_Home</a>
+          <a href="/work"     class="shrink-0 flex items-center hover:text-accent transition-colors">02_Work</a>
+          <a href="/workshop" class="shrink-0 flex items-center hover:text-accent transition-colors">03_Workshop</a>
+          <a href="/writing"  class="shrink-0 flex items-center hover:text-accent transition-colors">04_Writing</a>
+          <a href="/contact"  class="shrink-0 flex items-center hover:text-accent transition-colors">05_Connect</a>
+        </nav>
       </div>
-      <!-- Row 2: nav -->
-      <nav class="nav-scroll max-w-7xl mx-auto w-full h-10 flex items-center gap-5 overflow-x-auto px-4 sm:px-6 lg:px-8">
-        <a href="/"         class="shrink-0 text-xs font-mono uppercase tracking-tighter text-slate-400 hover:text-emerald-400 transition-colors">01_Home</a>
-        <a href="/work"     class="shrink-0 text-xs font-mono uppercase tracking-tighter text-slate-400 hover:text-emerald-400 transition-colors">02_Work</a>
-        <a href="/workshop" class="shrink-0 text-xs font-mono uppercase tracking-tighter text-slate-400 hover:text-emerald-400 transition-colors">03_Workshop</a>
-        <a href="/writing"  class="shrink-0 text-xs font-mono uppercase tracking-tighter text-slate-400 hover:text-emerald-400 transition-colors">04_Writing</a>
-        <a href="/contact"  class="shrink-0 text-xs font-mono uppercase tracking-tighter text-slate-400 hover:text-emerald-400 transition-colors">05_Connect</a>
-      </nav>
       {{#if worknav}}
-      <!-- Row 3: /work sub-nav -->
-      <div class="border-t border-slate-800/60 bg-[#0E0E10]/80">
-        <nav class="subnav nav-scroll max-w-7xl mx-auto w-full h-9 flex items-center gap-4 overflow-x-auto px-4 sm:px-6 lg:px-8 font-mono text-[11px]">
-          <span class="text-slate-600 select-none shrink-0">~/work $</span>
-          <a href="/work/fintech-ai" class="shrink-0 text-slate-400 hover:text-emerald-400 transition-colors">fintech-ai</a>
-          <a href="/work/systems"    class="shrink-0 text-slate-400 hover:text-emerald-400 transition-colors">systems</a>
-          <a href="/work/web"        class="shrink-0 text-slate-400 hover:text-emerald-400 transition-colors">web</a>
-          <a href="/work/gamedev"    class="shrink-0 text-slate-400 hover:text-emerald-400 transition-colors">gamedev</a>
+      <!-- /work sub-nav -->
+      <div class="border-t border-rule/70 bg-card/80">
+        <nav class="subnav nav-scroll max-w-[1280px] mx-auto w-full px-5 sm:px-8 h-9 flex items-center gap-5 overflow-x-auto font-mono text-[11px] tracking-[.08em] text-muted">
+          <span class="select-none shrink-0 text-[#9aa4ab]">~/work $</span>
+          <a href="/work/fintech-ai" class="shrink-0 hover:text-accent transition-colors">fintech-ai</a>
+          <a href="/work/systems"    class="shrink-0 hover:text-accent transition-colors">systems</a>
+          <a href="/work/web"        class="shrink-0 hover:text-accent transition-colors">web</a>
+          <a href="/work/gamedev"    class="shrink-0 hover:text-accent transition-colors">gamedev</a>
         </nav>
       </div>
       {{/if}}
     </header>
 
-    <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 md:py-12 flex flex-col gap-8">
+    <main class="flex-1 max-w-[1280px] mx-auto w-full px-5 sm:px-8 flex flex-col">
       {{body}}
     </main>
 
-    <footer class="h-10 bg-emerald-500 text-black font-mono text-[10px] font-bold uppercase shrink-0 select-none">
-      <div class="max-w-7xl mx-auto w-full h-full px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-        <div class="flex space-x-6">
+    <footer class="border-t border-rule">
+      <div class="max-w-[1280px] mx-auto w-full px-5 sm:px-8 py-8 flex flex-wrap gap-x-8 gap-y-3 items-center justify-between font-mono text-[11px] tracking-[.08em] text-muted">
+        <div class="flex flex-wrap gap-x-6 gap-y-2">
           <span>Operator: Alvaro Guzman</span>
-          <span class="hidden sm:inline">Origin: Santo Domingo, DO</span>
+          <span>Origin: Santo Domingo, DO</span>
           <span class="hidden md:inline">Runtime: c-copper / wasmoon-lua</span>
         </div>
-        <div class="flex items-center">
-          <span class="mr-2">System_Health</span>
-          <div class="flex space-x-1">
-            <div class="w-1.5 h-3 bg-black/20"></div>
-            <div class="w-1.5 h-3 bg-black/40"></div>
-            <div class="w-1.5 h-3 bg-black/60"></div>
-            <div class="w-1.5 h-3 bg-black"></div>
-          </div>
-        </div>
+        <span class="text-accent">System_Health: OK</span>
       </div>
     </footer>
 
     <script>
       (function () {
         document.documentElement.classList.add("js");
-
-        // cursor spotlight
-        var glow = document.getElementById("cursor-glow");
-        var raf = null;
-        window.addEventListener("mousemove", function (e) {
-          if (raf) return;
-          raf = requestAnimationFrame(function () {
-            glow.style.setProperty("--cx", e.clientX + "px");
-            glow.style.setProperty("--cy", e.clientY + "px");
-            glow.style.opacity = "1";
-            raf = null;
-          });
-        }, { passive: true });
 
         // current-page nav indicator: prefix match on top nav, exact on sub-nav
         var path = location.pathname;
@@ -135,7 +107,7 @@
           }, { rootMargin: "0px 0px -8% 0px" });
           sections.forEach(function (el, i) {
             el.classList.add("rv");
-            el.style.setProperty("--rvd", (i % 5) * 70 + "ms");
+            el.style.setProperty("--rvd", (i % 4) * 60 + "ms");
             io.observe(el);
           });
         }

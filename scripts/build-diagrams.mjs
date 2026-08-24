@@ -19,22 +19,23 @@ const { chromium } = require("playwright");
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const MERMAID = join(root, "node_modules", "mermaid", "dist", "mermaid.min.js");
 
-// Site palette: bg #0A0A0B / panels #121214 / borders slate-800 / emerald accent.
+// Site palette (paper editorial): paper #e9ecef / card #f7f8f9 / ink #14181c /
+// rule #ccd4da / accent (moss) #3f6b52 / copper #a4623a.
 const THEME = {
   theme: "base",
   themeVariables: {
-    darkMode: true,
-    background: "#0A0A0B",
-    primaryColor: "#121214",
-    primaryTextColor: "#cbd5e1",
-    primaryBorderColor: "#334155",
-    lineColor: "#10b981",
-    secondaryColor: "#0E0E10",
-    tertiaryColor: "#0E0E10",
-    clusterBkg: "#0E0E10",
-    clusterBorder: "#1e293b",
-    edgeLabelBackground: "#0A0A0B",
-    fontFamily: '"JetBrains Mono", ui-monospace, monospace',
+    darkMode: false,
+    background: "#f7f8f9",
+    primaryColor: "#e9ecef",
+    primaryTextColor: "#14181c",
+    primaryBorderColor: "#9aa4ab",
+    lineColor: "#3f6b52",
+    secondaryColor: "#dde7e0",
+    tertiaryColor: "#f7f8f9",
+    clusterBkg: "#f0f2f4",
+    clusterBorder: "#ccd4da",
+    edgeLabelBackground: "#f7f8f9",
+    fontFamily: '"IBM Plex Mono", ui-monospace, monospace',
     fontSize: "14px",
   },
   flowchart: { useMaxWidth: true, curve: "linear", padding: 12 },
@@ -43,7 +44,12 @@ const THEME = {
 };
 
 const sources = readdirSync(join(root, "diagrams")).filter((f) => f.endsWith(".mmd"));
-const browser = await chromium.launch({ args: ["--no-sandbox"] });
+// PW_CHROME=/path/to/chrome overrides the browser binary when the global
+// playwright install and its cached browsers drift out of sync.
+const browser = await chromium.launch({
+  args: ["--no-sandbox"],
+  ...(process.env.PW_CHROME ? { executablePath: process.env.PW_CHROME } : {}),
+});
 const page = await browser.newPage();
 await page.setContent("<!doctype html><body></body>");
 await page.addScriptTag({ path: MERMAID });

@@ -23,7 +23,7 @@ local function removeAt(idx)
 end
 
 local input = h("input", {
-	class = "flex-1 bg-[#0A0A0B] border border-slate-800 focus:border-emerald-500/50 focus:outline-none rounded px-3 py-2 text-sm text-slate-100 font-mono placeholder:text-slate-700",
+	class = "field flex-1 !py-2.5",
 	placeholder = "new todo...",
 })
 dom.on(input, "input", function(e) setDraft(e.target.value) end)
@@ -37,12 +37,12 @@ reactive.effect(function()
 	list.innerHTML = ""
 	for i, v in ipairs(items()) do
 		dom.append(list, h("li", {
-			class = "bg-[#0A0A0B] border border-slate-800 rounded px-3 py-2 text-sm text-slate-200 flex items-center gap-2 font-mono group",
+			class = "bg-paper border border-rule px-3 py-2 text-[13px] text-ink flex items-center gap-2 font-mono group",
 		},
-			h("span", { class = "text-emerald-500 text-[10px]" }, "▸"),
+			h("span", { class = "text-accent text-[10px]" }, "▸"),
 			h("span", { class = "flex-1" }, v),
 			h("button", {
-				class = "opacity-40 group-hover:opacity-100 px-2 py-0.5 text-rose-400 hover:text-rose-300 hover:bg-rose-950/30 border border-transparent hover:border-rose-900 rounded text-[11px] font-mono uppercase tracking-wider transition-all active:scale-[0.95]",
+				class = "opacity-50 group-hover:opacity-100 px-2 py-0.5 text-copper border border-transparent hover:border-copper text-[10px] font-mono uppercase tracking-wider transition-all",
 				title = "remove item",
 				onClick = function() removeAt(i) end,
 			}, "del")
@@ -51,16 +51,16 @@ reactive.effect(function()
 end)
 
 local root = h("div", { class = "flex flex-col gap-4" },
-	h("div", { class = "text-[10px] font-mono uppercase tracking-widest text-emerald-500" }, "[0x02] todos // mutable signal"),
+	h("div", { class = "label text-accent" }, "[0x02] todos // mutable signal"),
 	h("div", { class = "flex flex-row gap-2" },
 		input,
 		h("button", {
-			class = "px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-neutral-950 font-mono text-xs uppercase tracking-wider font-bold rounded transition-colors active:scale-[0.98]",
+			class = "btn btn-sm btn-ink",
 			onClick = addItem,
 		}, "append")
 	),
 	list,
-	h("div", { class = "text-[10px] font-mono text-slate-600 pt-3 border-t border-slate-800" }, function()
+	h("div", { class = "mono-sm pt-3 border-t border-rule" }, function()
 		return #items() .. " item(s) in list"
 	end)
 )

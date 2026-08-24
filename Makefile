@@ -28,6 +28,9 @@ $(TARGET): main.c $(OBJ)
 %.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
+# generated allowlist: rebuild the controller when build-writing.mjs regenerates it
+controllers/writing_controller.o: controllers/writing_manifest.h
+
 clean:
 ifeq ($(OS),Windows_NT)
 	-$(RM) $(call FixPath,$(TARGET)) 2>nul

@@ -1,0 +1,103 @@
+<!-- generated from writing/on-being-pragmatic.md — do not edit by hand -->
+<div id="read-progress" aria-hidden="true"></div>
+
+<div class="flex items-center gap-2 py-5 mono-sm tracking-[.1em]">
+  <a href="/writing" class="hover:text-accent transition-colors">← ~/writing</a>
+  <span>/on-being-pragmatic</span>
+</div>
+
+<article class="border-t border-rule">
+  <header class="pt-12 pb-10 lg:pt-[52px] border-b border-rule max-w-[78ch]">
+    <div class="flex items-center gap-4 font-mono text-[11px] tracking-[.14em] text-muted mb-6">
+      <span class="text-accent">ENGINEERING</span>
+      <span>2026-08-24</span>
+      <span>3 MIN</span>
+    </div>
+    <h1 class="text-[clamp(36px,4.6vw,60px)] leading-[1.02] tracking-[-.032em] font-semibold max-w-[26ch]">On being pragmatic</h1>
+    <p class="mt-6 font-serif text-[20px] leading-[1.55] text-muted max-w-[56ch]">Correct and right are different things. Correct means the program does what it needs to do for the people who need it, at a cost they can afford. Right means it matches an idea the author had. Most of the damage in this industry lives in the gap.</p>
+  </header>
+
+  <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_240px] gap-12 lg:gap-16 pt-12">
+    <div class="prose-article">
+<p>Every codebase I have regretted was written by someone who was trying to be right. Correct and right are different things, and most of the damage in this industry lives in the gap between them.</p>
+<p>Correct means the program does what it needs to do, for the people who need it, at a cost they can afford. Right means the program matches an idea the author had about how programs should look. Correct ships. Right gets refactored by the next person, who has their own idea about how programs should look.</p>
+<h2 id="what-pragmatism-is-not">What pragmatism is not</h2>
+<p>People hear pragmatic and think lazy, or &quot;just make it work.&quot; It is the opposite. Purism is the easy option because it comes with a rulebook. Pragmatism comes with a question, which is what does this actually need, and answering it takes work.</p>
+<p>A purist knows the answer before looking at the problem: dependency injection everywhere, every function pure, every abstraction abstracted. A pragmatist has to look first.</p>
+<p>None of this is an argument against craft. The best engineers I have worked with cared a great deal about quality. They spent that care on the parts that mattered and let the rest be ordinary. A boring function that works is craft. A clever one that needs a comment to be understood is debt.</p>
+<h2 id="the-three-questions">The three questions</h2>
+<p>When I am about to add structure to something, I try to answer three things before typing.</p>
+<p><strong>Who pays for this?</strong> Every abstraction has a reader on the other end. A layer that saves me ten minutes today and costs every future reader five minutes of indirection is a bad trade by the second reader.</p>
+<p><strong>What breaks if I am wrong?</strong> If the answer is &quot;I rename a function,&quot; the decision does not deserve a meeting. If the answer is &quot;we migrate a database,&quot; it does. Rigor should be proportional to the cost of a mistake.</p>
+<p><strong>Is this the problem, or the problem I would rather be solving?</strong> This is the uncomfortable one. A lot of what gets called architecture is a developer avoiding a boring task by inventing an interesting one next to it.</p>
+<h2 id="two-failures-with-the-same-cause">Two failures with the same cause</h2>
+<p>A banking client once needed a nightly reconciliation job. The first proposal was an event-driven pipeline with a message broker, retries, dead-letter queues, and a dashboard. The volume was four thousand rows. A single scheduled process with a transaction and a log file ran for three years without incident. Nobody ever asked for the dashboard.</p>
+<p>I have also watched a quick script become the ingestion path for a product&#39;s entire customer base, still parsing CSV with <code>split(&#39;,&#39;)</code>, still failing silently whenever a field contained a comma. Building something small was the correct call at the time. The failure was that nobody asked the question again once the script became load-bearing.</p>
+<p>Both cases went wrong in the same way. A decision was made once and never revisited. Pragmatism is a habit of re-deciding, and it stops working the moment you treat it as a decision.</p>
+<h2 id="why-this-site-is-written-in-c">Why this site is written in C</h2>
+<p>This page is served by an HTTP server, a router, and a template engine I wrote from scratch in C. For a portfolio site, that is an unreasonable choice. Any static generator would have done the job in an afternoon.</p>
+<p>The website was the excuse, though. I wanted to understand sockets, threads, and parsing from the ground up, and a site I actually had to keep online was the cheapest thing that would force me to finish. Measured against that goal, C was the pragmatic choice. Measured against &quot;I need a portfolio,&quot; it was absurd.</p>
+<p>Pragmatism only works if you are honest about what you are optimizing for. If you lie about the goal, every decision downstream inherits the lie.</p>
+<h2 id="the-short-version">The short version</h2>
+<blockquote>
+<p>Build the thing the problem needs. Build it well. Do not build the thing you wish the problem needed.</p>
+</blockquote>
+<p>Know what you are optimizing for. Spend rigor where mistakes are expensive. Revisit decisions when the facts change. Let the rest be boring.</p>
+<hr>
+<p>Most of what I know about this I learned by getting it wrong first. That is probably the most pragmatic thing about it.</p>
+
+      <div class="mt-12 pt-6 border-t border-rule flex flex-wrap gap-2.5 font-sans">
+        <a href="/writing" class="btn btn-sm btn-outline">← back to ~/writing</a>
+        <a href="/contact" class="btn btn-sm btn-ghost">Get in touch →</a>
+      </div>
+    </div>
+
+    <aside class="lg:sticky lg:top-24 self-start flex flex-col gap-3.5 order-first lg:order-none">
+      <div class="panel p-5">
+        <div class="label mb-3.5">CONTENTS</div>
+        <div class="flex flex-col gap-2.5 text-[13.5px] leading-[1.45]">
+          <a href="#what-pragmatism-is-not" class="hover:text-accent transition-colors">What pragmatism is not</a>
+          <a href="#the-three-questions" class="hover:text-accent transition-colors">The three questions</a>
+          <a href="#two-failures-with-the-same-cause" class="hover:text-accent transition-colors">Two failures with the same cause</a>
+          <a href="#why-this-site-is-written-in-c" class="hover:text-accent transition-colors">Why this site is written in C</a>
+          <a href="#the-short-version" class="hover:text-accent transition-colors">The short version</a>
+        </div>
+      </div>
+      <div class="panel-plain p-5">
+        <div class="label mb-3.5">FILED_UNDER</div>
+        <div class="flex flex-wrap gap-[7px]">
+          <span class="tag tag-sm tag-accent">pragmatism</span>
+          <span class="tag tag-sm">architecture</span>
+          <span class="tag tag-sm">fintech</span>
+          <span class="tag tag-sm">c-copper</span>
+        </div>
+      </div>
+    </aside>
+  </div>
+</article>
+
+<nav class="rule-grid grid-cols-1 md:grid-cols-2 my-16">
+  <a href="/writing/building-c-copper" class="p-7 block">
+    <div class="label mb-3">← PREVIOUS</div>
+    <div class="text-[19px] font-semibold tracking-[-.015em] leading-[1.25]">Building c-copper: what a web framework in C teaches you</div>
+  </a>
+  <a href="/writing" class="p-7 block md:text-right">
+    <div class="label mb-3">ALL POSTS →</div>
+    <div class="text-[19px] font-semibold tracking-[-.015em] leading-[1.25]">~/writing</div>
+  </a>
+</nav>
+
+<script>
+  (function () {
+    var bar = document.getElementById("read-progress");
+    if (!bar) return;
+    var h = document.documentElement;
+    function tick() {
+      var max = h.scrollHeight - h.clientHeight;
+      bar.style.width = (max > 0 ? Math.min(100, (h.scrollTop / max) * 100) : 0).toFixed(1) + "%";
+    }
+    window.addEventListener("scroll", tick, { passive: true });
+    window.addEventListener("resize", tick);
+    tick();
+  })();
+</script>

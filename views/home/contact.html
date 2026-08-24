@@ -5,7 +5,6 @@
     message: '',
     state: 'idle',
     logs: [],
-    submissions: [],
     canSend() { return this.name.trim() &amp;&amp; this.email.trim() &amp;&amp; this.message.trim(); },
     pushLog(line) {
       const t = new Date().toLocaleTimeString();
@@ -15,7 +14,7 @@
       if (!this.canSend()) { this.state = 'error'; return; }
       this.state = 'sending';
       this.logs = [];
-      this.pushLog('Opening POST /api/contact to local backend...');
+      this.pushLog('Opening POST /api/contact on this C server...');
       await new Promise(r =&gt; setTimeout(r, 120));
       this.pushLog('Attaching CSRF token + encoding form payload...');
 
@@ -35,8 +34,7 @@
         });
         const data = await r.json().catch(() =&gt; ({}));
         if (r.ok &amp;&amp; data.ok) {
-          this.pushLog('HTTP ' + r.status + ' OK. Email delivered to Resend.');
-          this.submissions.unshift({ name: this.name, email: this.email, message: this.message, when: new Date().toLocaleTimeString() });
+          this.pushLog('HTTP ' + r.status + ' OK. Delivered.');
           this.state = 'sent';
           this.name = ''; this.email = ''; this.message = '';
         } else {
@@ -58,209 +56,140 @@
     },
     reset() { this.state = 'idle'; this.logs = []; }
   }"
-  class="grid grid-cols-1 lg:grid-cols-12 gap-6"
+  class="flex flex-col"
 >
-  <!-- LHS — Form -->
-  <div
-    class="lg:col-span-7 bg-[#121214] border border-slate-800 rounded-lg p-5 flex flex-col gap-4"
-  >
+  <!-- Hero -->
+  <section class="pt-12 pb-10 lg:pt-[76px] lg:pb-12 grid grid-cols-1 lg:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)] gap-10 lg:gap-14 border-b border-rule">
     <div>
-      <span
-        class="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold block mb-1"
-        >Communication Node</span
-      >
-      <h3
-        class="text-lg font-bold text-slate-100 tracking-tight flex items-center gap-1.5"
-      >
-        <svg
-          class="w-5 h-5 text-emerald-500 glow-green"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.5"
-        >
-          <path d="M4 4h16v16H4z" />
-          <path d="M4 8l8 5 8-5" />
-        </svg>
-        Establish encrypted transmission
-      </h3>
-      <p class="text-xs text-slate-400 mt-1 max-w-lg leading-relaxed">
-        I'm Alvaro Guzman, a developer based in the Dominican Republic. This form POSTs to <code class="text-emerald-400">/api/contact</code> on this same C server — the handler validates the body, calls Resend over HTTPS via libcurl, and reports the round-trip back here.
+      <div class="eyebrow flex items-center gap-2.5 mb-7">
+        <span class="w-[7px] h-[7px] rounded-full bg-accent inline-block shrink-0 pulse-dot"></span>
+        <span>05_CONNECT // OPEN_TO_WORK</span>
+      </div>
+      <h1 class="display max-w-[18ch]">Available for senior IC, architect, and applied-AI roles.</h1>
+      <p class="lede mt-6 max-w-[56ch]">
+        Remote across EU &amp; LATAM time zones; AST (UTC−4). Fastest route is email — include the stack and the
+        constraint you're working against and I'll reply with something useful.
       </p>
+      <div class="flex flex-wrap gap-2.5 mt-8">
+        <a href="mailto:aagn2807@gmail.com" class="btn btn-accent">[mail/aagn2807]</a>
+        <a href="https://www.linkedin.com/in/aguzmandev/" target="_blank" rel="noreferrer" class="btn btn-outline">[linkedin/aguzmandev]</a>
+        <a href="https://github.com/aag2807" target="_blank" rel="noreferrer" class="btn btn-outline">[github/aag2807]</a>
+        <a href="/static/cv/alvaro-guzman-cv.pdf" download="Alvaro_Guzman_CV.pdf" class="btn btn-ghost">Download CV ↓</a>
+      </div>
     </div>
 
-    <!-- Success state -->
-    <template x-if="state === 'sent'">
-      <div
-        class="bg-[#0A0A0B] border border-emerald-700/40 rounded-lg p-6 flex flex-col items-start gap-3"
-      >
-        <div
-          class="flex items-center gap-2 text-emerald-400 font-mono text-xs uppercase tracking-wider"
-        >
-          <span class="w-2 h-2 rounded-full bg-emerald-500 glow-green"></span>
-          Tunnel closed cleanly
+    <aside class="flex flex-col gap-3.5">
+      <div class="panel">
+        <div class="label mb-4">OPERATOR</div>
+        <div class="kv"><span>BASE</span><span>Santo Domingo, DO</span></div>
+        <div class="kv"><span>TIMEZONE</span><span>AST (UTC−4)</span></div>
+        <div class="kv"><span>EXPERIENCE</span><span>7+ years</span></div>
+        <div class="kv"><span>LANGUAGES</span><span>EN / ES</span></div>
+        <div class="kv"><span>STATUS</span><span class="text-accent">Open to offers</span></div>
+      </div>
+      <div class="panel-accent">
+        <div class="label text-accent mb-3">RESPONSE_TIME</div>
+        <div class="text-[34px] leading-none tracking-[-.03em] font-semibold">&lt; 24h</div>
+        <div class="text-[14.5px] leading-[1.55] text-muted mt-3">On weekdays. Recruiter templates get read; specifics get answered.</div>
+      </div>
+    </aside>
+  </section>
+
+  <!-- Fit -->
+  <section class="rule-grid grid-cols-1 md:grid-cols-2 my-11">
+    <div class="p-7 lg:p-[32px_30px]">
+      <div class="label text-accent mb-[18px]">GOOD_FIT</div>
+      <div class="flex flex-col gap-3.5 text-[16px] leading-[1.55]">
+        <div class="flex gap-3"><span class="font-mono text-[12px] text-accent pt-[3px]">+</span><span>Senior IC or architect work on .NET / Angular platforms in fintech or core banking.</span></div>
+        <div class="flex gap-3"><span class="font-mono text-[12px] text-accent pt-[3px]">+</span><span>Applied AI: on-prem LLM gateways, RAG, agent orchestration under real compliance constraints.</span></div>
+        <div class="flex gap-3"><span class="font-mono text-[12px] text-accent pt-[3px]">+</span><span>Systems-adjacent problems — runtimes, performance, protocol work — where reading the C matters.</span></div>
+        <div class="flex gap-3"><span class="font-mono text-[12px] text-accent pt-[3px]">+</span><span>Teams that want payment and banking integrations done once, properly.</span></div>
+      </div>
+    </div>
+    <div class="p-7 lg:p-[32px_30px]">
+      <div class="label mb-[18px]">PROBABLY_NOT</div>
+      <div class="flex flex-col gap-3.5 text-[16px] leading-[1.55] text-muted">
+        <div class="flex gap-3"><span class="font-mono text-[12px] pt-[3px]">−</span><span>Pure frontend feature work with no systems or architecture surface.</span></div>
+        <div class="flex gap-3"><span class="font-mono text-[12px] pt-[3px]">−</span><span>On-site only roles outside EU / LATAM time zones.</span></div>
+        <div class="flex gap-3"><span class="font-mono text-[12px] pt-[3px]">−</span><span>Projects where "move fast" means skipping the audit trail in a regulated environment.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Form -->
+  <section class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] gap-10 lg:gap-14 pb-14 border-b border-rule">
+    <div>
+      <h2 class="h3 max-w-[20ch]">Or send it from here.</h2>
+      <p class="mt-4 text-[16px] leading-[1.6] text-muted max-w-[40ch]">
+        Posts to <code class="ic">/api/contact</code> on this same C server — the handler validates the body, calls
+        Resend over HTTPS via libcurl, and reports the round-trip back here. No CRM, no autoresponder.
+      </p>
+
+      <!-- Tunnel log -->
+      <div class="mt-7 border border-rule bg-card">
+        <div class="flex items-center justify-between px-4 py-2.5 border-b border-rule label">
+          <span>TUNNEL_LOG</span>
+          <span class="flex items-center gap-1.5 text-accent">
+            <span class="w-1.5 h-1.5 rounded-full bg-accent" :class="state === 'sending' &amp;&amp; 'pulse-dot'"></span>
+            <span x-text="state.toUpperCase()"></span>
+          </span>
         </div>
-        <p class="text-sm text-slate-200">
-          Signal received. Reply path queued.
-        </p>
-        <button
-          @click="reset()"
-          class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 font-mono text-[10px] uppercase tracking-wider rounded transition-colors"
-        >
-          Send another &rarr;
-        </button>
-      </div>
-    </template>
-
-    <!-- Form body -->
-    <form
-      x-show="state !== 'sent'"
-      @submit.prevent="transmit($el.csrf_token.value)"
-      class="flex flex-col gap-4"
-      novalidate
-    >
-      @csrf
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <label class="flex flex-col gap-1.5">
-          <span
-            class="text-[10px] font-mono uppercase tracking-widest text-slate-400"
-            >Origin handle</span
-          >
-          <input
-            x-model="name"
-            type="text"
-            placeholder="how should i call you"
-            class="bg-[#0A0A0B] border border-slate-800 focus:border-emerald-500/50 focus:outline-none rounded px-3 py-2 text-sm text-slate-100 font-mono placeholder:text-slate-700"
-          />
-        </label>
-        <label class="flex flex-col gap-1.5">
-          <span
-            class="text-[10px] font-mono uppercase tracking-widest text-slate-400"
-            >Reply address</span
-          >
-          <input
-            x-model="email"
-            type="email"
-            placeholder="name@domain.tld"
-            class="bg-[#0A0A0B] border border-slate-800 focus:border-emerald-500/50 focus:outline-none rounded px-3 py-2 text-sm text-slate-100 font-mono placeholder:text-slate-700"
-          />
-        </label>
-      </div>
-
-      <label class="flex flex-col gap-1.5">
-        <span
-          class="text-[10px] font-mono uppercase tracking-widest text-slate-400"
-          >Payload</span
-        >
-        <textarea
-          x-model="message"
-          rows="6"
-          placeholder="contracts, collaboration, code review — what's the signal"
-          class="bg-[#0A0A0B] border border-slate-800 focus:border-emerald-500/50 focus:outline-none rounded px-3 py-2 text-sm text-slate-100 font-mono placeholder:text-slate-700 resize-y"
-        ></textarea>
-        <span
-          x-show="state === 'error'"
-          class="text-rose-400 text-[10px] font-mono uppercase tracking-widest"
-          >all three fields required</span
-        >
-      </label>
-
-      <button
-        type="submit"
-        :disabled="state === 'sending'"
-        class="self-start px-4 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-wait text-neutral-950 font-bold font-mono text-[10px] uppercase tracking-wider rounded transition-all active:scale-[0.98] flex items-center gap-2"
-      >
-        <span x-show="state !== 'sending'">Transmit &rarr;</span>
-        <span x-show="state === 'sending'" class="flex items-center gap-1.5">
-          <span class="w-1.5 h-1.5 rounded-full bg-black animate-pulse"></span>
-          Posting...
-        </span>
-      </button>
-    </form>
-  </div>
-
-  <!-- RHS — Tunnel log + relay info -->
-  <div class="lg:col-span-5 flex flex-col gap-4">
-    <div
-      class="bg-[#070708] border border-slate-800 rounded-lg p-4 flex flex-col min-h-[280px]"
-    >
-      <div class="flex justify-between items-center text-xs font-mono mb-3">
-        <span class="text-slate-400 uppercase tracking-widest font-semibold"
-          >Tunnel Log</span
-        >
-        <span class="text-emerald-500 flex items-center gap-1">
-          <span
-            class="w-1.5 h-1.5 rounded-full bg-emerald-500 glow-green"
-          ></span>
-          <span x-text="state.toUpperCase()"></span>
-        </span>
-      </div>
-      <div
-        class="flex-1 font-mono text-[10px] leading-relaxed text-slate-400 space-y-1"
-      >
-        <template x-if="state === 'idle' &amp;&amp; logs.length === 0">
-          <div class="text-slate-600 italic">
-            Awaiting transmission. Fill the form and submit.
-          </div>
-        </template>
-        <template x-for="line in logs" :key="line">
-          <div x-text="line" class="text-emerald-500/80"></div>
-        </template>
-      </div>
-    </div>
-
-    <div class="bg-[#121214] border border-slate-800 rounded-lg p-5">
-      <div
-        class="text-xs font-mono uppercase tracking-wider text-slate-400 mb-3"
-      >
-        Direct channels
-      </div>
-      <ul class="space-y-3 font-mono text-[11px]">
-        <li class="flex items-center justify-between">
-          <span class="text-slate-300">github</span>
-          <a
-            href="https://github.com/aag2807"
-            target="_blank"
-            rel="noreferrer"
-            class="text-emerald-400 hover:text-emerald-300"
-            >/aag2807</a
-          >
-        </li>
-        <li class="flex items-center justify-between">
-          <span class="text-slate-300">mail</span>
-          <a
-            href="mailto:aagn2807@gmail.com"
-            class="text-emerald-400 hover:text-emerald-300"
-            >aagn2807@gmail.com</a
-          >
-        </li>
-        <li class="flex items-center justify-between">
-          <span class="text-slate-300">timezone</span>
-          <span class="text-slate-500">AST (UTC-4) // Santo Domingo</span>
-        </li>
-      </ul>
-    </div>
-
-    <!-- Sent log -->
-    <template x-if="submissions.length &gt; 0">
-      <div class="bg-[#121214] border border-slate-800 rounded-lg p-5">
-        <div
-          class="text-xs font-mono uppercase tracking-wider text-slate-400 mb-3"
-        >
-          Session transmissions
-        </div>
-        <ul class="space-y-2 font-mono text-[10px]">
-          <template x-for="s in submissions" :key="s.when + s.email">
-            <li class="bg-[#0A0A0B] border border-slate-800 rounded px-3 py-2">
-              <div class="flex justify-between text-slate-500">
-                <span x-text="s.name"></span>
-                <span x-text="s.when"></span>
-              </div>
-              <div class="text-emerald-400 truncate" x-text="s.email"></div>
-            </li>
+        <div class="px-4 py-3 font-mono text-[11px] leading-[1.7] min-h-[96px]">
+          <template x-if="logs.length === 0">
+            <div class="text-[#9aa4ab] italic">Awaiting transmission. Fill the form and submit.</div>
           </template>
-        </ul>
+          <template x-for="line in logs" :key="line">
+            <div x-text="line" class="text-muted"></div>
+          </template>
+        </div>
       </div>
-    </template>
-  </div>
+    </div>
+
+    <div>
+      <!-- Success state -->
+      <template x-if="state === 'sent'">
+        <div class="panel-accent flex flex-col items-start gap-3">
+          <div class="label text-accent flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+            DELIVERED
+          </div>
+          <p class="text-[17px] leading-[1.5]">Signal received. Reply path queued — expect something back within a day.</p>
+          <button @click="reset()" class="btn btn-sm btn-outline mt-2">Send another →</button>
+        </div>
+      </template>
+
+      <form
+        x-show="state !== 'sent'"
+        @submit.prevent="transmit($el.csrf_token.value)"
+        class="flex flex-col gap-3.5"
+        novalidate
+      >
+        @csrf
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <label class="flex flex-col gap-2">
+            <span class="label">NAME</span>
+            <input x-model="name" type="text" class="field" placeholder="how should I call you" />
+          </label>
+          <label class="flex flex-col gap-2">
+            <span class="label">EMAIL</span>
+            <input x-model="email" type="email" class="field" placeholder="name@domain.tld" />
+          </label>
+        </div>
+        <label class="flex flex-col gap-2">
+          <span class="label">MESSAGE</span>
+          <textarea x-model="message" rows="6" class="field resize-y" placeholder="stack, constraint, timeline — what's the signal"></textarea>
+        </label>
+        <div class="flex flex-wrap items-center gap-4">
+          <button type="submit" :disabled="state === 'sending'" class="btn btn-ink">
+            <span x-show="state !== 'sending'">Send →</span>
+            <span x-show="state === 'sending'" class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-paper pulse-dot"></span>
+              Posting...
+            </span>
+          </button>
+          <span x-show="state === 'error'" class="label text-copper">all three fields required — or see the log</span>
+        </div>
+      </form>
+    </div>
+  </section>
 </div>

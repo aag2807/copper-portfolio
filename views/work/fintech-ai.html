@@ -1,349 +1,166 @@
-<!-- ============ PROFESSIONAL TRACK ============ -->
-<div class="flex flex-col gap-6">
-
-  <!-- Hero — banking AI positioning -->
-  <div class="bg-[#121214] border border-slate-800 rounded-lg p-6 lg:p-8">
-    <span class="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold block mb-2">Work // Fintech_AI &middot; Professional_Track</span>
-    <h2 class="text-2xl sm:text-3xl font-bold text-slate-100 tracking-tight leading-tight mb-3">
-      AI for banking, built inside the fence.
-    </h2>
-    <p class="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-2xl">
-      7+ years building enterprise software for industries where failure isn't an option: banking, payments, and fintech.
-      The current focus is applied AI in regulated environments &mdash; banks want LLM capability without sending a single
-      byte to the public cloud. That's the problem I work on daily, in <span class="text-emerald-400 font-semibold">C#/.NET</span>,
-      <span class="text-emerald-400 font-semibold">Angular</span>, and <span class="text-emerald-400 font-semibold">Rust</span>,
-      inside regulated banking environments. Client and employer names withheld; happy to walk through any of it under NDA.
+<!-- Hero -->
+<section class="pt-12 pb-10 lg:pt-[66px] border-b border-rule">
+  <a href="/work" class="mono-sm tracking-[.14em] hover:text-accent transition-colors">← 02_WORK</a>
+  <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] gap-8 lg:gap-12 items-end mt-7">
+    <div>
+      <div class="eyebrow text-accent mb-5">[0x01] AI_FINTECH // PROFESSIONAL_TRACK</div>
+      <h1 class="display max-w-[20ch]">AI for banking, built inside the fence.</h1>
+    </div>
+    <p class="lede-muted">
+      7+ years building enterprise software for industries where failure isn't an option: banking, payments, fintech.
+      The current focus is applied AI in regulated environments — LLM capability without sending a byte to the public
+      cloud. Client and employer names withheld; happy to walk through any of it under NDA.
     </p>
-    <div class="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono">
-      <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
-        <div class="text-lg font-bold text-emerald-400 tracking-tight">60+</div>
-        <div class="text-[9px] uppercase tracking-wider text-slate-500 mt-1">payment APIs integrated</div>
-      </div>
-      <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
-        <div class="text-lg font-bold text-emerald-400 tracking-tight">0 bytes</div>
-        <div class="text-[9px] uppercase tracking-wider text-slate-500 mt-1">external data egress</div>
-      </div>
-      <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
-        <div class="text-lg font-bold text-emerald-400 tracking-tight">+15%</div>
-        <div class="text-[9px] uppercase tracking-wider text-slate-500 mt-1">e-commerce conversion lift</div>
-      </div>
-      <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded">
-        <div class="text-lg font-bold text-emerald-400 tracking-tight">7+ yrs</div>
-        <div class="text-[9px] uppercase tracking-wider text-slate-500 mt-1">full stack, regulated systems</div>
-      </div>
+  </div>
+  <div class="rule-grid grid-cols-2 lg:grid-cols-4 mt-11">
+    <div class="p-5">
+      <div class="stat text-accent">60+</div>
+      <div class="label mt-2.5 leading-[1.5]">PAYMENT APIS<br />integrated</div>
+    </div>
+    <div class="p-5">
+      <div class="stat">0 bytes</div>
+      <div class="label mt-2.5 leading-[1.5]">EXTERNAL<br />data egress</div>
+    </div>
+    <div class="p-5">
+      <div class="stat">+15%</div>
+      <div class="label mt-2.5 leading-[1.5]">E-COMMERCE<br />conversion lift</div>
+    </div>
+    <div class="p-5">
+      <div class="stat">7+ yrs</div>
+      <div class="label mt-2.5 leading-[1.5]">FULL STACK<br />regulated systems</div>
     </div>
   </div>
+</section>
 
-  <!-- The two hireable stories -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-    <article class="bg-[#121214] border border-slate-800 rounded-lg p-6 flex flex-col justify-between">
-      <div>
-        <div class="flex items-center justify-between mb-2">
-          <div class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest">[0x01]_ONPREM_LLM_GATEWAY</div>
-          <span class="px-2 py-0.5 bg-emerald-950/40 border border-emerald-800 text-[9px] font-mono uppercase tracking-wider rounded text-emerald-300">active</span>
+<!-- Case studies -->
+<section class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.45fr)] gap-8 lg:gap-14 py-12 lg:py-[60px] border-b border-rule">
+  <div><div class="label sec-label">01 // CASE_STUDIES</div></div>
+  <div>
+    <h2 class="h3 max-w-[26ch]">Two hireable stories, both in production.</h2>
+    <div class="rule-grid grid-cols-1 md:grid-cols-2 mt-7">
+      <a href="/projects/llm-gateway" class="p-6 flex flex-col gap-3 min-h-[260px]">
+        <div class="flex items-center justify-between gap-3 label"><span class="text-accent">[0x01] ONPREM_LLM_GATEWAY</span><span class="st-live">ACTIVE</span></div>
+        <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1">On-prem AI gateway for banking</div>
+        <div class="text-[14.5px] leading-[1.55] text-muted">Multi-provider LLM routing behind one API surface, RAG pipelines with vector search, multi-agent orchestration, and zero external data egress. Architected in C#/.NET.</div>
+        <div class="mt-auto pt-4 flex items-center justify-between gap-3">
+          <span class="label tracking-[.1em]">c# · .net · rag · multi-agent</span>
+          <span class="font-mono text-[11px] tracking-[.1em] text-accent shrink-0">READ →</span>
         </div>
-        <h3 class="text-lg font-bold text-slate-100 tracking-tight mb-2">On-prem AI gateway for banking</h3>
-        <p class="text-[11px] text-slate-400 leading-relaxed">
-          An on-premise AI platform for financial institutions: multi-provider LLM routing behind one API surface,
-          RAG pipelines with vector search, multi-agent orchestration, and zero external data egress &mdash; full data
-          sovereignty for banks that can't ship data to a cloud model. Architected in C#/.NET.
+      </a>
+      <a href="/projects/payment-gateways" class="p-6 flex flex-col gap-3 min-h-[260px]">
+        <div class="flex items-center justify-between gap-3 label"><span class="text-accent">[0x02] PAYMENT_RAILS</span><span class="st-live">SHIPPED</span></div>
+        <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1">60+ payment gateway integrations</div>
+        <div class="text-[14.5px] leading-[1.55] text-muted">Checkout, transaction processing, and fraud handling across 60+ providers, multiple regions and regulatory regimes. Owned end to end; +15% conversion.</div>
+        <div class="mt-auto pt-4 flex items-center justify-between gap-3">
+          <span class="label tracking-[.1em]">angular · .net · payments · fraud</span>
+          <span class="font-mono text-[11px] tracking-[.1em] text-accent shrink-0">READ →</span>
+        </div>
+      </a>
+    </div>
+    <div class="mt-7 panel-accent flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
+      <div class="flex items-start gap-3">
+        <span class="w-[7px] h-[7px] rounded-full bg-accent shrink-0 mt-2 pulse-dot"></span>
+        <p class="text-[15px] leading-[1.6]">
+          <span class="font-semibold">Currently building:</span> a high-throughput access-control system in Rust — gRPC services
+          over MongoDB and Redis. Plus ongoing monolith → .NET microservices migrations in banking environments.
         </p>
       </div>
-      <div class="mt-4 flex items-center justify-between">
-        <div class="flex flex-wrap gap-1.5 font-mono text-[9px]">
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">C# / .NET</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">RAG</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">multi-agent</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">zero egress</span>
-        </div>
-        <a href="/projects/llm-gateway" class="shrink-0 text-[10px] font-mono text-emerald-400 hover:text-emerald-300 transition-colors">case_study&rarr;</a>
-      </div>
-    </article>
-
-    <article class="bg-[#121214] border border-slate-800 rounded-lg p-6 flex flex-col justify-between">
-      <div>
-        <div class="flex items-center justify-between mb-2">
-          <div class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest">[0x02]_PAYMENT_RAILS</div>
-          <span class="px-2 py-0.5 bg-sky-950/40 border border-sky-800 text-[9px] font-mono uppercase tracking-wider rounded text-sky-300">shipped</span>
-        </div>
-        <h3 class="text-lg font-bold text-slate-100 tracking-tight mb-2">60+ payment gateway integrations</h3>
-        <p class="text-[11px] text-slate-400 leading-relaxed">
-          Checkout flows, transaction processing, and fraud handling across 60+ third-party payment providers,
-          spanning multiple regions and regulatory regimes. Owned the full e-commerce flow end to end &mdash;
-          optimization work contributed to a 15% increase in conversion rates.
-        </p>
-      </div>
-      <div class="mt-4 flex items-center justify-between">
-        <div class="flex flex-wrap gap-1.5 font-mono text-[9px]">
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">Angular</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">.NET</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">payments</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">fraud handling</span>
-        </div>
-        <a href="/projects/payment-gateways" class="shrink-0 text-[10px] font-mono text-emerald-400 hover:text-emerald-300 transition-colors">case_study&rarr;</a>
-      </div>
-    </article>
-  </div>
-
-  <!-- Current build strip -->
-  <div class="bg-[#121214] border border-slate-800 rounded-lg px-6 py-4 flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
-    <div class="flex items-center gap-3 min-w-0">
-      <span class="w-2 h-2 rounded-full bg-emerald-500 glow-green shrink-0"></span>
-      <p class="text-[11px] text-slate-400 leading-relaxed min-w-0">
-        <span class="text-slate-200 font-semibold">Currently building:</span> a high-throughput access-control system in
-        <span class="text-emerald-400">Rust</span> &mdash; gRPC services over MongoDB and Redis. Plus ongoing
-        monolith&rarr;.NET microservices migrations in banking environments.
-      </p>
-    </div>
-    <div class="flex gap-1.5 font-mono text-[9px] shrink-0">
-      <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">Rust</span>
-      <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">gRPC</span>
-      <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">Redis</span>
+      <div class="flex gap-2 shrink-0"><span class="tag tag-sm tag-accent">Rust</span><span class="tag tag-sm tag-accent">gRPC</span><span class="tag tag-sm tag-accent">Redis</span></div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- ============ LOCAL AI LAB (personal builds) ============ -->
-<div class="flex items-center justify-between text-xs font-mono mt-2">
-  <span class="text-slate-400 uppercase tracking-widest font-semibold">Local_AI_Lab // Personal Builds</span>
-  <span class="text-[10px] text-slate-500">same discipline, my own hardware</span>
-</div>
-
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-  <!-- Top hero — local-first AI stance -->
-  <div class="lg:col-span-12 bg-[#121214] border border-slate-800 rounded-lg p-5 flex flex-col lg:flex-row gap-6 items-start">
-    <div class="lg:max-w-xl">
-      <span class="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold block mb-1">Stack // Local Inference</span>
-      <h3 class="text-2xl font-bold text-slate-100 tracking-tight leading-tight">
-        AI tools, run against a daemon I control.
-      </h3>
-      <p class="text-xs text-slate-400 mt-2 leading-relaxed max-w-lg">
-        Three builds, all sitting on top of a local Ollama daemon. Embeddings come from <code class="text-emerald-400 font-mono">mxbai-embed-large</code>, chat from whichever model fits the task. No API keys checked into anything, no provider lock-in &mdash; the cloud bridge is opt-in via the <code class="text-emerald-400 font-mono">:cloud</code> suffix when a model is too heavy to host.
-      </p>
+<!-- Local AI lab -->
+<section class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.45fr)] gap-8 lg:gap-14 py-12 lg:py-[60px] border-b border-rule">
+  <div><div class="label sec-label">02 // LOCAL_AI_LAB</div></div>
+  <div>
+    <h2 class="h3 max-w-[26ch]">AI tools, run against a daemon I control.</h2>
+    <p class="mt-5 text-[17px] leading-[1.65] max-w-[62ch]">
+      Personal builds sitting on a local Ollama daemon. Embeddings come from <code class="ic">mxbai-embed-large</code>,
+      chat from whichever model fits the task. No API keys checked into anything, no provider lock-in — the cloud bridge
+      is opt-in via the <code class="ic">:cloud</code> suffix when a model is too heavy to host.
+    </p>
+    <div class="rule-grid grid-cols-1 sm:grid-cols-3 mt-7">
+      <div class="p-5"><div class="label mb-2">RUNTIME</div><div class="font-mono text-[13px] text-accent break-words">ollama // :11434</div></div>
+      <div class="p-5"><div class="label mb-2">EMBED</div><div class="font-mono text-[13px] text-accent break-words">mxbai-embed-large</div></div>
+      <div class="p-5"><div class="label mb-2">INDEX</div><div class="font-mono text-[13px] text-accent break-words">sqlite-vec // vec0</div></div>
     </div>
-    <div class="flex-1 grid grid-cols-3 gap-3 w-full lg:w-auto font-mono min-w-0">
-      <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded min-w-0">
-        <div class="text-[9px] uppercase tracking-wider text-slate-500 mb-1">runtime</div>
-        <div class="text-emerald-400 text-[11px] break-words">ollama // :11434</div>
+
+    <div class="flex flex-col gap-8 mt-10">
+      <div class="ruled">
+        <div class="flex items-baseline justify-between gap-3">
+          <div class="flex items-baseline gap-3.5"><span class="font-mono text-[11px] tracking-[.12em] text-accent">[0x01]</span><h3 class="h4">Document OCR &amp; extraction pipeline</h3></div>
+          <span class="label st-live shrink-0">ACTIVE</span>
+        </div>
+        <p class="body-muted mt-3.5 max-w-[60ch]">Ingests document scans, runs OCR, then hands the raw text to a local LLM that classifies the document type and pulls out the fields that actually matter — dates, parties, totals, identifiers. Output drops into a searchable store, not a wall of unstructured text.</p>
+        <div class="flex flex-wrap gap-1.5 mt-4"><span class="tag tag-sm">OCR</span><span class="tag tag-sm">classifier</span><span class="tag tag-sm">structured extraction</span><span class="tag tag-sm">ollama</span></div>
       </div>
-      <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded min-w-0">
-        <div class="text-[9px] uppercase tracking-wider text-slate-500 mb-1">embed</div>
-        <div class="text-emerald-400 text-[11px] break-words">mxbai-embed-large</div>
+      <div class="ruled">
+        <div class="flex items-baseline justify-between gap-3">
+          <div class="flex items-baseline gap-3.5"><span class="font-mono text-[11px] tracking-[.12em] text-accent">[0x02]</span><h3 class="h4">Retrieval-augmented chat, end to end</h3></div>
+          <span class="label st-live shrink-0">ACTIVE</span>
+        </div>
+        <p class="body-muted mt-3.5 max-w-[60ch]">The unglamorous one. Embed a corpus, store the vectors, do a kNN lookup at query time, stitch the top chunks into the prompt, send it to the model. Built to wire the moving parts together myself instead of trusting a framework — chunking, recall thresholds, and prompt budget all picked deliberately.</p>
+        <div class="flex flex-wrap gap-1.5 mt-4"><span class="tag tag-sm">embeddings</span><span class="tag tag-sm">vector search</span><span class="tag tag-sm">prompt budget</span><span class="tag tag-sm">streaming</span></div>
       </div>
-      <div class="bg-[#0A0A0B] border border-slate-800 p-3 rounded min-w-0">
-        <div class="text-[9px] uppercase tracking-wider text-slate-500 mb-1">index</div>
-        <div class="text-emerald-400 text-[11px] break-words">sqlite-vec // vec0</div>
+      <div class="ruled">
+        <div class="flex items-baseline justify-between gap-3">
+          <div class="flex items-baseline gap-3.5"><span class="font-mono text-[11px] tracking-[.12em] text-accent">[0x03]</span><h3 class="h4">Terminal coding assistant, in Go</h3></div>
+          <span class="label st-live shrink-0">ACTIVE</span>
+        </div>
+        <p class="body-muted mt-3.5 max-w-[60ch]">A single Go binary that talks to the local Ollama daemon and answers from inside the shell. Streams tokens as they arrive, keeps a session buffer, and stays out of the way — no browser tab, no auth dance, no leaving the terminal to ask a small question.</p>
+        <div class="flex flex-wrap gap-1.5 mt-4"><span class="tag tag-sm">go</span><span class="tag tag-sm">ollama</span><span class="tag tag-sm">streaming</span><span class="tag tag-sm">single binary</span></div>
+      </div>
+      <div class="ruled">
+        <div class="flex items-baseline justify-between gap-3">
+          <div class="flex items-baseline gap-3.5"><span class="font-mono text-[11px] tracking-[.12em] text-accent">[0x04]</span><h3 class="h4">The Council — multi-agent deliberation</h3></div>
+          <span class="label st-live shrink-0">SHIPPED</span>
+        </div>
+        <p class="body-muted mt-3.5 max-w-[60ch]">Four Claude personas — Philosopher, Contrarian, Romanticist, Analyst — argue a question in parallel. An Arbiter persona reads the four outputs and synthesizes a single answer. Dark grimoire UI, hand-drawn SVG avatars. Built to see if forcing disagreement produces better answers than asking one model twice.</p>
+        <div class="flex flex-wrap gap-1.5 mt-4"><span class="tag tag-sm">React</span><span class="tag tag-sm">multi-agent</span><span class="tag tag-sm">Claude API</span><span class="tag tag-sm">SVG avatars</span></div>
       </div>
     </div>
   </div>
+</section>
 
-  <!-- LHS — Project slots, zig-zag -->
-  <div class="lg:col-span-7 flex flex-col gap-4">
-
-    <div class="flex justify-between items-center text-xs font-mono">
-      <span class="text-slate-400 uppercase tracking-widest font-semibold">Active Builds</span>
-      <span class="text-[10px] text-slate-500">three // all local-inference</span>
+<!-- Stream loop + posture -->
+<section class="rule-grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] my-12 lg:my-[60px]">
+  <div class="p-7 lg:p-[34px_30px] flex flex-col">
+    <div class="label">03 // POSTURE</div>
+    <h3 class="h3 mt-[18px] max-w-[22ch]">Wire the pieces by hand.</h3>
+    <div class="mt-6 flex flex-col">
+      <div class="kv"><span class="!text-accent">local_first</span><span class="text-muted">cloud is opt-in, not default</span></div>
+      <div class="kv"><span class="!text-accent">no_framework_magic</span><span class="text-muted">wire the pieces by hand</span></div>
+      <div class="kv"><span class="!text-accent">small_models_first</span><span class="text-muted">reach for big only when needed</span></div>
     </div>
-
-    <!-- Card 01 — left-image right-text — OCR INDEXER -->
-    <article class="grid grid-cols-1 sm:grid-cols-5 gap-4 bg-[#121214] border border-slate-800 rounded-lg overflow-hidden">
-      <div class="sm:col-span-2 aspect-video sm:aspect-auto bg-[#0A0A0B] relative overflow-hidden flex items-center justify-center min-h-[160px]">
-        <div class="absolute inset-0 opacity-[0.08] pointer-events-none" style="background-image:linear-gradient(to right, #10b981 1px, transparent 1px), linear-gradient(to bottom, #10b981 1px, transparent 1px); background-size: 24px 24px;"></div>
-        <div class="relative w-10 h-10 border-2 border-emerald-500 rotate-45 flex items-center justify-center">
-          <div class="w-2 h-2 bg-emerald-500 -rotate-45 glow-green"></div>
-        </div>
-        <div class="absolute inset-0 bg-gradient-to-tr from-[#0A0A0B] via-transparent to-emerald-950/30 pointer-events-none"></div>
-        <div class="absolute top-2 left-2 px-2 py-0.5 bg-emerald-950/40 border border-emerald-800 text-[9px] font-mono uppercase tracking-wider rounded text-emerald-300">active</div>
-      </div>
-      <div class="sm:col-span-3 p-5 flex flex-col justify-between">
-        <div>
-          <div class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest mb-1">[0x01]_DOC_OCR_INDEXER</div>
-          <h4 class="text-base font-bold text-slate-100 tracking-tight mb-2">Document OCR &amp; extraction pipeline</h4>
-          <p class="text-[11px] text-slate-400 leading-relaxed">
-            Ingests document scans, runs OCR, then hands the raw text to a local LLM that classifies the document type and pulls out the fields that actually matter &mdash; dates, parties, totals, identifiers. Output drops into a searchable store, not a wall of unstructured text.
-          </p>
-        </div>
-        <div class="mt-3 flex flex-wrap gap-1.5 font-mono text-[9px]">
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">OCR</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">classifier</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">structured extraction</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">ollama</span>
-        </div>
-      </div>
-    </article>
-
-    <!-- Card 02 — right-image left-text (zig) — RAG BOT -->
-    <article class="grid grid-cols-1 sm:grid-cols-5 gap-4 bg-[#121214] border border-slate-800 rounded-lg overflow-hidden">
-      <div class="sm:col-span-3 p-5 flex flex-col justify-between order-2 sm:order-1">
-        <div>
-          <div class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest mb-1">[0x02]_RAG_RETRIEVAL_BOT</div>
-          <h4 class="text-base font-bold text-slate-100 tracking-tight mb-2">Retrieval-augmented chat, end to end</h4>
-          <p class="text-[11px] text-slate-400 leading-relaxed">
-            The unglamorous one. Embed a corpus, store the vectors, do a kNN lookup at query time, stitch the top chunks into the prompt, send it to the model. Built mostly to wire the moving parts together myself instead of trusting a framework &mdash; chunking, recall thresholds, and prompt budget all picked deliberately.
-          </p>
-        </div>
-        <div class="mt-3 flex flex-wrap gap-1.5 font-mono text-[9px]">
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">embeddings</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">vector search</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">prompt budget</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">streaming</span>
-        </div>
-      </div>
-      <div class="sm:col-span-2 aspect-video sm:aspect-auto bg-[#0A0A0B] relative overflow-hidden flex items-center justify-center min-h-[160px] order-1 sm:order-2">
-        <div class="absolute inset-0 opacity-[0.08] pointer-events-none" style="background-image:linear-gradient(to right, #10b981 1px, transparent 1px), linear-gradient(to bottom, #10b981 1px, transparent 1px); background-size: 24px 24px;"></div>
-        <div class="relative w-10 h-10 border-2 border-emerald-500 rotate-45 flex items-center justify-center">
-          <div class="w-2 h-2 bg-emerald-500 -rotate-45 glow-green"></div>
-        </div>
-        <div class="absolute inset-0 bg-gradient-to-tl from-[#0A0A0B] via-transparent to-emerald-950/30 pointer-events-none"></div>
-        <div class="absolute top-2 right-2 px-2 py-0.5 bg-emerald-950/40 border border-emerald-800 text-[9px] font-mono uppercase tracking-wider rounded text-emerald-300">active</div>
-      </div>
-    </article>
-
-    <!-- Card 03 — left-image right-text — GO CLI -->
-    <article class="grid grid-cols-1 sm:grid-cols-5 gap-4 bg-[#121214] border border-slate-800 rounded-lg overflow-hidden">
-      <div class="sm:col-span-2 aspect-video sm:aspect-auto bg-[#0A0A0B] relative overflow-hidden flex items-center justify-center min-h-[160px]">
-        <div class="absolute inset-0 opacity-[0.08] pointer-events-none" style="background-image:linear-gradient(to right, #10b981 1px, transparent 1px), linear-gradient(to bottom, #10b981 1px, transparent 1px); background-size: 24px 24px;"></div>
-        <div class="relative w-10 h-10 border-2 border-emerald-500 rotate-45 flex items-center justify-center">
-          <div class="w-2 h-2 bg-emerald-500 -rotate-45 glow-green"></div>
-        </div>
-        <div class="absolute inset-0 bg-gradient-to-tr from-[#0A0A0B] via-transparent to-emerald-950/30 pointer-events-none"></div>
-        <div class="absolute top-2 left-2 px-2 py-0.5 bg-emerald-950/40 border border-emerald-800 text-[9px] font-mono uppercase tracking-wider rounded text-emerald-300">active</div>
-      </div>
-      <div class="sm:col-span-3 p-5 flex flex-col justify-between">
-        <div>
-          <div class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest mb-1">[0x03]_GO_CODING_CLI</div>
-          <h4 class="text-base font-bold text-slate-100 tracking-tight mb-2">Terminal coding assistant, in Go</h4>
-          <p class="text-[11px] text-slate-400 leading-relaxed">
-            A single Go binary that talks to the local Ollama daemon and answers from inside the shell. Streams tokens as they arrive, keeps a session buffer, and stays out of the way &mdash; no browser tab, no auth dance, no leaving the terminal to ask a small question.
-          </p>
-        </div>
-        <div class="mt-3 flex flex-wrap gap-1.5 font-mono text-[9px]">
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">go</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">ollama</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">streaming</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">single binary</span>
-        </div>
-      </div>
-    </article>
-
-    <!-- Card 05 — left-image right-text — THE COUNCIL -->
-    <article class="grid grid-cols-1 sm:grid-cols-5 gap-4 bg-[#121214] border border-slate-800 rounded-lg overflow-hidden">
-      <div class="sm:col-span-2 aspect-video sm:aspect-auto bg-[#0A0A0B] relative overflow-hidden flex items-center justify-center min-h-[160px]">
-        <div class="absolute inset-0 opacity-[0.06] pointer-events-none" style="background-image:linear-gradient(to right, #38bdf8 1px, transparent 1px), linear-gradient(to bottom, #38bdf8 1px, transparent 1px); background-size: 24px 24px;"></div>
-        <div class="relative font-mono text-sky-300 text-[10px] tracking-widest uppercase text-center leading-relaxed">
-          <div>philosopher &middot; contrarian</div>
-          <div class="text-sky-500 my-1">&mdash; arbiter &mdash;</div>
-          <div>romanticist &middot; analyst</div>
-        </div>
-        <div class="absolute inset-0 bg-gradient-to-tr from-[#0A0A0B] via-transparent to-sky-950/30 pointer-events-none"></div>
-        <div class="absolute top-2 left-2 px-2 py-0.5 bg-sky-950/40 border border-sky-800 text-[9px] font-mono uppercase tracking-wider rounded text-sky-300">shipped</div>
-      </div>
-      <div class="sm:col-span-3 p-5 flex flex-col justify-between">
-        <div>
-          <div class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest mb-1">[0x05]_THE_COUNCIL</div>
-          <h4 class="text-base font-bold text-slate-100 tracking-tight mb-2">Multi-agent deliberation app</h4>
-          <p class="text-[11px] text-slate-400 leading-relaxed">
-            Four Claude personas &mdash; Philosopher, Contrarian, Romanticist, Analyst &mdash; argue a question in parallel. An Arbiter persona reads the four outputs and synthesizes a single answer. Dark grimoire UI, hand-drawn SVG avatars. Built to see if forcing disagreement produces better answers than asking one model twice.
-          </p>
-        </div>
-        <div class="mt-3 flex flex-wrap gap-1.5 font-mono text-[9px]">
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">React</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">multi-agent</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">Claude API</span>
-          <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-slate-300">SVG avatars</span>
-          <!-- TODO: confirm repo / live URL -->
-        </div>
-      </div>
-    </article>
-
+    <div class="mt-6 flex flex-col">
+      <div class="kv"><span>ollama daemon</span><span>local + :cloud bridge</span></div>
+      <div class="kv"><span>mxbai-embed-large</span><span>1024-dim, L2-normalized</span></div>
+      <div class="kv"><span>sqlite-vec</span><span>vec0 virtual table</span></div>
+      <div class="kv"><span>go net/http</span><span>streaming json decoder</span></div>
+      <div class="kv"><span>python glue</span><span>ingest + write paths</span></div>
+    </div>
   </div>
-
-  <!-- RHS — Stack, snippet, posture -->
-  <div class="lg:col-span-5 flex flex-col gap-4">
-
-    <!-- Go snippet — ollama chat call -->
-    <div class="bg-[#121214] border border-slate-800 rounded-lg p-4 flex flex-col">
-      <div class="flex justify-between items-center mb-3">
-        <span class="text-xs font-mono uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 glow-green"></span>
-          cli/chat.go // stream loop
-        </span>
-        <span class="px-2 py-0.5 bg-emerald-950/30 border border-emerald-800 text-[10px] uppercase font-mono tracking-wider rounded text-emerald-300">go 1.22</span>
-      </div>
-      <pre class="bg-[#0A0A0B] text-slate-300 p-4 rounded border border-slate-800 font-mono text-[11px] leading-relaxed overflow-x-auto"><code><span class="text-slate-500">// stream chat tokens straight to stdout</span>
-<span class="text-sky-400">func</span> stream(ctx context.Context, prompt <span class="text-sky-400">string</span>) <span class="text-sky-400">error</span> {
-    body, _ := json.Marshal(map[<span class="text-sky-400">string</span>]any{
-        <span class="text-emerald-400">"model"</span>:  cfg.Model,
-        <span class="text-emerald-400">"prompt"</span>: prompt,
-        <span class="text-emerald-400">"stream"</span>: <span class="text-amber-400">true</span>,
+  <pre class="code"><span class="c">// cli/chat.go — stream chat tokens straight to stdout</span>
+<span class="k">func</span> <span class="f">stream</span>(ctx context.Context, prompt <span class="t">string</span>) <span class="t">error</span> {
+    body, _ := json.Marshal(map[<span class="t">string</span>]any{
+        <span class="s">"model"</span>:  cfg.Model,
+        <span class="s">"prompt"</span>: prompt,
+        <span class="s">"stream"</span>: <span class="n">true</span>,
     })
-    req, _ := http.NewRequestWithContext(ctx, <span class="text-emerald-400">"POST"</span>,
-        cfg.Host+<span class="text-emerald-400">"/api/generate"</span>, bytes.NewReader(body))
+    req, _ := http.NewRequestWithContext(ctx, <span class="s">"POST"</span>,
+        cfg.Host+<span class="s">"/api/generate"</span>, bytes.NewReader(body))
 
     res, err := http.DefaultClient.Do(req)
-    <span class="text-sky-400">if</span> err != <span class="text-rose-400">nil</span> { <span class="text-sky-400">return</span> err }
-    <span class="text-sky-400">defer</span> res.Body.Close()
+    <span class="k">if</span> err != <span class="n">nil</span> { <span class="k">return</span> err }
+    <span class="k">defer</span> res.Body.Close()
 
     dec := json.NewDecoder(res.Body)
-    <span class="text-sky-400">for</span> {
-        <span class="text-sky-400">var</span> chunk struct{ Response <span class="text-sky-400">string</span>; Done <span class="text-sky-400">bool</span> }
-        <span class="text-sky-400">if</span> err := dec.Decode(&amp;chunk); err != <span class="text-rose-400">nil</span> { <span class="text-sky-400">return</span> err }
+    <span class="k">for</span> {
+        <span class="k">var</span> chunk struct{ Response <span class="t">string</span>; Done <span class="t">bool</span> }
+        <span class="k">if</span> err := dec.Decode(&amp;chunk); err != <span class="n">nil</span> { <span class="k">return</span> err }
         fmt.Print(chunk.Response)
-        <span class="text-sky-400">if</span> chunk.Done { <span class="text-sky-400">return</span> <span class="text-rose-400">nil</span> }
+        <span class="k">if</span> chunk.Done { <span class="k">return</span> <span class="n">nil</span> }
     }
-}</code></pre>
-    </div>
-
-    <!-- Stack list -->
-    <div class="bg-[#121214] border border-slate-800 rounded-lg p-5">
-      <div class="flex items-center gap-2 mb-4 border-b border-slate-800 pb-2.5">
-        <svg class="w-4 h-4 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-        <span class="text-xs uppercase font-mono tracking-wider text-slate-300 font-bold">Shared Stack</span>
-      </div>
-      <ul class="divide-y divide-slate-800/70 font-mono text-[11px]">
-        <li class="py-2 flex justify-between items-center">
-          <span class="text-slate-300">ollama daemon</span>
-          <span class="text-emerald-400 text-[10px]">local + :cloud bridge</span>
-        </li>
-        <li class="py-2 flex justify-between items-center">
-          <span class="text-slate-300">mxbai-embed-large</span>
-          <span class="text-emerald-400 text-[10px]">1024-dim, L2-normalized</span>
-        </li>
-        <li class="py-2 flex justify-between items-center">
-          <span class="text-slate-300">sqlite-vec</span>
-          <span class="text-emerald-400 text-[10px]">vec0 virtual table</span>
-        </li>
-        <li class="py-2 flex justify-between items-center">
-          <span class="text-slate-300">go net/http</span>
-          <span class="text-emerald-400 text-[10px]">streaming json decoder</span>
-        </li>
-        <li class="py-2 flex justify-between items-center">
-          <span class="text-slate-300">python glue</span>
-          <span class="text-emerald-400 text-[10px]">ingest + write paths</span>
-        </li>
-      </ul>
-    </div>
-
-    <!-- Posture -->
-    <div class="bg-[#121214] border border-slate-800 rounded-lg p-5">
-      <div class="text-xs font-mono uppercase tracking-wider text-slate-400 mb-3">Posture</div>
-      <div class="space-y-2 font-mono text-[11px]">
-        <div class="bg-[#0A0A0B] border border-slate-800 px-3 py-2 rounded flex items-center justify-between">
-          <code class="text-emerald-400">local_first</code>
-          <span class="text-[10px] text-slate-500">cloud is opt-in, not default</span>
-        </div>
-        <div class="bg-[#0A0A0B] border border-slate-800 px-3 py-2 rounded flex items-center justify-between">
-          <code class="text-emerald-400">no_framework_magic</code>
-          <span class="text-[10px] text-slate-500">wire the pieces by hand</span>
-        </div>
-        <div class="bg-[#0A0A0B] border border-slate-800 px-3 py-2 rounded flex items-center justify-between">
-          <code class="text-emerald-400">small_models_first</code>
-          <span class="text-[10px] text-slate-500">reach for big only when needed</span>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-</div>
+}</pre>
+</section>

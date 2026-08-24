@@ -1,43 +1,46 @@
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-  <!-- Mount target — left -->
-  <div class="lg:col-span-7 bg-[#121214] border border-slate-800 rounded-lg overflow-hidden">
-    <div class="px-5 py-3 border-b border-slate-800 bg-[#0E0E10] flex items-center justify-between">
-      <span class="text-xs font-mono uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 glow-green"></span>
-        wasmoon // pages/todolist.lua
-      </span>
-      <span class="text-[10px] font-mono text-slate-500">data-lua-module="pages/todolist"</span>
-    </div>
-    <div class="p-8 min-h-[300px]">
-      <div id="app" class="text-slate-100 w-full font-mono"></div>
-    </div>
+<div class="pt-8 pb-14 flex flex-col gap-6">
+  <div class="flex items-center gap-2 mono-sm tracking-[.1em]">
+    <a href="/workshop" class="hover:text-accent transition-colors">← ~/workshop</a>
+    <span>/todos</span>
   </div>
 
-  <!-- Source viewer — right -->
-  <div class="lg:col-span-5 bg-[#121214] border border-slate-800 rounded-lg p-5">
-    <div class="text-xs font-mono uppercase tracking-wider text-slate-400 mb-3">source</div>
-    <pre class="bg-[#0A0A0B] text-slate-300 p-4 rounded border border-slate-800 font-mono text-[11px] leading-relaxed overflow-x-auto"><code><span class="text-sky-400">local</span> items, setItems = reactive.signal({})
-<span class="text-sky-400">local</span> draft, setDraft = reactive.signal(<span class="text-emerald-400">""</span>)
+  <section class="rule-grid grid-cols-1 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
+    <!-- Mount target -->
+    <div class="flex flex-col">
+      <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-5 py-3.5 border-b border-rule label">
+        <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-accent"></span>wasmoon // pages/todolist.lua</span>
+        <span class="normal-case tracking-[.06em]">data-lua-module="pages/todolist"</span>
+      </div>
+      <div class="p-8 min-h-[300px]">
+        <div id="app" class="w-full font-mono"></div>
+      </div>
+    </div>
 
-<span class="text-sky-400">local</span> <span class="text-sky-400">function</span> addItem()
-    <span class="text-sky-400">local</span> d = draft()
-    <span class="text-sky-400">if</span> d == <span class="text-emerald-400">""</span> <span class="text-sky-400">then return end</span>
-    <span class="text-sky-400">local</span> copy = {}
-    <span class="text-sky-400">for</span> i, v <span class="text-sky-400">in</span> ipairs(items()) <span class="text-sky-400">do</span> copy[i] = v <span class="text-sky-400">end</span>
-    copy[#copy+<span class="text-amber-400">1</span>] = d
+    <!-- Source -->
+    <div class="flex flex-col">
+      <div class="px-5 py-3.5 border-b border-rule label">SOURCE</div>
+      <pre class="code code-sm flex-1"><span class="k">local</span> items, setItems = reactive.signal({})
+<span class="k">local</span> draft, setDraft = reactive.signal(<span class="s">""</span>)
+
+<span class="k">local function</span> addItem()
+    <span class="k">local</span> d = draft()
+    <span class="k">if</span> d == <span class="s">""</span> <span class="k">then return end</span>
+    <span class="k">local</span> copy = {}
+    <span class="k">for</span> i, v <span class="k">in</span> ipairs(items()) <span class="k">do</span> copy[i] = v <span class="k">end</span>
+    copy[#copy+<span class="n">1</span>] = d
     setItems(copy)
-    setDraft(<span class="text-emerald-400">""</span>)
-<span class="text-sky-400">end</span>
+    setDraft(<span class="s">""</span>)
+<span class="k">end</span>
 
-reactive.effect(<span class="text-sky-400">function</span>()
-    list.innerHTML = <span class="text-emerald-400">""</span>
-    <span class="text-sky-400">for</span> _, v <span class="text-sky-400">in</span> ipairs(items()) <span class="text-sky-400">do</span>
-        dom.append(list, h(<span class="text-emerald-400">"li"</span>, {}, v))
-    <span class="text-sky-400">end</span>
-<span class="text-sky-400">end</span>)</code></pre>
-    <p class="text-[10px] font-mono text-slate-500 leading-relaxed mt-3">
-      Two signals + one effect. The effect tears down and rebuilds the list whenever the items signal mutates.
-    </p>
-  </div>
+reactive.effect(<span class="k">function</span>()
+    list.innerHTML = <span class="s">""</span>
+    <span class="k">for</span> _, v <span class="k">in</span> ipairs(items()) <span class="k">do</span>
+        dom.append(list, h(<span class="s">"li"</span>, {}, v))
+    <span class="k">end</span>
+<span class="k">end</span>)</pre>
+      <p class="px-5 py-4 border-t border-rule text-[14px] leading-[1.55] text-muted">
+        Two signals + one effect. The effect tears down and rebuilds the list whenever the items signal mutates.
+      </p>
+    </div>
+  </section>
 </div>
