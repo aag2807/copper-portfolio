@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
     int port = resolve_port(argc, argv);
     printf("\n");
     printf(" ╔══════════════════════════════════════════╗\n");
-    printf(" ║       C Copper Web Framework v0.03       ║\n");
+    printf(" ║        C Copper Web Framework v0.5       ║\n");
     printf(" ╚══════════════════════════════════════════╝\n\n");
 
     env_load(".env");
