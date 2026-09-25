@@ -145,8 +145,9 @@ EmailResult email_send_via_resend(const char* api_key, const char* from, const c
     else
     {
         result.ok = 0;
-        const char* tail = str_cstr(&resp);
-        snprintf(result.message, sizeof(result.message), "resend %ld: %.400s", http_code, tail);
+        // Resend's error body is for the operator only: log it, don't return it.
+        fprintf(stderr, "[email] resend %ld: %.400s\n", http_code, str_cstr(&resp));
+        snprintf(result.message, sizeof(result.message), "resend returned HTTP %ld", http_code);
     }
 
     curl_slist_free_all(headers);

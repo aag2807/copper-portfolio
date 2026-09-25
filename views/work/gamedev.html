@@ -4,11 +4,12 @@
   <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] gap-8 lg:gap-12 items-end mt-7">
     <div>
       <div class="eyebrow text-accent mb-5">[0x04] GAMEDEV // LÖVE 11.5 · UNITY · BEVY</div>
-      <h1 class="display max-w-[20ch]">Lua, run from the metal of the game loop.</h1>
+      <h1 class="display max-w-[20ch]">Game loops, from the metal up.</h1>
     </div>
     <p class="lede-muted">
-      LÖVE is the prototyping bench — built directly against the callback surface, no wrapping engine, no entity
-      component DSL. Productized work runs in Unity; explorations sit in Rust/Bevy and SDL2/C++.
+      LÖVE is where I prototype: plain Lua against its update and draw callbacks, with no engine layered on top.
+      Passages, the game I'm building, runs in Unity. The rest is study — a BSP renderer in C, and an SDL2 → Rust/Bevy
+      track.
     </p>
   </div>
   <div class="rule-grid grid-cols-1 sm:grid-cols-3 mt-11">
@@ -20,7 +21,7 @@
 
 <!-- Builds -->
 <section class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.45fr)] gap-8 lg:gap-14 py-12 lg:py-[60px] border-b border-rule">
-  <div><div class="label sec-label">01 // ACTIVE_AND_PAST_BUILDS</div></div>
+  <div><h2 class="label sec-label">01 // ACTIVE_AND_PAST_BUILDS</h2></div>
   <div class="flex flex-col gap-8">
     <div class="ruled">
       <div class="flex items-baseline justify-between gap-3">
@@ -54,7 +55,7 @@
 <section class="rule-grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] my-12 lg:my-[60px]">
   <div class="p-7 lg:p-[34px_30px] flex flex-col">
     <div class="label">02 // LOOP_SKELETON</div>
-    <h3 class="h3 mt-[18px] max-w-[22ch]">Fixed timestep, honestly.</h3>
+    <h2 class="h3 mt-[18px] max-w-[22ch]">Fixed timestep, honestly.</h2>
     <p class="body-muted mt-4 max-w-[42ch]">Accumulate real time, step the world in constant slices, draw whatever is current. Deterministic under load, and the bug that only appears on fast machines goes away.</p>
     <div class="mt-6 flex flex-col">
       <div class="kv"><span>love.graphics</span><span>canvases, batches, shaders</span></div>

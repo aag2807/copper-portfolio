@@ -1,0 +1,62 @@
+<!doctype html>
+<!-- Source for public/og.png (1200×630). Rendered by scripts/build-og.mjs. -->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Serif:ital@1&display=block" rel="stylesheet" />
+<style>
+  :root { --paper:#e9ecef; --card:#f7f8f9; --ink:#14181c; --muted:#5c666e; --rule:#ccd4da; --moss:#3f6b52; --copper:#8c5230; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1200px; height: 630px; background: var(--paper); color: var(--ink); -webkit-font-smoothing: antialiased; }
+  body { font-family: "IBM Plex Sans", sans-serif; padding: 56px 72px; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+  .mono { font-family: "IBM Plex Mono", monospace; }
+  .top { display: flex; justify-content: space-between; align-items: center; font-size: 15px; letter-spacing: .14em; padding-bottom: 22px; border-bottom: 1px solid var(--rule); }
+  .top .id { font-weight: 600; }
+  .top .ver { color: var(--copper); letter-spacing: .1em; }
+  .eyebrow { margin-top: 70px; display: flex; align-items: center; gap: 14px; font-size: 16px; letter-spacing: .16em; color: var(--muted); }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--moss); }
+  h1 { margin-top: 26px; font-size: 104px; line-height: .98; letter-spacing: -.035em; font-weight: 600; }
+  .pos { margin-top: 26px; font-size: 38px; letter-spacing: -.015em; font-weight: 500; color: var(--moss); }
+  .pos span { color: var(--rule); font-weight: 400; margin: 0 6px; }
+  .bottom { margin-top: auto; display: grid; grid-template-columns: repeat(3, 1fr) 1.35fr; border-top: 2px solid var(--ink); }
+  .cell { padding: 20px 0 0; }
+  .cell + .cell { padding-left: 24px; border-left: 1px solid var(--rule); }
+  .k { font-size: 13px; letter-spacing: .16em; color: var(--muted); }
+  .v { margin-top: 10px; font-size: 26px; font-weight: 600; letter-spacing: -.01em; }
+  .v.url { color: var(--moss); font-family: "IBM Plex Mono", monospace; font-weight: 500; font-size: 24px; }
+  .globe { position: absolute; right: -70px; top: 92px; font-size: 13px; line-height: 13px; color: var(--ink); opacity: .075; white-space: pre; pointer-events: none; }
+</style>
+</head>
+<body>
+  <pre class="globe mono" id="globe" aria-hidden="true"></pre>
+  <div class="top mono"><span class="id">A_GUZMAN</span><span class="ver">SANTO DOMINGO, DO · AST (UTC−4)</span></div>
+  <div class="eyebrow mono"><span class="dot"></span>SENIOR FULLSTACK ENGINEER</div>
+  <h1>Alvaro Guzman</h1>
+  <div class="pos">Fintech <span>·</span> .NET <span>·</span> Applied AI</div>
+  <div class="bottom">
+    <div class="cell"><div class="k mono">EXPERIENCE</div><div class="v">7+ years</div></div>
+    <div class="cell"><div class="k mono">PAYMENTS</div><div class="v">60+ gateways</div></div>
+    <div class="cell"><div class="k mono">SYSTEMS</div><div class="v">C · Go · Odin</div></div>
+    <div class="cell"><div class="k mono">PORTFOLIO</div><div class="v url">alvaro-guzman.com</div></div>
+  </div>
+  <script>
+    // Faint static ASCII sphere, echoing the site's background.
+    (function () {
+      var ramp = " .:-=+*#%@", R = 17, out = "";
+      for (var y = -R; y <= R; y++) {
+        var row = "";
+        for (var x = -R * 2; x <= R * 2; x++) {
+          var nx = x / (R * 2), ny = y / R, d = nx * nx + ny * ny;
+          if (d > 1) { row += " "; continue; }
+          var nz = Math.sqrt(1 - d), l = Math.max(0, -0.5 * nx - 0.45 * ny + 0.74 * nz);
+          row += ramp[Math.min(ramp.length - 1, Math.floor(l * ramp.length))];
+        }
+        out += row + "\n";
+      }
+      document.getElementById("globe").textContent = out;
+    })();
+  </script>
+</body>
+</html>

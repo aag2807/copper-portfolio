@@ -1,4 +1,6 @@
 flowchart TD
+  accTitle: c-copper request lifecycle
+  accDescr: A request is accepted, handed to a pthread, parsed, passed through the logging, static, rate-limit and CSRF middleware, routed to a controller, rendered through the view engine into the layout, and written back to the socket.
   client([client]) --> acc["accept()"]
   acc --> thr["pthread dispatch"]
   thr --> parser["request parser"]

@@ -14,6 +14,8 @@ extern void home_workshop(Request*, Response*, void*);
 extern void home_counter(Request*, Response*, void*);
 extern void home_todolist(Request*, Response*, void*);
 extern void contact_submit(Request*, Response*, void*);
+extern void home_robots(Request*, Response*, void*);
+extern void home_sitemap(Request*, Response*, void*);
 
 extern void work_index(Request*, Response*, void*);
 extern void work_fintech_ai(Request*, Response*, void*);
@@ -37,11 +39,28 @@ static int logging_middleware(Request* req, Response* res, MiddlewareNode* self,
     return middleware_next(self, req, res, router);
 }
 
+// $PORT (Cloud Run) wins, then argv[1], then 8080.
+static int resolve_port(int argc, char* argv[])
+{
+    const char* sources[2] = {getenv("PORT"), argc > 1 ? argv[1] : NULL};
+    for (int i = 0; i < 2; i++)
+    {
+        const char* v = sources[i];
+        if (!v || !*v) continue;
+        char* end = NULL;
+        long p = strtol(v, &end, 10);
+        if (*end == '\0' && p > 0 && p <= 65535) return (int)p;
+        fprintf(stderr, "ignoring invalid port \"%s\"\n", v);
+    }
+    return 8080;
+}
+
 int main(int argc, char* argv[])
 {
-    int port = 8080;
-    if (argc > 1)
-        port = atoi(argv[1]);
+    // Line-buffer stdout so startup logs reach Cloud Run (a pipe) immediately.
+    setvbuf(stdout, NULL, _IOLBF, 0);
+
+    int port = resolve_port(argc, argv);
     printf("\n");
     printf(" ╔══════════════════════════════════════════╗\n");
     printf(" ║       C Copper Web Framework v0.03       ║\n");
@@ -71,6 +90,8 @@ int main(int argc, char* argv[])
     server_get(server, "/writing", writing_index);
     server_get(server, "/counter", home_counter);
     server_get(server, "/todos", home_todolist);
+    server_get(server, "/robots.txt", home_robots);
+    server_get(server, "/sitemap.xml", home_sitemap);
 
     // 301s from pre-restructure URLs
     server_get(server, "/systems", redirect_systems);

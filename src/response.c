@@ -22,6 +22,7 @@ void response_init(Response* res, int fd)
     res->body = str_new();
     res->fd = fd;
     res->headers_sent = 0;
+    res->omit_body = 0;
 }
 
 void response_status(Response* res, int code, const char* text)
@@ -80,8 +81,17 @@ void response_flush(Response* res, int fd)
     // Build the headers as a single buffer (status line + headers + blank line).
     String buf = str_new();
     str_appendf(&buf, "HTTP/1.1 %d %s\r\n", res->status_code, str_cstr(&res->status_text));
-    str_appendf(&buf, "Content-Length: %zu\r\n", res->body.len);
+    // 304 and 204 carry no body and must not advertise a zero Content-Length.
+    if (res->status_code != 304 && res->status_code != 204)
+        str_appendf(&buf, "Content-Length: %zu\r\n", res->body.len);
     str_append(&buf, "Connection: close\r\n");
+    // Security defaults for every response. The full CSP is deferred; this one
+    // only forbids framing.
+    str_append(&buf, "X-Content-Type-Options: nosniff\r\n");
+    str_append(&buf, "Referrer-Policy: strict-origin-when-cross-origin\r\n");
+    str_append(&buf, "Strict-Transport-Security: max-age=31536000; includeSubDomains\r\n");
+    str_append(&buf, "Content-Security-Policy: frame-ancestors 'none'\r\n");
+    str_append(&buf, "Permissions-Policy: camera=(), microphone=(), geolocation=()\r\n");
     str_append(&buf, str_cstr(&res->headers));
     str_append(&buf, "\r\n");
 
@@ -100,7 +110,7 @@ void response_flush(Response* res, int fd)
     // Write body separately so binary payloads (PDFs, fonts, images) are not
     // truncated at the first NUL byte. We use res->body.len, not strlen.
     const char* body_data = str_cstr(&res->body);
-    size_t body_remaining = res->body.len;
+    size_t body_remaining = (res->omit_body || res->status_code == 304 || res->status_code == 204) ? 0 : res->body.len;
     while (body_remaining > 0)
     {
         ssize_t n = sock_write(fd, body_data, body_remaining);

@@ -1,4 +1,6 @@
 flowchart TD
+  accTitle: Payment gateway integration architecture
+  accDescr: Checkout calls the orders API, which passes through a fraud pipeline to a payment orchestrator and a transaction state machine with idempotency keys and audit. The state machine drives 60+ provider adapters; provider webhooks are verified and reconciled back into the state machine.
   checkout["checkout (Angular / Ionic)"] --> orders["orders API (.NET)"]
   orders --> fraud["fraud pipeline"]
   fraud --> orch["payment orchestrator"]

@@ -20,7 +20,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const MERMAID = join(root, "node_modules", "mermaid", "dist", "mermaid.min.js");
 
 // Site palette (paper editorial): paper #e9ecef / card #f7f8f9 / ink #14181c /
-// rule #ccd4da / accent (moss) #3f6b52 / copper #a4623a.
+// rule #ccd4da / accent (moss) #3f6b52 / copper #8c5230.
 const THEME = {
   theme: "base",
   themeVariables: {

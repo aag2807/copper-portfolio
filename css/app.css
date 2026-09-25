@@ -21,7 +21,7 @@
   --color-rule: #ccd4da;
   --color-accent: #3f6b52;
   --color-accent-soft: #dde7e0;
-  --color-copper: #a4623a;
+  --color-copper: #8c5230;
   --color-copper-soft: #efe1d8;
   --color-code: #14181c;
   --color-code-fg: #dfe5e8;
@@ -42,6 +42,15 @@
   ::selection { background: var(--color-accent); color: #fff; }
   :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
 }
+
+/* ---- skip link: first focusable element, hidden until focused ---- */
+.skip-link {
+  position: absolute; left: 12px; top: -100px; z-index: 100;
+  padding: 10px 14px; background: var(--color-ink); color: var(--color-paper);
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em;
+}
+.skip-link:focus { top: 12px; }
+#main:focus { outline: none; }
 
 @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
 @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
@@ -168,7 +177,10 @@
   /* -- surfaces -- */
   .panel { border: 1px solid var(--color-rule); background: var(--color-card); padding: 22px; }
   .panel-accent { border: 1px solid var(--color-accent); background: var(--color-accent-soft); padding: 22px; }
-  .panel-plain { border: 1px solid var(--color-rule); padding: 22px; }
+  /* frosted, so the #universe background reads through without crossing the text */
+  .panel-plain { border: 1px solid var(--color-rule); padding: 22px;
+    background: color-mix(in srgb, var(--color-paper) 84%, transparent);
+    -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
 
   /* hairline grid: 1px gaps painted with the rule colour */
   .rule-grid {
@@ -244,7 +256,7 @@
   .code .f { color: #7fb493; }
   .code .n { color: #c98a5e; }
   .code .s { color: #c98a5e; }
-  .code .c { color: #6a757e; font-style: italic; }
+  .code .c { color: #7a858e; font-style: italic; }
   .code .t { color: #a9b8c4; }
 
   /* -- form controls -- */
@@ -259,8 +271,8 @@
     color: var(--color-ink);
     transition: border-color .18s ease;
   }
-  .field::placeholder { color: #9aa4ab; }
-  .field:focus { outline: none; border-color: var(--color-accent); }
+  .field::placeholder { color: var(--color-muted); }
+  .field:focus { outline: 2px solid var(--color-accent); outline-offset: 1px; border-color: var(--color-accent); }
 
   /* -- sticky section label (case studies) -- */
   .sec-label { position: sticky; top: 96px; }
@@ -304,6 +316,22 @@ nav a[aria-current="page"] { color: var(--color-accent); }
   .js .rv { opacity: 0; transform: translateY(10px); transition: opacity .55s ease, transform .55s ease; transition-delay: var(--rvd, 0ms); }
   .js .rv.rv-in { opacity: 1; transform: none; }
 }
+
+/* ----------------------------------------------------------------------------
+   Universe background (public/js/universe.js): ASCII Earth + starfield.
+   A fixed canvas at z-index 0, below the page. <main> and <footer> become
+   positioned (z-index auto, so no new stacking context: #read-progress keeps
+   its z-index 60 against the sticky z-50 header) and so paint above it.
+   The canvas never takes input; it fades in once the script has drawn.
+---------------------------------------------------------------------------- */
+#universe {
+  position: fixed; inset: 0; width: 100%; height: 100%;
+  z-index: 0; pointer-events: none; display: block;
+  opacity: 0; transition: opacity .9s ease;
+}
+#universe.on { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { #universe { transition: none; } }
+body > main, body > footer { position: relative; }
 
 /* ---- reading progress (writing posts) ---- */
 #read-progress {

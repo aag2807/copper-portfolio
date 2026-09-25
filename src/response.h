@@ -11,6 +11,7 @@ typedef struct
     String body;
     int fd; // client socket
     int headers_sent;
+    int omit_body; // HEAD: send headers (incl. Content-Length) but no body
 } Response;
 
 void response_init(Response* res, int fd);

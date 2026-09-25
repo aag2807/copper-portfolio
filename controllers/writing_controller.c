@@ -31,6 +31,8 @@ ACTION(writing_show)
                     {"title", "text", kWritingPosts[i].title, NULL},
                     {"path", "text", str_cstr(&req->path), NULL},
                     {"description", "text", kWritingPosts[i].desc, NULL},
+                    {"ogType", "text", "article", NULL},
+                    {"published", "text", kWritingPosts[i].date, NULL},
                     {NULL, NULL, NULL, NULL},
                 };
                 response_status(res, 200, "OK");
@@ -40,6 +42,5 @@ ACTION(writing_show)
         }
     }
 
-    response_status(res, 404, "Not Found");
-    response_html(res, "<h1>404 - Page Not Found</h1>");
+    render_not_found(res);
 }

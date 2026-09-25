@@ -4,21 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{title}} — Alvaro Guzman</title>
-    <meta name="description" content="{{#if description}}{{description}}{{else}}Alvaro Guzman — senior fullstack engineer for fintech and core banking. .NET, Angular, applied AI/LLM. This portfolio is served from a hand-written C MVC framework with a Lua runtime in the browser.{{/if}}" />
+    <meta name="description" content="{{#if description}}{{description}}{{else}}Alvaro Guzman, senior fullstack engineer for fintech and core banking: .NET, Angular, Svelte, Vue, Laravel, Go, Odin, applied AI. Served by his own C framework.{{/if}}" />
     <meta name="author" content="Alvaro Guzman" />
     <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
     {{#if path}}<link rel="canonical" href="https://alvaro-guzman.com{{path}}" />{{/if}}
     <meta name="theme-color" content="#e9ecef" />
     <!-- social sharing -->
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content="{{#if ogType}}{{ogType}}{{else}}website{{/if}}" />
+    {{#if published}}<meta property="article:published_time" content="{{published}}" />
+    <meta property="article:author" content="Alvaro Guzman" />{{/if}}
     <meta property="og:site_name" content="Alvaro Guzman" />
     <meta property="og:title" content="{{title}} — Alvaro Guzman" />
-    <meta property="og:description" content="{{#if description}}{{description}}{{else}}Senior fullstack engineer — .NET, Angular, applied AI/LLM for fintech and core banking. Portfolio served from a hand-written C MVC framework with a Lua runtime in the browser.{{/if}}" />
+    <meta property="og:description" content="{{#if description}}{{description}}{{else}}Alvaro Guzman, senior fullstack engineer for fintech and core banking: .NET, Angular, Svelte, Vue, Laravel, Go, Odin, applied AI. Served by his own C framework.{{/if}}" />
     {{#if path}}<meta property="og:url" content="https://alvaro-guzman.com{{path}}" />{{/if}}
     <meta property="og:image" content="https://alvaro-guzman.com/static/og.png" />
-    <meta property="og:image:width" content="2400" />
-    <meta property="og:image:height" content="1260" />
-    <meta property="og:image:alt" content="Alvaro Guzman — senior fullstack engineer, fintech and applied AI. Built the stack from scratch: C web framework, Lua-in-browser runtime." />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Alvaro Guzman — senior fullstack engineer: fintech, .NET and applied AI. 7+ years. alvaro-guzman.com" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -27,13 +29,29 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/static/app.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Alvaro Guzman",
+        "jobTitle": "Senior Fullstack Software Engineer",
+        "url": "https://alvaro-guzman.com",
+        "email": "mailto:aagn2807@gmail.com",
+        "address": { "@type": "PostalAddress", "addressLocality": "Santo Domingo", "addressCountry": "DO" },
+        "knowsLanguage": ["en", "es"],
+        "sameAs": ["https://github.com/aag2807", "https://www.linkedin.com/in/aguzmandev/"]
+      }
+    </script>
     <script defer src="/static/alpine.js"></script>
-    <script defer src="/static/framework/lua-framework.js"></script>
+    {{#if luaModule}}<script defer src="/static/framework/lua-framework.js"></script>{{/if}}
+    <script defer src="/static/js/universe.js"></script>
   </head>
   <body
     class="min-h-[100dvh] flex flex-col bg-paper text-ink font-sans"
     {{#if luaModule}}data-lua-module="{{luaModule}}"{{/if}}
   >
+    <a href="#main" class="skip-link">Skip to content</a>
+    <canvas id="universe" aria-hidden="true"></canvas>
     <header class="sticky top-0 z-50 border-b border-rule bg-paper/92 backdrop-blur-md">
       <div class="max-w-[1280px] mx-auto w-full px-5 sm:px-8 flex flex-col md:flex-row md:items-center md:justify-between md:gap-6 md:py-5">
         <!-- identity row (own row on phones) -->
@@ -42,7 +60,7 @@
           <span class="font-mono text-[11px] tracking-[.1em] text-copper">c-copper v0.03</span>
         </div>
         <!-- nav row (full-width scroll strip on phones, inline on desktop) -->
-        <nav class="topnav nav-scroll -mx-5 px-5 sm:-mx-8 sm:px-8 md:mx-0 md:px-0 border-t border-rule/70 md:border-t-0 flex items-stretch md:items-center gap-5 sm:gap-[22px] overflow-x-auto font-mono text-[12px] tracking-[.08em] text-muted min-w-0 h-11 md:h-auto">
+        <nav aria-label="Main" class="topnav nav-scroll -mx-5 px-5 sm:-mx-8 sm:px-8 md:mx-0 md:px-0 border-t border-rule/70 md:border-t-0 flex items-stretch md:items-center gap-5 sm:gap-[22px] overflow-x-auto font-mono text-[12px] tracking-[.08em] text-muted min-w-0 h-11 md:h-auto">
           <a href="/"         class="shrink-0 flex items-center hover:text-accent transition-colors">01_Home</a>
           <a href="/work"     class="shrink-0 flex items-center hover:text-accent transition-colors">02_Work</a>
           <a href="/workshop" class="shrink-0 flex items-center hover:text-accent transition-colors">03_Workshop</a>
@@ -53,8 +71,8 @@
       {{#if worknav}}
       <!-- /work sub-nav -->
       <div class="border-t border-rule/70 bg-card/80">
-        <nav class="subnav nav-scroll max-w-[1280px] mx-auto w-full px-5 sm:px-8 h-9 flex items-center gap-5 overflow-x-auto font-mono text-[11px] tracking-[.08em] text-muted">
-          <span class="select-none shrink-0 text-[#9aa4ab]">~/work $</span>
+        <nav aria-label="Work sections" class="subnav nav-scroll max-w-[1280px] mx-auto w-full px-5 sm:px-8 h-9 flex items-center gap-5 overflow-x-auto font-mono text-[11px] tracking-[.08em] text-muted">
+          <span class="select-none shrink-0 text-muted" aria-hidden="true">~/work $</span>
           <a href="/work/fintech-ai" class="shrink-0 hover:text-accent transition-colors">fintech-ai</a>
           <a href="/work/systems"    class="shrink-0 hover:text-accent transition-colors">systems</a>
           <a href="/work/web"        class="shrink-0 hover:text-accent transition-colors">web</a>
@@ -64,7 +82,7 @@
       {{/if}}
     </header>
 
-    <main class="flex-1 max-w-[1280px] mx-auto w-full px-5 sm:px-8 flex flex-col">
+    <main id="main" tabindex="-1" class="flex-1 max-w-[1280px] mx-auto w-full px-5 sm:px-8 flex flex-col">
       {{body}}
     </main>
 
@@ -72,10 +90,9 @@
       <div class="max-w-[1280px] mx-auto w-full px-5 sm:px-8 py-8 flex flex-wrap gap-x-8 gap-y-3 items-center justify-between font-mono text-[11px] tracking-[.08em] text-muted">
         <div class="flex flex-wrap gap-x-6 gap-y-2">
           <span>Operator: Alvaro Guzman</span>
-          <span>Origin: Santo Domingo, DO</span>
+          <span>Origin: Santo Domingo, DO · AST (UTC−4)</span>
           <span class="hidden md:inline">Runtime: c-copper / wasmoon-lua</span>
         </div>
-        <span class="text-accent">System_Health: OK</span>
       </div>
     </footer>
 

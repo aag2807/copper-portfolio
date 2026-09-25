@@ -3,10 +3,13 @@
 #include "csrf.h"
 #include "str.h"
 
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+
+#define LAYOUT_PATH "views/layout.html"
 
 char* read_file(const char* path)
 {
@@ -134,6 +137,32 @@ static StopTag render_span(const char** pp, String* out, ViewData* data, ViewDat
         if (p[0] == '{' && p[1] == '{')
         {
             p += 2;
+
+            // {{{key}}} — raw substitution, for values that intentionally carry HTML.
+            if (p[0] == '{')
+            {
+                p++;
+                skip_spaces(&p);
+                char key[128];
+                size_t i = 0;
+                while (*p && !(p[0] == '}' && p[1] == '}' && p[2] == '}') && i + 1 < sizeof(key))
+                {
+                    key[i++] = *p++;
+                }
+                key[i] = '\0';
+                while (i > 0 && key[i - 1] == ' ') key[--i] = '\0';
+                if (p[0] == '}' && p[1] == '}' && p[2] == '}') p += 3;
+
+                if (body && strcmp(key, "body") == 0)
+                {
+                    str_append(out, body);
+                    continue;
+                }
+                const char* value = lookup_value(key, data, row);
+                if (value) str_append(out, value);
+                continue;
+            }
+
             skip_spaces(&p);
 
             // Block tags
@@ -213,7 +242,8 @@ static StopTag render_span(const char** pp, String* out, ViewData* data, ViewDat
                 return STOP_ELSE;
             }
 
-            // Plain {{key}} substitution
+            // Plain {{key}} substitution — HTML-escaped. {{body}} (the rendered
+            // page inserted into the layout) is the one raw exception.
             char key[128];
             size_t i = 0;
             while (*p && !(p[0] == '}' && p[1] == '}') && i + 1 < sizeof(key))
@@ -231,7 +261,7 @@ static StopTag render_span(const char** pp, String* out, ViewData* data, ViewDat
             }
 
             const char* value = lookup_value(key, data, row);
-            if (value) str_append(out, value);
+            if (value) str_append_html(out, value);
             continue;
         }
 
@@ -275,7 +305,44 @@ static String render_template(const char* template, ViewData* data, const char* 
     return result;
 }
 
-void render_view(Response* res, const char* template_path, ViewData* data)
+String view_render_string(const char* template, ViewData* data, const char* body)
+{
+    return render_template(template, data, body);
+}
+
+// The layout is read once and kept for the life of the process. Set
+// VIEW_NO_CACHE=1 to re-read it on every request while editing it locally.
+static char* g_layout = NULL;
+static int g_layout_loaded = 0;
+static pthread_mutex_t g_layout_lock = PTHREAD_MUTEX_INITIALIZER;
+
+static int layout_cache_disabled(void)
+{
+    const char* v = getenv("VIEW_NO_CACHE");
+    return v && *v && strcmp(v, "0") != 0;
+}
+
+// Returns the layout source. *owned is set when the caller must free it.
+static const char* layout_get(int* owned)
+{
+    *owned = 0;
+    if (layout_cache_disabled())
+    {
+        *owned = 1;
+        return read_file(LAYOUT_PATH);
+    }
+    pthread_mutex_lock(&g_layout_lock);
+    if (!g_layout_loaded)
+    {
+        g_layout = read_file(LAYOUT_PATH);
+        g_layout_loaded = 1;
+    }
+    pthread_mutex_unlock(&g_layout_lock);
+    return g_layout;
+}
+
+// Renders views/<template_path> inside the layout. Returns 0 if the template is missing.
+static int render_into(Response* res, const char* template_path, ViewData* data)
 {
     char full_path[512];
     snprintf(full_path, sizeof(full_path), "views/%s", template_path);
@@ -283,19 +350,19 @@ void render_view(Response* res, const char* template_path, ViewData* data)
 
     if (!template)
     {
-        response_html(res, "<h1>500 - View not found</h1>");
-        return;
+        return 0;
     }
 
     String body = render_template(template, data, NULL);
 
-    char* layout = read_file("views/layout.html");
+    int owned = 0;
+    const char* layout = layout_get(&owned);
     if (layout)
     {
         String final = render_template(layout, data, str_cstr(&body));
         response_html(res, str_cstr(&final));
         str_free(&final);
-        free(layout);
+        if (owned) free((char*)layout);
     }
     else
     {
@@ -303,4 +370,27 @@ void render_view(Response* res, const char* template_path, ViewData* data)
     }
     str_free(&body);
     free(template);
+    return 1;
+}
+
+void render_view(Response* res, const char* template_path, ViewData* data)
+{
+    if (!render_into(res, template_path, data))
+    {
+        response_html(res, "<h1>500 - View not found</h1>");
+    }
+}
+
+void render_not_found(Response* res)
+{
+    ViewData data[] = {
+        {"title", "text", "Not found (404)", NULL},
+        {"description", "text", "No route matches this path on alvaro-guzman.com.", NULL},
+        {NULL, NULL, NULL, NULL},
+    };
+    response_status(res, 404, "Not Found");
+    if (!render_into(res, "errors/404.html", data))
+    {
+        response_html(res, "<h1>404 - Page Not Found</h1>");
+    }
 }

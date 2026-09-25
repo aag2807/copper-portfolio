@@ -1,5 +1,10 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -g -O2 -Iinclude
+# Production flags: hardening on, no debug info. `make DEBUG=1` for a -g -O0 build.
+CFLAGS = -Wall -Wextra -Wformat=2 -O2 -MMD -MP \
+         -fstack-protector-strong -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2
+ifdef DEBUG
+    CFLAGS := $(filter-out -O2 -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2,$(CFLAGS)) -g -O0
+endif
 
 # Detect Windows (cmd.exe + mingw32-make sets OS=Windows_NT) vs POSIX.
 ifeq ($(OS),Windows_NT)
@@ -16,29 +21,42 @@ endif
 
 SRC         := $(wildcard src/*.c)
 CONTROLLERS := $(wildcard controllers/*.c)
-MODELS      := $(wildcard models/*.c)
-OBJ         := $(SRC:.c=.o) $(CONTROLLERS:.c=.o) $(MODELS:.c=.o)
+OBJ         := $(SRC:.c=.o) $(CONTROLLERS:.c=.o)
 TARGET      := server$(EXE)
+
+# Each tests/test_*.c is its own binary, linked against the framework (src/)
+# but not main.c or the controllers.
+TEST_SRC    := $(wildcard tests/test_*.c)
+TEST_BIN    := $(TEST_SRC:.c=$(EXE))
+
+DEPS        := $(OBJ:.o=.d) main.d $(TEST_SRC:.c=.d)
 
 all: $(TARGET)
 
-$(TARGET): main.c $(OBJ)
+$(TARGET): main.o $(OBJ)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-# generated allowlist: rebuild the controller when build-writing.mjs regenerates it
-controllers/writing_controller.o: controllers/writing_manifest.h
+tests/test_%$(EXE): tests/test_%.c $(SRC:.c=.o)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+
+test: $(TEST_BIN)
+	@for t in $(TEST_BIN); do echo "== $$t"; ./$$t || exit 1; done
+
+-include $(DEPS)
 
 clean:
 ifeq ($(OS),Windows_NT)
 	-$(RM) $(call FixPath,$(TARGET)) 2>nul
-	-$(RM) $(call FixPath,src/*.o) 2>nul
-	-$(RM) $(call FixPath,controllers/*.o) 2>nul
-	-$(RM) $(call FixPath,models/*.o) 2>nul
+	-$(RM) $(call FixPath,main.o) $(call FixPath,main.d) 2>nul
+	-$(RM) $(call FixPath,src/*.o) $(call FixPath,src/*.d) 2>nul
+	-$(RM) $(call FixPath,controllers/*.o) $(call FixPath,controllers/*.d) 2>nul
+	-$(RM) $(call FixPath,tests/*.d) $(call FixPath,tests/*.exe) 2>nul
 else
-	$(RM) $(TARGET) src/*.o controllers/*.o models/*.o
+	$(RM) $(TARGET) main.o main.d src/*.o src/*.d controllers/*.o controllers/*.d \
+	      tests/*.d $(TEST_BIN)
 endif
 
 run: $(TARGET)
@@ -83,4 +101,4 @@ rollback:
 	  --to-revisions=$$(gcloud run revisions list --service=$(SERVICE) --region=$(REGION) \
 	    --format='value(name)' --limit=2 | tail -n1)=100
 
-.PHONY: all clean run docker-build docker-push deploy rollback
+.PHONY: all clean run test docker-build docker-push deploy rollback

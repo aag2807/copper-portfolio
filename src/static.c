@@ -2,10 +2,12 @@
 
 #include "request.h"
 #include "response.h"
+#include "view.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
 
 #define STATIC_PREFIX "/static/"
 #define STATIC_ROOT "public"
@@ -18,8 +20,10 @@ static const char* content_type_for(const char* path)
         return "application/octet-stream";
     if (!strcmp(dot, ".css"))
         return "text/css; charset=utf-8";
-    if (!strcmp(dot, ".js"))
+    if (!strcmp(dot, ".js") || !strcmp(dot, ".mjs"))
         return "application/javascript; charset=utf-8";
+    if (!strcmp(dot, ".wasm"))
+        return "application/wasm";
     if (!strcmp(dot, ".html"))
         return "text/html; charset=utf-8";
     if (!strcmp(dot, ".json"))
@@ -43,6 +47,78 @@ static const char* content_type_for(const char* path)
     return "application/octet-stream";
 }
 
+// Does the If-None-Match header list this ETag (or "*")?
+static int etag_matches(const char* inm, const char* etag)
+{
+    if (!inm || !*inm) return 0;
+    if (strcmp(inm, "*") == 0) return 1;
+    size_t elen = strlen(etag);
+    const char* p = inm;
+    while (*p)
+    {
+        while (*p == ' ' || *p == '\t' || *p == ',') p++;
+        if (p[0] == 'W' && p[1] == '/') p += 2; // weak comparison
+        const char* e = p;
+        while (*e && *e != ',') e++;
+        const char* t = e;
+        while (t > p && (t[-1] == ' ' || t[-1] == '\t')) t--;
+        if ((size_t)(t - p) == elen && strncmp(p, etag, elen) == 0) return 1;
+        p = e;
+    }
+    return 0;
+}
+
+int static_send_file(Request* req, Response* res, const char* full, const char* content_type)
+{
+    struct stat st;
+    if (stat(full, &st) != 0 || !S_ISREG(st.st_mode))
+    {
+        return 0;
+    }
+
+    if (st.st_size > MAX_FILE_BYTES)
+    {
+        response_status(res, 413, "Payload Too Large");
+        response_html(res, "<h1>413</h1>");
+        return 1;
+    }
+
+    char etag[64];
+    snprintf(etag, sizeof(etag), "\"%llx-%llx\"", (unsigned long long)st.st_size, (unsigned long long)st.st_mtime);
+    // Assets are not fingerprinted, so browsers must revalidate on every use;
+    // the ETag keeps that to a cheap 304 when nothing changed.
+    response_header(res, "Cache-Control", "public, no-cache");
+    response_header(res, "ETag", etag);
+
+    if (etag_matches(request_header(req, "If-None-Match"), etag))
+    {
+        response_status(res, 304, "Not Modified");
+        return 1;
+    }
+
+    FILE* f = fopen(full, "rb");
+    if (!f)
+    {
+        return 0;
+    }
+
+    size_t size = (size_t)st.st_size;
+    char* buf = malloc(size ? size : 1);
+    if (!buf)
+    {
+        fclose(f);
+        response_status(res, 500, "Internal Server Error");
+        return 1;
+    }
+
+    size_t read_n = fread(buf, 1, size, f);
+    fclose(f);
+
+    response_bytes(res, content_type, buf, read_n);
+    free(buf);
+    return 1;
+}
+
 int static_middleware(Request* req, Response* res, MiddlewareNode* self, Router* router)
 {
     const char* path = str_cstr(&req->path);
@@ -50,6 +126,15 @@ int static_middleware(Request* req, Response* res, MiddlewareNode* self, Router*
     if (strncmp(path, STATIC_PREFIX, strlen(STATIC_PREFIX)) != 0)
     {
         return middleware_next(self, req, res, router);
+    }
+
+    const char* method = str_cstr(&req->method);
+    if (strcmp(method, "GET") != 0 && strcmp(method, "HEAD") != 0)
+    {
+        response_status(res, 405, "Method Not Allowed");
+        response_header(res, "Allow", "GET, HEAD");
+        response_html(res, "<h1>405 - Method Not Allowed</h1>");
+        return 1;
     }
 
     const char* rel = path + strlen(STATIC_PREFIX);
@@ -71,38 +156,10 @@ int static_middleware(Request* req, Response* res, MiddlewareNode* self, Router*
         return 1;
     }
 
-    FILE* f = fopen(full, "rb");
-    if (!f)
+    // Missing files and directories both get the 404 page.
+    if (!static_send_file(req, res, full, content_type_for(rel)))
     {
-        response_status(res, 404, "Not Found");
-        response_html(res, "<h1>404 - Not Found</h1>");
-        return 1;
+        render_not_found(res);
     }
-
-    fseek(f, 0, SEEK_END);
-    long size = ftell(f);
-    fseek(f, 0, SEEK_SET);
-
-    if (size < 0 || size > MAX_FILE_BYTES)
-    {
-        fclose(f);
-        response_status(res, 413, "Payload Too Large");
-        response_html(res, "<h1>413</h1>");
-        return 1;
-    }
-
-    char* buf = malloc((size_t)size);
-    if (!buf)
-    {
-        fclose(f);
-        response_status(res, 500, "Internal Server Error");
-        return 1;
-    }
-
-    size_t read_n = fread(buf, 1, (size_t)size, f);
-    fclose(f);
-
-    response_bytes(res, content_type_for(rel), buf, read_n);
-    free(buf);
     return 1;
 }

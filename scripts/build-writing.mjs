@@ -24,10 +24,18 @@ function parseFrontmatter(raw) {
   return { meta, body: m[2] };
 }
 
-// The C template engine interprets {{...}} and @csrf — generated HTML must
-// never contain either, or article content would be mangled at render time.
+// The C template engine interprets {{...}}, @csrf and @layout (it deletes the
+// whole @layout line) — generated HTML must never contain them, or article
+// content would be mangled at render time.
 const neutralize = (html) =>
-  html.replace(/\{\{/g, "&#123;&#123;").replace(/\}\}/g, "&#125;&#125;").replace(/@csrf/g, "&#64;csrf");
+  html
+    .replace(/\{\{/g, "&#123;&#123;")
+    .replace(/\}\}/g, "&#125;&#125;")
+    .replace(/@csrf/g, "&#64;csrf")
+    .replace(/@layout/g, "&#64;layout");
+
+// Escape for a C string literal: backslash first, then quotes and newlines.
+const cString = (s) => String(s).replace(/\\/g, "\\\\").replace(/"/g, '\\"').replace(/\r?\n/g, "\\n");
 
 const escapeHtml = (s) =>
   String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -62,6 +70,8 @@ for (const f of readdirSync(SRC).filter((f) => f.endsWith(".md")).sort()) {
   for (const k of ["slug", "title", "description", "date"])
     if (!meta[k]) throw new Error(`${f}: frontmatter missing "${k}"`);
   if (!/^[a-z0-9-]+$/.test(meta.slug)) throw new Error(`${f}: slug must be [a-z0-9-]`);
+  if (meta.description.length > 160)
+    console.warn(`${f}: description is ${meta.description.length} chars (search snippets cut at ~160)`);
   const { html, toc } = renderWithToc(body);
   posts.push({
     ...meta,
@@ -81,12 +91,12 @@ posts.forEach((p, i) => {
   const prev = posts[i + 1]; // older
   const next = posts[i - 1]; // newer
   const tocHtml = p.toc.length
-    ? `      <div class="panel p-5">
+    ? `      <nav aria-label="Contents" class="panel p-5">
         <div class="label mb-3.5">CONTENTS</div>
         <div class="flex flex-col gap-2.5 text-[13.5px] leading-[1.45]">
 ${p.toc.map((t) => `          <a href="#${t.id}" class="hover:text-accent transition-colors">${t.text}</a>`).join("\n")}
         </div>
-      </div>`
+      </nav>`
     : "";
   const tagsHtml = p.tags.length
     ? `      <div class="panel-plain p-5">
@@ -144,7 +154,7 @@ ${tagsHtml}
   </div>
 </article>
 
-<nav class="rule-grid grid-cols-1${prev || next ? " md:grid-cols-2" : ""} my-16">
+<nav aria-label="More posts" class="rule-grid grid-cols-1${prev || next ? " md:grid-cols-2" : ""} my-16">
 ${prev || next ? navCell(prev, "prev") + "\n" + navCell(next, "next") : navCell(null, "prev")}
 </nav>
 
@@ -230,13 +240,14 @@ typedef struct
     const char* view;
     const char* title;
     const char* desc;
+    const char* date; /* YYYY-MM-DD, for article:published_time */
 } WritingPost;
 
 static const WritingPost kWritingPosts[] = {
 ${posts
   .map(
     (p) =>
-      `    {"${p.slug}", "writing/${p.slug}.html", "${p.title.replace(/"/g, '\\"')}", "${p.description.replace(/"/g, '\\"')}"},`,
+      `    {"${cString(p.slug)}", "writing/${cString(p.slug)}.html", "${cString(p.title)}", "${cString(p.description)}", "${cString(p.date)}"},`,
   )
   .join("\n")}
 };

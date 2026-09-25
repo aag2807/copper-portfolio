@@ -1,4 +1,12 @@
 *.o
-server
+*.d
 node_modules/
 .env
+
+# Build outputs (make / npm run build)
+/server
+/server.exe
+/tests/test_*
+!/tests/test_*.c
+/public/lua/
+/public/framework/

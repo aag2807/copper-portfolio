@@ -1,4 +1,6 @@
 flowchart TD
+  accTitle: On-prem LLM gateway architecture
+  accDescr: Internal apps call a .NET gateway inside the on-prem boundary. The gateway handles auth, audit and quotas, routes to local model providers, runs a RAG pipeline (chunk, embed, vector search, prompt assembly) and a bounded, logged agent orchestrator. No egress to public AI endpoints.
   apps["internal apps"] --> gw
 
   subgraph boundary["on-prem boundary — egress to public AI endpoints: none"]

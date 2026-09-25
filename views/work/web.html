@@ -9,7 +9,7 @@
     <p class="lede-muted">
       Pages that need interactivity declare a <code class="ic">data-lua-module</code> attribute on the body. A
       wasmoon-compiled Lua engine boots, fetches only that module, and runs it. No virtual DOM, no React — signals +
-      hyperscript in ~180 lines of Lua.
+      hyperscript in a ~120-line Lua library.
     </p>
   </div>
   <div class="rule-grid grid-cols-1 sm:grid-cols-3 mt-11">
@@ -22,14 +22,14 @@
 <!-- Live demos -->
 <section class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.45fr)] gap-8 lg:gap-14 py-12 lg:py-[60px] border-b border-rule">
   <div>
-    <div class="label sec-label flex items-center gap-2">01 // LIVE_DEMOS <span class="w-1.5 h-1.5 rounded-full bg-accent"></span></div>
+    <h2 class="label sec-label flex items-center gap-2">01 // LIVE_DEMOS <span class="w-1.5 h-1.5 rounded-full bg-accent" aria-hidden="true"></span></h2>
   </div>
   <div class="flex flex-col gap-6">
     <a href="/counter" class="rule-grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] group">
       <div class="p-6 flex flex-col">
         <div class="label text-accent">[demo_01]</div>
         <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-3">Reactive counter</div>
-        <p class="text-[14.5px] leading-[1.55] text-muted mt-2.5">A single signal driving a text node and two button handlers. The whole demo is ~20 lines of Lua.</p>
+        <p class="text-[14.5px] leading-[1.55] text-muted mt-2.5">A single signal driving a text node and two button handlers. The whole demo is ~30 lines of Lua.</p>
         <span class="btn btn-sm btn-ink self-start mt-auto group-hover:bg-accent group-hover:border-accent">Run demo →</span>
       </div>
       <pre class="code code-sm"><span class="c">-- pages/counter.lua</span>
@@ -74,7 +74,7 @@ reactive.effect(<span class="k">function</span>()
     <h2 class="h3 max-w-[26ch]">Pages without a module ship zero wasmoon.</h2>
     <p class="mt-5 text-[17px] leading-[1.65] text-muted max-w-[62ch]">
       boot.js returns early when the body carries no <code class="ic">data-lua-module</code>. The framework JS is
-      fetched once per origin and cached; every page module after that is under a kilobyte.
+      fetched once per origin and cached; every page module after that is a kilobyte or two.
     </p>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-7">
       <div class="flex flex-col">
@@ -85,9 +85,9 @@ reactive.effect(<span class="k">function</span>()
         <div class="kv"><span>pages/*.lua</span><span>fetched on demand</span></div>
       </div>
       <div class="flex flex-col">
-        <div class="kv"><span>lua-framework.js</span><span class="text-accent">~168 KiB</span></div>
+        <div class="kv"><span>lua-framework.js</span><span class="text-accent">~114 KiB</span></div>
         <div class="kv"><span>3× library .lua</span><span class="text-accent">~2 KiB</span></div>
-        <div class="kv"><span>page module .lua</span><span class="text-accent">~0.6 KiB</span></div>
+        <div class="kv"><span>page module .lua</span><span class="text-accent">~1–2 KiB</span></div>
         <div class="kv"><span class="!text-ink font-semibold">non-lua routes</span><span class="text-accent font-semibold">0 bytes</span></div>
       </div>
     </div>
@@ -96,7 +96,7 @@ reactive.effect(<span class="k">function</span>()
 
 <!-- Selected web builds -->
 <section class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.45fr)] gap-8 lg:gap-14 py-12 lg:py-[60px] border-b border-rule">
-  <div><div class="label sec-label">03 // SELECTED_WEB_BUILDS</div></div>
+  <div><h2 class="label sec-label">03 // SELECTED_WEB_BUILDS</h2></div>
   <div class="flex flex-col gap-8">
     <div class="ruled">
       <div class="flex items-baseline justify-between gap-3">

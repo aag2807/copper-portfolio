@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://alvaro-guzman.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://alvaro-guzman.com/work</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://alvaro-guzman.com/work/fintech-ai</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://alvaro-guzman.com/projects/llm-gateway</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://alvaro-guzman.com/projects/payment-gateways</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://alvaro-guzman.com/work/systems</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://alvaro-guzman.com/projects/c-copper</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://alvaro-guzman.com/work/web</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://alvaro-guzman.com/work/gamedev</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://alvaro-guzman.com/workshop</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://alvaro-guzman.com/writing</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://alvaro-guzman.com/writing/building-c-copper</loc><lastmod>2026-07-25</lastmod><priority>0.6</priority></url>
+  <url><loc>https://alvaro-guzman.com/writing/on-being-pragmatic</loc><lastmod>2026-08-24</lastmod><priority>0.6</priority></url>
+  <url><loc>https://alvaro-guzman.com/contact</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://alvaro-guzman.com/counter</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://alvaro-guzman.com/todos</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+</urlset>

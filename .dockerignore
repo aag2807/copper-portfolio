@@ -24,3 +24,8 @@ Thumbs.db
 # Local plans / scratch
 /tmp
 *.log
+
+# Dependency files and test binaries from local builds
+**/*.d
+tests/test_*
+!tests/test_*.c

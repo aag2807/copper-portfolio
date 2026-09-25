@@ -7,7 +7,7 @@
       <h1 class="display max-w-[20ch]">AI for banking, built inside the fence.</h1>
     </div>
     <p class="lede-muted">
-      7+ years building enterprise software for industries where failure isn't an option: banking, payments, fintech.
+      7+ years building enterprise software for banks, payment providers and fintech — systems that move money and answer to regulators.
       The current focus is applied AI in regulated environments — LLM capability without sending a byte to the public
       cloud. Client and employer names withheld; happy to walk through any of it under NDA.
     </p>
@@ -23,7 +23,7 @@
     </div>
     <div class="p-5">
       <div class="stat">+15%</div>
-      <div class="label mt-2.5 leading-[1.5]">E-COMMERCE<br />conversion lift</div>
+      <div class="label mt-2.5 leading-[1.5]">E-COMMERCE CONVERSION<br />measured; checkout work contributed</div>
     </div>
     <div class="p-5">
       <div class="stat">7+ yrs</div>
@@ -36,7 +36,7 @@
 <section class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.45fr)] gap-8 lg:gap-14 py-12 lg:py-[60px] border-b border-rule">
   <div><div class="label sec-label">01 // CASE_STUDIES</div></div>
   <div>
-    <h2 class="h3 max-w-[26ch]">Two hireable stories, both in production.</h2>
+    <h2 class="h3 max-w-[26ch]">Two production systems.</h2>
     <div class="rule-grid grid-cols-1 md:grid-cols-2 mt-7">
       <a href="/projects/llm-gateway" class="p-6 flex flex-col gap-3 min-h-[260px]">
         <div class="flex items-center justify-between gap-3 label"><span class="text-accent">[0x01] ONPREM_LLM_GATEWAY</span><span class="st-live">ACTIVE</span></div>
@@ -50,7 +50,7 @@
       <a href="/projects/payment-gateways" class="p-6 flex flex-col gap-3 min-h-[260px]">
         <div class="flex items-center justify-between gap-3 label"><span class="text-accent">[0x02] PAYMENT_RAILS</span><span class="st-live">SHIPPED</span></div>
         <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1">60+ payment gateway integrations</div>
-        <div class="text-[14.5px] leading-[1.55] text-muted">Checkout, transaction processing, and fraud handling across 60+ providers, multiple regions and regulatory regimes. Owned end to end; +15% conversion.</div>
+        <div class="text-[14.5px] leading-[1.55] text-muted">Checkout, transaction processing, and fraud handling across 60+ providers, multiple regions and regulatory regimes. Owned end to end; contributed to a measured +15% conversion.</div>
         <div class="mt-auto pt-4 flex items-center justify-between gap-3">
           <span class="label tracking-[.1em]">angular · .net · payments · fraud</span>
           <span class="font-mono text-[11px] tracking-[.1em] text-accent shrink-0">READ →</span>
@@ -61,11 +61,10 @@
       <div class="flex items-start gap-3">
         <span class="w-[7px] h-[7px] rounded-full bg-accent shrink-0 mt-2 pulse-dot"></span>
         <p class="text-[15px] leading-[1.6]">
-          <span class="font-semibold">Currently building:</span> a high-throughput access-control system in Rust — gRPC services
-          over MongoDB and Redis. Plus ongoing monolith → .NET microservices migrations in banking environments.
+          <span class="font-semibold">Also ongoing:</span> monolith → .NET microservices migrations in banking environments.
         </p>
       </div>
-      <div class="flex gap-2 shrink-0"><span class="tag tag-sm tag-accent">Rust</span><span class="tag tag-sm tag-accent">gRPC</span><span class="tag tag-sm tag-accent">Redis</span></div>
+      <div class="flex gap-2 shrink-0"><span class="tag tag-sm tag-accent">.NET</span><span class="tag tag-sm tag-accent">microservices</span></div>
     </div>
   </div>
 </section>
@@ -114,9 +113,9 @@
       <div class="ruled">
         <div class="flex items-baseline justify-between gap-3">
           <div class="flex items-baseline gap-3.5"><span class="font-mono text-[11px] tracking-[.12em] text-accent">[0x04]</span><h3 class="h4">The Council — multi-agent deliberation</h3></div>
-          <span class="label st-live shrink-0">SHIPPED</span>
+          <span class="label st-live shrink-0">SHIPPED · CLOUD API</span>
         </div>
-        <p class="body-muted mt-3.5 max-w-[60ch]">Four Claude personas — Philosopher, Contrarian, Romanticist, Analyst — argue a question in parallel. An Arbiter persona reads the four outputs and synthesizes a single answer. Dark grimoire UI, hand-drawn SVG avatars. Built to see if forcing disagreement produces better answers than asking one model twice.</p>
+        <p class="body-muted mt-3.5 max-w-[60ch]">Four Claude personas — Philosopher, Contrarian, Romanticist, Analyst — argue a question in parallel. An Arbiter persona reads the four outputs and synthesizes a single answer. Dark grimoire UI, hand-drawn SVG avatars. Built to see if forcing disagreement produces better answers than asking one model twice. The one exception to the local-first rule: it calls the Claude API rather than the local daemon.</p>
         <div class="flex flex-wrap gap-1.5 mt-4"><span class="tag tag-sm">React</span><span class="tag tag-sm">multi-agent</span><span class="tag tag-sm">Claude API</span><span class="tag tag-sm">SVG avatars</span></div>
       </div>
     </div>
@@ -127,9 +126,10 @@
 <section class="rule-grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] my-12 lg:my-[60px]">
   <div class="p-7 lg:p-[34px_30px] flex flex-col">
     <div class="label">03 // POSTURE</div>
-    <h3 class="h3 mt-[18px] max-w-[22ch]">Wire the pieces by hand.</h3>
+    <h2 class="h3 mt-[18px] max-w-[22ch]">Local first, small models first.</h2>
     <div class="mt-6 flex flex-col">
       <div class="kv"><span class="!text-accent">local_first</span><span class="text-muted">cloud is opt-in, not default</span></div>
+      <div class="kv"><span class="!text-accent">cloud_exception</span><span class="text-muted">the council, via the claude api</span></div>
       <div class="kv"><span class="!text-accent">no_framework_magic</span><span class="text-muted">wire the pieces by hand</span></div>
       <div class="kv"><span class="!text-accent">small_models_first</span><span class="text-muted">reach for big only when needed</span></div>
     </div>

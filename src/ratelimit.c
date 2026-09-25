@@ -8,6 +8,9 @@
 #include <time.h>
 
 #define BUCKETS 256
+// Hard cap on tracked IPs. Spoofed or rotating addresses cannot grow memory
+// past this; when full and nothing has expired, new IPs are refused (429).
+#define MAX_ENTRIES 10000
 
 typedef struct Entry
 {
@@ -21,6 +24,7 @@ static Entry* g_buckets[BUCKETS];
 static pthread_mutex_t g_lock = PTHREAD_MUTEX_INITIALIZER;
 static int g_max = 5;
 static int g_window = 3600;
+static int g_entries = 0;
 
 void ratelimit_init(int max_per_window, int window_seconds)
 {
@@ -36,9 +40,30 @@ static unsigned int hash_ip(const char* s)
     return h % BUCKETS;
 }
 
+// Drops every expired entry in bucket b. Caller holds g_lock.
+static void evict_bucket(unsigned int b, long now, const char* keep)
+{
+    Entry** link = &g_buckets[b];
+    while (*link)
+    {
+        Entry* e = *link;
+        if (now - e->window_start >= g_window && (!keep || strcmp(e->ip, keep) != 0))
+        {
+            *link = e->next;
+            free(e);
+            g_entries--;
+            continue;
+        }
+        link = &e->next;
+    }
+}
+
+// Returns the entry for ip, or NULL if the table is full. Caller holds g_lock.
 static Entry* lookup_or_create(const char* ip, long now)
 {
     unsigned int b = hash_ip(ip);
+    evict_bucket(b, now, ip);
+
     Entry* e = g_buckets[b];
     while (e)
     {
@@ -53,11 +78,20 @@ static Entry* lookup_or_create(const char* ip, long now)
         }
         e = e->next;
     }
+
+    if (g_entries >= MAX_ENTRIES)
+    {
+        for (unsigned int i = 0; i < BUCKETS; i++) evict_bucket(i, now, NULL);
+        if (g_entries >= MAX_ENTRIES) return NULL;
+    }
+
     e = calloc(1, sizeof(Entry));
+    if (!e) return NULL;
     snprintf(e->ip, sizeof(e->ip), "%s", ip);
     e->window_start = now;
     e->next = g_buckets[b];
     g_buckets[b] = e;
+    g_entries++;
     return e;
 }
 
@@ -82,7 +116,11 @@ int ratelimit_middleware(Request* req, Response* res, MiddlewareNode* self, Rout
 
     pthread_mutex_lock(&g_lock);
     Entry* e = lookup_or_create(ip, now);
-    if (e->count >= g_max)
+    if (!e)
+    {
+        over_limit = 1; // table full: fail closed
+    }
+    else if (e->count >= g_max)
     {
         over_limit = 1;
         retry_after = (int)(g_window - (now - e->window_start));
@@ -120,4 +158,5 @@ void ratelimit_cleanup(void)
         }
         g_buckets[i] = NULL;
     }
+    g_entries = 0;
 }

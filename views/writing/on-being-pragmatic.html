@@ -9,12 +9,12 @@
 <article class="border-t border-rule">
   <header class="pt-12 pb-10 lg:pt-[52px] border-b border-rule max-w-[78ch]">
     <div class="flex items-center gap-4 font-mono text-[11px] tracking-[.14em] text-muted mb-6">
-      <span class="text-accent">ENGINEERING</span>
+      <span class="text-accent">engineering</span>
       <span>2026-08-24</span>
       <span>3 MIN</span>
     </div>
     <h1 class="text-[clamp(36px,4.6vw,60px)] leading-[1.02] tracking-[-.032em] font-semibold max-w-[26ch]">On being pragmatic</h1>
-    <p class="mt-6 font-serif text-[20px] leading-[1.55] text-muted max-w-[56ch]">Correct and right are different things. Correct means the program does what it needs to do for the people who need it, at a cost they can afford. Right means it matches an idea the author had. Most of the damage in this industry lives in the gap.</p>
+    <p class="mt-6 font-serif text-[20px] leading-[1.55] text-muted max-w-[56ch]">Correct and right are different things. Correct ships; right matches an idea the author had. Most of the damage in this industry lives in the gap.</p>
   </header>
 
   <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_240px] gap-12 lg:gap-16 pt-12">
@@ -53,7 +53,7 @@
     </div>
 
     <aside class="lg:sticky lg:top-24 self-start flex flex-col gap-3.5 order-first lg:order-none">
-      <div class="panel p-5">
+      <nav aria-label="Contents" class="panel p-5">
         <div class="label mb-3.5">CONTENTS</div>
         <div class="flex flex-col gap-2.5 text-[13.5px] leading-[1.45]">
           <a href="#what-pragmatism-is-not" class="hover:text-accent transition-colors">What pragmatism is not</a>
@@ -62,7 +62,7 @@
           <a href="#why-this-site-is-written-in-c" class="hover:text-accent transition-colors">Why this site is written in C</a>
           <a href="#the-short-version" class="hover:text-accent transition-colors">The short version</a>
         </div>
-      </div>
+      </nav>
       <div class="panel-plain p-5">
         <div class="label mb-3.5">FILED_UNDER</div>
         <div class="flex flex-wrap gap-[7px]">
@@ -76,7 +76,7 @@
   </div>
 </article>
 
-<nav class="rule-grid grid-cols-1 md:grid-cols-2 my-16">
+<nav aria-label="More posts" class="rule-grid grid-cols-1 md:grid-cols-2 my-16">
   <a href="/writing/building-c-copper" class="p-7 block">
     <div class="label mb-3">← PREVIOUS</div>
     <div class="text-[19px] font-semibold tracking-[-.015em] leading-[1.25]">Building c-copper: what a web framework in C teaches you</div>

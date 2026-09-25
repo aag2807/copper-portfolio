@@ -12,10 +12,10 @@
     </p>
   </div>
   <div class="rule-grid grid-cols-2 lg:grid-cols-4 mt-11">
-    <div class="p-5"><div class="stat text-accent">1,559</div><div class="label mt-2.5 leading-[1.5]">LINES OF C<br />src + controllers</div></div>
-    <div class="p-5"><div class="stat">15</div><div class="label mt-2.5 leading-[1.5]">HTTP ROUTES<br />registered</div></div>
-    <div class="p-5"><div class="stat">3</div><div class="label mt-2.5 leading-[1.5]">TEMPLATE<br />directives</div></div>
-    <div class="p-5"><div class="stat">0</div><div class="label mt-2.5 leading-[1.5]">RUNTIME<br />dependencies</div></div>
+    <div class="p-5"><div class="stat text-accent">~2,800</div><div class="label mt-2.5 leading-[1.5]">LINES OF C<br />src/, .c + .h</div></div>
+    <div class="p-5"><div class="stat">20</div><div class="label mt-2.5 leading-[1.5]">HTTP ROUTES<br />registered, 4 are 301s</div></div>
+    <div class="p-5"><div class="stat">6</div><div class="label mt-2.5 leading-[1.5]">TEMPLATE<br />directives</div></div>
+    <div class="p-5"><div class="stat">0</div><div class="label mt-2.5 leading-[1.5]">FRAMEWORK DEPS<br />libcurl for outbound email</div></div>
   </div>
 </section>
 
@@ -42,14 +42,17 @@
       <a href="https://github.com/aag2807/copper-portfolio" target="_blank" rel="noreferrer" class="btn btn-sm btn-ghost">Source →</a>
     </div>
   </div>
-  <pre class="code code-sm"><span class="c">// Thread-safe URL pattern matching using strtok_r</span>
+  <pre class="code code-sm"><span class="c">// src/router.c (abridged: comments trimmed)</span>
 <span class="k">static int</span> <span class="f">match_pattern</span>(<span class="k">const char</span>* pattern, <span class="k">const char</span>* path, Request* req)
 {
     <span class="k">if</span> (!strchr(pattern, <span class="s">'{'</span>))
         <span class="k">return</span> strcmp(pattern, path) == <span class="n">0</span>;
 
     <span class="k">char</span> pat_copy[<span class="n">256</span>], path_copy[<span class="n">256</span>];
+    pat_copy[<span class="n">0</span>] = <span class="s">'\0'</span>;
+    path_copy[<span class="n">0</span>] = <span class="s">'\0'</span>;
     strncat(pat_copy, pattern, <span class="k">sizeof</span>(pat_copy) - <span class="n">1</span>);
+    <span class="k">if</span> (strlen(path) &gt;= <span class="k">sizeof</span>(path_copy)) <span class="k">return</span> <span class="n">0</span>;
     strncat(path_copy, path, <span class="k">sizeof</span>(path_copy) - <span class="n">1</span>);
 
     <span class="k">char</span> *save1, *save2;
@@ -58,8 +61,14 @@
 
     <span class="k">while</span> (p_seg &amp;&amp; path_seg) {
         <span class="k">if</span> (p_seg[<span class="n">0</span>] == <span class="s">'{'</span>) {
-            <span class="c">// extract {id} → bind to request param</span>
-            request_set_param(req, param, path_seg);
+            <span class="c">// copy the name between { and } → bind it to the path segment</span>
+            <span class="k">char</span> param[<span class="n">64</span>] = {<span class="n">0</span>};
+            <span class="k">int</span> i = <span class="n">1</span>;
+            <span class="k">while</span> (p_seg[i] &amp;&amp; p_seg[i] != <span class="s">'}'</span> &amp;&amp; i - <span class="n">1</span> &lt; (<span class="k">int</span>)<span class="k">sizeof</span>(param) - <span class="n">1</span>) {
+                param[i - <span class="n">1</span>] = p_seg[i];
+                i++;
+            }
+            <span class="k">if</span> (req) request_set_param(req, param, path_seg);
         } <span class="k">else if</span> (strcmp(p_seg, path_seg) != <span class="n">0</span>) {
             <span class="k">return</span> <span class="n">0</span>;
         }
@@ -72,22 +81,25 @@
 
 <!-- Pipeline + directives -->
 <section class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.45fr)] gap-8 lg:gap-14 py-12 lg:py-[60px] border-b border-rule">
-  <div><div class="label sec-label">02 // REQUEST_PIPELINE</div></div>
+  <div><h2 class="label sec-label">02 // REQUEST_PIPELINE</h2></div>
   <div>
-    <h2 class="h3 max-w-[26ch]">Five stages, each one a file you can read.</h2>
+    <h3 class="h3 max-w-[26ch]">Five stages, each one a file you can read.</h3>
     <div class="rule-grid grid-cols-2 sm:grid-cols-5 mt-7">
       <div class="p-4 text-center"><div class="font-mono text-[12px] text-accent">socket()</div><div class="label mt-1.5 tracking-[.08em]">accept + read</div></div>
-      <div class="p-4 text-center"><div class="font-mono text-[12px] text-accent">middleware</div><div class="label mt-1.5 tracking-[.08em]">log + static</div></div>
+      <div class="p-4 text-center"><div class="font-mono text-[12px] text-accent">middleware</div><div class="label mt-1.5 tracking-[.08em]">log · static · ratelimit · csrf</div></div>
       <div class="p-4 text-center"><div class="font-mono text-[12px] text-accent">router</div><div class="label mt-1.5 tracking-[.08em]">match + bind</div></div>
       <div class="p-4 text-center"><div class="font-mono text-[12px] text-accent">controller</div><div class="label mt-1.5 tracking-[.08em]">ACTION()</div></div>
       <div class="p-4 text-center col-span-2 sm:col-span-1"><div class="font-mono text-[12px] text-accent">view</div><div class="label mt-1.5 tracking-[.08em]">render + layout</div></div>
     </div>
     <div class="mt-8">
-      <div class="label mb-3">TEMPLATE_DIRECTIVES</div>
+      <h4 class="label mb-3">TEMPLATE_DIRECTIVES (6)</h4>
       <div class="flex flex-col">
-        <div class="kv"><span class="!text-accent">&#123;&#123; key &#125;&#125;</span><span class="text-muted">interpolate</span></div>
-        <div class="kv"><span class="!text-accent">&#123;&#123;#if x&#125;&#125; ... &#123;&#123;/if&#125;&#125;</span><span class="text-muted">conditional</span></div>
+        <div class="kv"><span class="!text-accent">&#123;&#123; key &#125;&#125;</span><span class="text-muted">interpolate, HTML-escaped</span></div>
+        <div class="kv"><span class="!text-accent">&#123;&#123;&#123; key &#125;&#125;&#125;</span><span class="text-muted">interpolate raw</span></div>
+        <div class="kv"><span class="!text-accent">&#123;&#123;#if x&#125;&#125; ... &#123;&#123;else&#125;&#125; ... &#123;&#123;/if&#125;&#125;</span><span class="text-muted">conditional</span></div>
         <div class="kv"><span class="!text-accent">&#123;&#123;#each rows&#125;&#125; ... &#123;&#123;/each&#125;&#125;</span><span class="text-muted">iterate</span></div>
+        <div class="kv"><span class="!text-accent">&#64;layout</span><span class="text-muted">layout marker, stripped</span></div>
+        <div class="kv"><span class="!text-accent">&#64;csrf</span><span class="text-muted">signed hidden token</span></div>
       </div>
     </div>
   </div>
@@ -95,7 +107,7 @@
 
 <!-- Adjacent systems -->
 <section class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.45fr)] gap-8 lg:gap-14 py-12 lg:py-[60px] border-b border-rule">
-  <div><div class="label sec-label">03 // ADJACENT_SYSTEMS</div></div>
+  <div><h2 class="label sec-label">03 // ADJACENT_SYSTEMS</h2></div>
   <div class="flex flex-col gap-8">
     <div class="ruled">
       <div class="flex items-baseline justify-between gap-3">
@@ -110,10 +122,10 @@
         <div class="flex items-baseline gap-3.5"><span class="font-mono text-[11px] tracking-[.12em] text-accent">[0x03]</span><h3 class="h4">Lunar — statically-typed superset of Lua</h3></div>
         <span class="label st-live shrink-0">ACTIVE</span>
       </div>
-      <p class="body-muted mt-3.5 max-w-[60ch]">Compiler, LSP, bundler, test framework — all in Go. TypeScript-for-Lua, end to end. Strong types on top of Lua semantics so projects that grew past the comfortable Lua size still have a teaching tool for the next person to read them.</p>
+      <p class="body-muted mt-3.5 max-w-[60ch]">Compiler, LSP, bundler, test framework — all in Go. TypeScript-for-Lua, end to end. Types on top of Lua semantics, so a codebase that outgrows plain Lua stays readable for the next person.</p>
       <div class="flex flex-wrap gap-1.5 mt-4 items-center"><span class="tag tag-sm">Go</span><span class="tag tag-sm">compiler</span><span class="tag tag-sm">LSP</span><span class="tag tag-sm">bundler</span><a href="https://github.com/aag2807/lunar" target="_blank" rel="noreferrer" class="tag tag-sm tag-accent hover:bg-accent hover:text-white transition-colors">source →</a></div>
     </div>
-    <div class="ruled opacity-75">
+    <div class="ruled">
       <div class="flex items-baseline justify-between gap-3">
         <div class="flex items-baseline gap-3.5"><span class="font-mono text-[11px] tracking-[.12em] text-muted">[0x04]</span><h3 class="h4">Axon — self-hosted LLM gateway</h3></div>
         <span class="label st-off shrink-0">ARCHIVED</span>

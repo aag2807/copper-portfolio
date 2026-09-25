@@ -78,6 +78,31 @@ void str_appendf(String* s, const char* fmt, ...)
     s->len += need;
 }
 
+void str_append_html(String* s, const char* data)
+{
+    const char* run = data;
+    for (const char* p = data; *p; p++)
+    {
+        const char* ent = NULL;
+        switch (*p)
+        {
+            case '&':  ent = "&amp;";  break;
+            case '<':  ent = "&lt;";   break;
+            case '>':  ent = "&gt;";   break;
+            case '"':  ent = "&quot;"; break;
+            case '\'': ent = "&#39;";  break;
+            default:   break;
+        }
+        if (ent)
+        {
+            if (p > run) str_append_bytes(s, run, (size_t)(p - run));
+            str_append(s, ent);
+            run = p + 1;
+        }
+    }
+    if (*run) str_append(s, run);
+}
+
 void str_free(String* s)
 {
     free(s->data);

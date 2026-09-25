@@ -67,7 +67,7 @@ ACTION(work_gamedev)
         {"title", "text", "Gamedev", NULL},
         {"path", "text", str_cstr(&req->path), NULL},
         {"description", "text",
-         "LitRPG action prototypes in Unity, BSP rendering research, planned SDL2 and Bevy work.",
+         "Passages, a gambit-driven action RPG in Unity; a from-scratch BSP renderer in C; an SDL2 → Rust/Bevy ECS track; LÖVE for prototyping.",
          NULL},
         {"worknav", "text", "1", NULL},
         {NULL, NULL, NULL, NULL},

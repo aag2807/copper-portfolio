@@ -31,7 +31,8 @@ void router_add(Router* r, const char* method, const char* pattern, RouteHandler
     route->has_params = (strchr(pattern, '{') != NULL);
 }
 
-// Thread-safe URL pattern matching using strtok_r
+// Thread-safe URL pattern matching using strtok_r. `req` may be NULL to test
+// a match without capturing params.
 static int match_pattern(const char* pattern, const char* path, Request* req)
 {
     if (!strchr(pattern, '{'))
@@ -43,6 +44,7 @@ static int match_pattern(const char* pattern, const char* path, Request* req)
     pat_copy[0] = '\0';
     path_copy[0] = '\0';
     strncat(pat_copy, pattern, sizeof(pat_copy) - 1);
+    if (strlen(path) >= sizeof(path_copy)) return 0;
     strncat(path_copy, path, sizeof(path_copy) - 1);
     char *save1, *save2;
     char* p_seg = strtok_r(pat_copy, "/", &save1);
@@ -59,7 +61,7 @@ static int match_pattern(const char* pattern, const char* path, Request* req)
                 param[i - 1] = p_seg[i];
                 i++;
             }
-            request_set_param(req, param, path_seg);
+            if (req) request_set_param(req, param, path_seg);
         }
         else if (strcmp(p_seg, path_seg) != 0)
         {
@@ -72,12 +74,19 @@ static int match_pattern(const char* pattern, const char* path, Request* req)
     return (p_seg == NULL && path_seg == NULL);
 }
 
+// HEAD is answered by the GET handler (the body is dropped at flush time).
+static int method_matches(const char* route_method, const char* req_method)
+{
+    if (strcmp(route_method, req_method) == 0) return 1;
+    return strcmp(req_method, "HEAD") == 0 && strcmp(route_method, "GET") == 0;
+}
+
 int router_match(Router* r, Request* req, RouteHandler* handler, void** ctx)
 {
     for (int i = 0; i < r->count; i++)
     {
         Route* route = &r->routes[i];
-        if (strcmp(route->method, str_cstr(&req->method)) != 0)
+        if (!method_matches(route->method, str_cstr(&req->method)))
         {
             continue;
         }
@@ -91,6 +100,41 @@ int router_match(Router* r, Request* req, RouteHandler* handler, void** ctx)
         }
     }
     return 0;
+}
+
+int router_allowed(Router* r, const char* path, char* out, size_t cap)
+{
+    int n = 0;
+    int has_get = 0;
+    if (cap) out[0] = '\0';
+    for (int i = 0; i < r->count; i++)
+    {
+        Route* route = &r->routes[i];
+        if (!match_pattern(route->pattern, path, NULL)) continue;
+
+        // skip duplicates already listed
+        int dup = 0;
+        for (int j = 0; j < i; j++)
+        {
+            if (strcmp(r->routes[j].method, route->method) == 0 && match_pattern(r->routes[j].pattern, path, NULL))
+            {
+                dup = 1;
+                break;
+            }
+        }
+        if (dup) continue;
+
+        size_t len = strlen(out);
+        snprintf(out + len, cap - len, "%s%s", n ? ", " : "", route->method);
+        if (strcmp(route->method, "GET") == 0) has_get = 1;
+        n++;
+    }
+    if (has_get)
+    {
+        size_t len = strlen(out);
+        snprintf(out + len, cap - len, ", HEAD");
+    }
+    return n;
 }
 
 void router_destroy(Router* r)

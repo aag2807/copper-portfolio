@@ -2,8 +2,33 @@
 #include "middleware.h"
 
 #include "router.h"
+#include "view.h"
 
 #include <stdlib.h>
+
+// Routes the request: handler on match, 405 + Allow when the path exists under
+// other methods, otherwise the layout-rendered 404 page.
+static void dispatch(Router* router, Request* req, Response* res)
+{
+    RouteHandler handler;
+    void* ctx;
+    if (router_match(router, req, &handler, &ctx))
+    {
+        handler(req, res, ctx);
+        return;
+    }
+
+    char allow[128];
+    if (router_allowed(router, str_cstr(&req->path), allow, sizeof(allow)) > 0)
+    {
+        response_status(res, 405, "Method Not Allowed");
+        response_header(res, "Allow", allow);
+        response_html(res, "<h1>405 - Method Not Allowed</h1>");
+        return;
+    }
+
+    render_not_found(res);
+}
 
 MiddlewarePipeline* middleware_create(void)
 {
@@ -35,17 +60,7 @@ int middleware_next(MiddlewareNode* self, Request* req, Response* res, Router* r
         return self->next->func(req, res, self->next, router);
     }
     // End of chain — route the request
-    RouteHandler handler;
-    void* ctx;
-    if (router_match(router, req, &handler, &ctx))
-    {
-        handler(req, res, ctx);
-    }
-    else
-    {
-        response_status(res, 404, "Not Found");
-        response_html(res, "<h1>404 - Page Not Found</h1>");
-    }
+    dispatch(router, req, res);
     return 1;
 }
 
@@ -58,17 +73,7 @@ void middleware_run(MiddlewarePipeline* p, Request* req, Response* res, Router* 
     else
     {
         // No middleware — route directly
-        RouteHandler handler;
-        void* ctx;
-        if (router_match(router, req, &handler, &ctx))
-        {
-            handler(req, res, ctx);
-        }
-        else
-        {
-            response_status(res, 404, "Not Found");
-            response_html(res, "<h1>404 - Page Not Found</h1>");
-        }
+        dispatch(router, req, res);
     }
 }
 

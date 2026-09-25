@@ -27,7 +27,7 @@ module.exports = {
 	},
 	experiments: {
 		topLevelAwait: true,
-		asyncWebAssembly: true, 
+		asyncWebAssembly: true,
 	},
-	mode: "development",
+	mode: "production",
 };

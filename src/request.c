@@ -3,7 +3,29 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-void request_init(Request* req, const char* raw)
+
+static int is_token_char(unsigned char c)
+{
+    if (c <= 0x20 || c >= 0x7f) return 0;
+    return strchr("()<>@,;:\\\"/[]?={}", c) == NULL;
+}
+
+static int push_header(Request* req, const char* key, size_t klen, const char* val, size_t vlen)
+{
+    if (req->headers.count >= REQ_MAX_HEADERS) return 431;
+    if (req->headers.count >= req->headers.cap)
+    {
+        req->headers.cap *= 2;
+        req->headers.keys = realloc(req->headers.keys, req->headers.cap * sizeof(char*));
+        req->headers.values = realloc(req->headers.values, req->headers.cap * sizeof(char*));
+    }
+    req->headers.keys[req->headers.count] = strndup(key, klen);
+    req->headers.values[req->headers.count] = strndup(val, vlen);
+    req->headers.count++;
+    return 0;
+}
+
+int request_init(Request* req, const char* raw, size_t raw_len)
 {
     memset(req, 0, sizeof(Request));
 
@@ -14,128 +36,172 @@ void request_init(Request* req, const char* raw)
     req->body = str_new();
     req->client_ip = str_new();
 
-    // Parse the request line: "GET /path?q=1 HTTP/1.1\r\n"
-    const char* p = raw;
-
-    // Method
-    while (*p && *p != ' ')
-    {
-        str_appendf(&req->method, "%c", *p++);
-    }
-
-    if (*p)
-    {
-        p++; // skip space
-    }
-    //
-    // Path with optional query string
-    while (*p && *p != ' ' && *p != '?')
-    {
-        str_appendf(&req->path, "%c", *p++);
-    }
-
-    if (*p == '?')
-    {
-        p++; // skip '?'
-        while (*p && *p != ' ')
-        {
-            str_appendf(&req->query, "%c", *p++);
-        }
-    }
-
-    if (*p)
-    {
-        p++; // skip space
-    }
-
-    // Version
-    while (*p && *p != '\r' && *p != '\n')
-    {
-        str_appendf(&req->version, "%c", *p++);
-    }
-
-    if (*p == '\r')
-    {
-        p++;
-    }
-    if (*p == '\n')
-    {
-        p++;
-    }
-
-    // Headers
     req->headers.cap = 16;
     req->headers.keys = calloc(req->headers.cap, sizeof(char*));
     req->headers.values = calloc(req->headers.cap, sizeof(char*));
-    while (*p && *p != '\r' && p[1] && !(p[0] == '\r' && p[1] == '\n'))
+
+    const char* p = raw;
+    const char* end = raw + raw_len;
+
+    // Parse the request line: "GET /path?q=1 HTTP/1.1\r\n"
+    // Method: uppercase token, bounded.
+    const char* s = p;
+    while (p < end && *p >= 'A' && *p <= 'Z' && (size_t)(p - s) < REQ_MAX_METHOD) p++;
+    if (p == s || p >= end || *p != ' ') return 400;
+    str_append_bytes(&req->method, s, (size_t)(p - s));
+    p++; // skip space
+
+    // Path with optional query string. Stops at SP, CR, LF; rejects controls.
+    s = p;
+    while (p < end && *p != ' ' && *p != '?' && *p != '\r' && *p != '\n')
     {
-        if (*p == ' ' || *p == '\t')
-        {
-            p++;
-            continue;
-        }
-        char key[256] = {0};
-        char val[1024] = {0};
-        int i = 0;
-        //
-        // Header name
-        while (*p && *p != ':')
-        {
-            key[i++] = *p++;
-        }
-        if (*p == ':')
-        {
-            p++;
-        }
-        while (*p == ' ' || *p == '\t')
-        {
-            p++; // skip leading whitespace
-        }
-        i = 0;
-
-        // Read the header value up to CRLF.
-        while (*p && *p != '\r' && *p != '\n' && i + 1 < (int)sizeof(val))
-        {
-            val[i++] = *p++;
-        }
-        val[i] = '\0';
-
-        if (*p == '\r') p++;
-        if (*p == '\n') p++;
-
-        if (req->headers.count >= req->headers.cap)
-        {
-            req->headers.cap *= 2;
-            req->headers.keys = realloc(req->headers.keys, req->headers.cap * sizeof(char*));
-            req->headers.values = realloc(req->headers.values, req->headers.cap * sizeof(char*));
-        }
-
-        req->headers.keys[req->headers.count] = strdup(key);
-        req->headers.values[req->headers.count] = strdup(val);
-        req->headers.count++;
-    }
-
-    // Skip empty line separating headers from body
-    if (*p == '\r')
-    {
+        unsigned char c = (unsigned char)*p;
+        if (c < 0x20 || c == 0x7f) return 400;
+        if ((size_t)(p - s) >= REQ_MAX_TARGET) return 414;
         p++;
     }
+    if (p == s || *s != '/') return 400;
+    str_append_bytes(&req->path, s, (size_t)(p - s));
 
-    if (*p == '\n')
+    if (p < end && *p == '?')
     {
-        p++;
+        p++; // skip '?'
+        s = p;
+        while (p < end && *p != ' ' && *p != '\r' && *p != '\n')
+        {
+            unsigned char c = (unsigned char)*p;
+            if (c < 0x20 || c == 0x7f) return 400;
+            if ((size_t)(p - s) >= REQ_MAX_TARGET) return 414;
+            p++;
+        }
+        str_append_bytes(&req->query, s, (size_t)(p - s));
+    }
+
+    if (p >= end || *p != ' ') return 400;
+    p++; // skip space
+
+    // Version
+    s = p;
+    while (p < end && *p != '\r' && *p != '\n' && (size_t)(p - s) < REQ_MAX_VERSION) p++;
+    if ((size_t)(p - s) < 8 || strncmp(s, "HTTP/1.", 7) != 0) return 400;
+    str_append_bytes(&req->version, s, (size_t)(p - s));
+
+    if (p < end && *p == '\r') p++;
+    if (p >= end || *p != '\n') return 400;
+    p++;
+
+    // Headers: "Name: value\r\n" until an empty line.
+    for (;;)
+    {
+        if (p >= end) break; // no blank line: headers-only request
+        if (*p == '\n') { p++; break; }
+        if (*p == '\r' && p + 1 < end && p[1] == '\n') { p += 2; break; }
+
+        // Header name: token chars up to ':', bounded, never past CR/LF.
+        s = p;
+        while (p < end && *p != ':' && *p != '\r' && *p != '\n')
+        {
+            if (!is_token_char((unsigned char)*p)) return 400;
+            if ((size_t)(p - s) >= REQ_MAX_HEADER_NAME) return 400;
+            p++;
+        }
+        if (p >= end || *p != ':' || p == s) return 400; // no colon / empty name
+        size_t klen = (size_t)(p - s);
+        const char* key = s;
+        p++; // skip ':'
+
+        while (p < end && (*p == ' ' || *p == '\t')) p++;
+        s = p;
+        while (p < end && *p != '\r' && *p != '\n') p++;
+        const char* vend = p;
+        while (vend > s && (vend[-1] == ' ' || vend[-1] == '\t')) vend--;
+
+        int rc = push_header(req, key, klen, s, (size_t)(vend - s));
+        if (rc) return rc;
+
+        if (p < end && *p == '\r') p++;
+        if (p < end && *p == '\n') p++;
     }
 
     // Body
     const char* cl = request_header(req, "Content-Length");
     if (cl)
     {
-        int len = atoi(cl);
-        for (int i = 0; i < len && *p; i++)
-        {
-            str_appendf(&req->body, "%c", *p++);
-        }
+        long len = request_parse_content_length(cl);
+        if (len == -1) return 400;
+        if (len == -2) return 413;
+        size_t avail = (size_t)(end - p);
+        size_t take = (size_t)len < avail ? (size_t)len : avail;
+        str_append_bytes(&req->body, p, take);
     }
+    return 0;
+}
+
+long request_parse_content_length(const char* v)
+{
+    if (!v || !*v) return -1;
+    long n = 0;
+    for (const char* q = v; *q; q++)
+    {
+        if (*q < '0' || *q > '9') return -1;
+        n = n * 10 + (*q - '0');
+        if (n > REQ_MAX_BODY) return -2;
+    }
+    return n;
+}
+
+int request_xff_client_ip(const char* xff, char* out, size_t cap)
+{
+    if (!out || cap == 0) return 0;
+    out[0] = '\0';
+    if (!xff || !*xff) return 0;
+
+    // Cloud Run's front end appends the address it saw to the end of the list,
+    // so the LAST entry is the only one a client cannot forge.
+    const char* comma = strrchr(xff, ',');
+    const char* s = comma ? comma + 1 : xff;
+    while (*s == ' ' || *s == '\t') s++;
+    const char* e = s + strlen(s);
+    while (e > s && (e[-1] == ' ' || e[-1] == '\t')) e--;
+
+    size_t n = (size_t)(e - s);
+    if (n == 0 || n >= cap) return 0;
+    for (size_t i = 0; i < n; i++)
+    {
+        char c = s[i];
+        int ok = (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F') || c == '.' || c == ':';
+        if (!ok) return 0;
+    }
+    memcpy(out, s, n);
+    out[n] = '\0';
+    return 1;
+}
+
+int request_canonical_path(const char* path, String* out)
+{
+    // Collapse runs of '/' and drop a trailing '/' (except for the root).
+    const char* p = path;
+    int prev_slash = 0;
+    for (; *p; p++)
+    {
+        if (*p == '/')
+        {
+            if (prev_slash) continue;
+            prev_slash = 1;
+        }
+        else
+        {
+            prev_slash = 0;
+        }
+        str_append_bytes(out, p, 1);
+    }
+    if (out->len == 0) str_append(out, "/");
+    if (out->len > 1 && out->data[out->len - 1] == '/')
+    {
+        out->len--;
+        out->data[out->len] = '\0';
+    }
+    return strcmp(str_cstr(out), path) != 0;
 }
 
 void request_set_param(Request* req, const char* key, const char* value)

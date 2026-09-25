@@ -80,7 +80,7 @@
 
     <aside class="flex flex-col gap-3.5">
       <div class="panel">
-        <div class="label mb-4">OPERATOR</div>
+        <h2 class="label mb-4">OPERATOR</h2>
         <div class="kv"><span>BASE</span><span>Santo Domingo, DO</span></div>
         <div class="kv"><span>TIMEZONE</span><span>AST (UTC−4)</span></div>
         <div class="kv"><span>EXPERIENCE</span><span>7+ years</span></div>
@@ -88,9 +88,9 @@
         <div class="kv"><span>STATUS</span><span class="text-accent">Open to offers</span></div>
       </div>
       <div class="panel-accent">
-        <div class="label text-accent mb-3">RESPONSE_TIME</div>
+        <h2 class="label text-accent mb-3">RESPONSE_TIME</h2>
         <div class="text-[34px] leading-none tracking-[-.03em] font-semibold">&lt; 24h</div>
-        <div class="text-[14.5px] leading-[1.55] text-muted mt-3">On weekdays. Recruiter templates get read; specifics get answered.</div>
+        <div class="text-[14.5px] leading-[1.55] text-muted mt-3">On weekdays. Messages with a role, stack and timeline get a detailed reply.</div>
       </div>
     </aside>
   </section>
@@ -98,7 +98,7 @@
   <!-- Fit -->
   <section class="rule-grid grid-cols-1 md:grid-cols-2 my-11">
     <div class="p-7 lg:p-[32px_30px]">
-      <div class="label text-accent mb-[18px]">GOOD_FIT</div>
+      <h2 class="label text-accent mb-[18px]">GOOD_FIT</h2>
       <div class="flex flex-col gap-3.5 text-[16px] leading-[1.55]">
         <div class="flex gap-3"><span class="font-mono text-[12px] text-accent pt-[3px]">+</span><span>Senior IC or architect work on .NET / Angular platforms in fintech or core banking.</span></div>
         <div class="flex gap-3"><span class="font-mono text-[12px] text-accent pt-[3px]">+</span><span>Applied AI: on-prem LLM gateways, RAG, agent orchestration under real compliance constraints.</span></div>
@@ -107,7 +107,7 @@
       </div>
     </div>
     <div class="p-7 lg:p-[32px_30px]">
-      <div class="label mb-[18px]">PROBABLY_NOT</div>
+      <h2 class="label mb-[18px]">PROBABLY_NOT</h2>
       <div class="flex flex-col gap-3.5 text-[16px] leading-[1.55] text-muted">
         <div class="flex gap-3"><span class="font-mono text-[12px] pt-[3px]">−</span><span>Pure frontend feature work with no systems or architecture surface.</span></div>
         <div class="flex gap-3"><span class="font-mono text-[12px] pt-[3px]">−</span><span>On-site only roles outside EU / LATAM time zones.</span></div>
@@ -134,9 +134,9 @@
             <span x-text="state.toUpperCase()"></span>
           </span>
         </div>
-        <div class="px-4 py-3 font-mono text-[11px] leading-[1.7] min-h-[96px]">
+        <div class="px-4 py-3 font-mono text-[11px] leading-[1.7] min-h-[96px]" role="log" aria-live="polite" aria-label="contact form status">
           <template x-if="logs.length === 0">
-            <div class="text-[#9aa4ab] italic">Awaiting transmission. Fill the form and submit.</div>
+            <div class="text-muted italic">Awaiting transmission. Fill the form and submit.</div>
           </template>
           <template x-for="line in logs" :key="line">
             <div x-text="line" class="text-muted"></div>
@@ -147,16 +147,18 @@
 
     <div>
       <!-- Success state -->
+      <div aria-live="polite">
       <template x-if="state === 'sent'">
         <div class="panel-accent flex flex-col items-start gap-3">
           <div class="label text-accent flex items-center gap-2">
             <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
             DELIVERED
           </div>
-          <p class="text-[17px] leading-[1.5]">Signal received. Reply path queued — expect something back within a day.</p>
+          <p class="text-[17px] leading-[1.5]">Sent. I'll reply within one business day.</p>
           <button @click="reset()" class="btn btn-sm btn-outline mt-2">Send another →</button>
         </div>
       </template>
+      </div>
 
       <form
         x-show="state !== 'sent'"
@@ -168,7 +170,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
           <label class="flex flex-col gap-2">
             <span class="label">NAME</span>
-            <input x-model="name" type="text" class="field" placeholder="how should I call you" />
+            <input x-model="name" type="text" class="field" placeholder="what should I call you" />
           </label>
           <label class="flex flex-col gap-2">
             <span class="label">EMAIL</span>
@@ -177,7 +179,7 @@
         </div>
         <label class="flex flex-col gap-2">
           <span class="label">MESSAGE</span>
-          <textarea x-model="message" rows="6" class="field resize-y" placeholder="stack, constraint, timeline — what's the signal"></textarea>
+          <textarea x-model="message" rows="6" class="field resize-y" placeholder="stack, constraint, timeline"></textarea>
         </label>
         <div class="flex flex-wrap items-center gap-4">
           <button type="submit" :disabled="state === 'sending'" class="btn btn-ink">
@@ -187,7 +189,7 @@
               Posting...
             </span>
           </button>
-          <span x-show="state === 'error'" class="label text-copper">all three fields required — or see the log</span>
+          <span aria-live="polite" class="label text-copper"><span x-show="state === 'error'">all three fields required — or see the log</span></span>
         </div>
       </form>
     </div>

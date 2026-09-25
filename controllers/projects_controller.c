@@ -4,7 +4,7 @@
 #include <string.h>
 
 /* Static allowlist: the slug from the URL is matched here and NEVER passed
- * into a template ({{key}} does not escape — request data must not reach it). */
+ * into a template; {{key}} escapes, but the allowlist keeps unknown slugs out entirely. */
 static const struct
 {
     const char* slug;
@@ -42,6 +42,5 @@ ACTION(projects_show)
         }
     }
 
-    response_status(res, 404, "Not Found");
-    response_html(res, "<h1>404 - Page Not Found</h1>");
+    render_not_found(res);
 }

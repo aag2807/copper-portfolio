@@ -24,10 +24,50 @@ static void html_escape(String* out, const char* s)
     }
 }
 
+static const char* reason_for(int status)
+{
+    switch (status)
+    {
+        case 200: return "OK";
+        case 400: return "Bad Request";
+        case 500: return "Internal Server Error";
+        case 502: return "Bad Gateway";
+        default:  return "Error";
+    }
+}
+
 static void respond_json(Response* res, int status, const char* json)
 {
-    response_status(res, status, status == 200 ? "OK" : "Bad Request");
+    response_status(res, status, reason_for(status));
     response_json(res, json);
+}
+
+/* One plain address (local@domain.tld) and nothing else: it becomes the
+ * Resend reply_to, so lists, display names and header tricks are refused. */
+static int is_single_email(const char* s)
+{
+    size_t len = strlen(s);
+    if (len < 3 || len > 254) return 0;
+
+    const char* at = NULL;
+    for (const char* p = s; *p; p++)
+    {
+        unsigned char c = (unsigned char)*p;
+        if (c <= 0x20 || c >= 0x7f) return 0;
+        if (strchr(",;<>()[]\\\":", c)) return 0;
+        if (c == '@')
+        {
+            if (at) return 0;
+            at = p;
+        }
+    }
+    if (!at || at == s || at[1] == '\0') return 0;
+
+    const char* domain = at + 1;
+    const char* dot = strrchr(domain, '.');
+    if (!dot || dot == domain || dot[1] == '\0') return 0;
+    if (domain[0] == '.' || domain[strlen(domain) - 1] == '.' || strstr(domain, "..")) return 0;
+    return 1;
 }
 
 ACTION(contact_submit)
@@ -49,6 +89,12 @@ ACTION(contact_submit)
     {
         respond_json(res, 400,
             "{\"ok\":false,\"error\":\"name, email and message are required\"}");
+        return;
+    }
+
+    if (!is_single_email(email))
+    {
+        respond_json(res, 400, "{\"ok\":false,\"error\":\"a single valid email address is required\"}");
         return;
     }
 
@@ -84,20 +130,8 @@ ACTION(contact_submit)
     }
     else
     {
-        String resp = str_new();
-        str_append(&resp, "{\"ok\":false,\"status\":");
-        char buf[32];
-        snprintf(buf, sizeof(buf), "%d", r.status_code);
-        str_append(&resp, buf);
-        str_append(&resp, ",\"error\":\"");
-        for (const char* p = r.message; *p; p++)
-        {
-            if (*p == '"' || *p == '\\') str_append(&resp, "\\");
-            if (*p == '\n' || *p == '\r' || *p == '\t') { str_append(&resp, " "); continue; }
-            str_append_bytes(&resp, p, 1);
-        }
-        str_append(&resp, "\"}");
-        respond_json(res, 502, str_cstr(&resp));
-        str_free(&resp);
+        // Provider details stay in the logs; the client only learns it failed.
+        fprintf(stderr, "[contact] email delivery failed (status %d): %s\n", r.status_code, r.message);
+        respond_json(res, 502, "{\"ok\":false,\"error\":\"email delivery failed, please try again later\"}");
     }
 }

@@ -7,22 +7,22 @@
     </div>
     <h1 class="display-lg max-w-[15ch]">BUILT THE STACK FROM SCRATCH.</h1>
     <p class="mt-7 font-mono text-[13px] leading-[1.7] tracking-[.02em] text-muted max-w-[52ch]">
-      Senior Fullstack — .NET / Angular / AI·LLM — Fintech &amp; Core Banking — 7+ years
+      Senior Fullstack — Fintech &amp; Core Banking — .NET · Angular · Svelte · Vue · Laravel · Go · Odin — 7+ years
     </p>
     <p class="lede mt-6">
-      I build enterprise software for industries where failure isn't an option: banking, payments, and fintech.
+      I build enterprise software for banks and payment providers — systems that move money and get audited.
       60+ payment-gateway integrations shipped inside regulated environments; currently building an on-prem AI/LLM
-      gateway for banking — RAG, multi-agent orchestration, zero data egress. Full stack: .NET, Angular, React, Node,
-      Rust, and cloud infra on Azure.
+      gateway for banking — RAG, multi-agent orchestration, zero data egress. Day to day that means .NET and Angular,
+      plus Svelte, Vue, Laravel and Go; Odin and C when the work sits closer to the metal; cloud infra on Azure.
     </p>
     <p class="lede mt-5">
-      And the mic drop: this page is served by
+      This page is served by
       <a href="/projects/c-copper" class="text-copper border-b border-copper hover:text-ink hover:border-ink transition-colors">c-copper</a>,
-      a web framework I wrote in C, with a Lua runtime I compiled to WASM driving the frontend. The from-scratch depth
-      is the proof; the day job is the product.
+      a web framework I wrote in C, with a Lua runtime compiled to WASM on the frontend. It's how I keep the
+      fundamentals sharp.
     </p>
-    <p class="mt-6 pl-4 border-l-2 border-rule text-[15px] leading-[1.6] text-muted max-w-[56ch]">
-      <span class="font-mono text-[11px] tracking-[.12em]">[es]</span>
+    <p lang="es" class="mt-6 pl-4 border-l-2 border-rule text-[15px] leading-[1.6] text-muted max-w-[56ch]">
+      <span class="font-mono text-[11px] tracking-[.12em]" aria-hidden="true">[es]</span>
       Desarrollador de software senior — sistemas, fintech e IA aplicada. Construyo desde cero: frameworks web en C,
       compiladores en Go, integraciones bancarias.
     </p>
@@ -35,32 +35,32 @@
 
   <aside class="flex flex-col gap-3.5">
     <div class="panel">
-      <div class="label mb-[18px]">SYSTEMS_STATUS</div>
+      <h2 class="label mb-[18px]">SYSTEMS_STATUS</h2>
       <div class="grid grid-cols-2 gap-[18px]">
         <a href="/projects/c-copper" class="group">
-          <div class="stat group-hover:text-accent transition-colors">1,559</div>
-          <div class="label mt-2 leading-[1.5]">LINES OF C<br />framework core</div>
+          <div class="stat group-hover:text-accent transition-colors">~2,800</div>
+          <div class="label mt-2 leading-[1.5]">LINES OF C<br />framework core, src/</div>
         </a>
         <a href="/work/web" class="group">
-          <div class="stat text-accent">184</div>
-          <div class="label mt-2 leading-[1.5]">LINES OF LUA<br />browser runtime</div>
+          <div class="stat text-accent">~120</div>
+          <div class="label mt-2 leading-[1.5]">LINES OF LUA<br />browser runtime library</div>
         </a>
         <a href="/projects/payment-gateways" class="group">
           <div class="stat group-hover:text-accent transition-colors">60+</div>
           <div class="label mt-2 leading-[1.5]">PAYMENT<br />integrations</div>
         </a>
-        <div>
-          <div class="stat" id="ticks">21</div>
-          <div class="label mt-2 leading-[1.5]">TELEMETRY<br />clock signals</div>
-        </div>
+        <a href="/work/systems" class="group">
+          <div class="stat group-hover:text-accent transition-colors">20</div>
+          <div class="label mt-2 leading-[1.5]">ROUTES<br />served by this binary</div>
+        </a>
       </div>
     </div>
     <div class="panel-accent">
-      <div class="label text-accent mb-3">CURRENT_FOCUS</div>
+      <h2 class="label text-accent mb-3">CURRENT_FOCUS</h2>
       <div class="text-[16px] leading-[1.5]">Browser-side Lua runtime<br />Per-route module loading via WASM</div>
     </div>
     <div class="panel-plain">
-      <div class="label mb-3">AVAILABLE_FOR</div>
+      <h2 class="label mb-3">AVAILABLE_FOR</h2>
       <div class="font-mono text-[12px] leading-[1.9]">senior_ic<br />applied_ai<br />systems_engineering</div>
       <div class="mt-4 text-[14px] leading-[1.55] text-muted">Remote across EU &amp; LATAM time zones; AST (UTC−4).</div>
     </div>
@@ -95,8 +95,8 @@
     <a href="/work/gamedev" class="p-6 pb-[30px] flex flex-col gap-3 min-h-[236px]">
       <div class="label text-accent">[0x04]</div>
       <div class="eyebrow tracking-[.12em]">GAMEDEV</div>
-      <div class="text-[24px] tracking-[-.02em] font-semibold mt-auto">LOVE2D</div>
-      <div class="text-[14px] leading-[1.5] text-muted">LÖVE 11.5 prototypes, Lua game loops, frame-paced sims.</div>
+      <div class="text-[24px] tracking-[-.02em] font-semibold mt-auto">GAME_LOOPS</div>
+      <div class="text-[14px] leading-[1.5] text-muted">Passages in Unity, LÖVE prototypes, a Rust/Bevy ECS track.</div>
     </a>
   </div>
 </section>
@@ -105,15 +105,21 @@
 <section class="rule-grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] mt-16">
   <div class="p-7 lg:p-[34px_30px] flex flex-col">
     <div class="label">REQUEST_TRACE</div>
-    <h3 class="h3 mt-[18px]">Every request on this site walks this loop.</h3>
-    <p class="body-muted mt-4 max-w-[42ch]">Route table, pattern match, handler dispatch — hand-written in C99, no framework underneath it.</p>
+    <h2 class="h3 mt-[18px]">Every request on this site walks this loop.</h2>
+    <p class="body-muted mt-4 max-w-[42ch]">Route table, pattern match, handler dispatch — hand-written in C99, no framework underneath it. Excerpt from <span class="font-mono text-[13px]">src/router.c</span>.</p>
     <a href="/work/systems" class="mt-auto pt-6 font-mono text-[12px] tracking-[.1em] text-accent hover:text-ink transition-colors">Inspect_C →</a>
   </div>
-  <pre class="code !bg-code"><span class="k">static int</span> <span class="f">route_match</span>(Router* r, Request* req) {
-  <span class="k">for</span> (Route* it = r-&gt;head; it; it = it-&gt;next)
-    <span class="k">if</span> (path_matches(it-&gt;pattern, req-&gt;path))
-      <span class="k">return</span> it-&gt;handler(req, res, ctx);
-  <span class="k">return</span> <span class="n">404</span>;
+  <pre class="code !bg-code"><span class="k">int</span> <span class="f">router_match</span>(Router* r, Request* req, RouteHandler* handler, <span class="k">void</span>** ctx) {
+  <span class="k">for</span> (<span class="k">int</span> i = <span class="n">0</span>; i &lt; r-&gt;count; i++) {
+    Route* route = &amp;r-&gt;routes[i];
+    <span class="k">if</span> (!method_matches(route-&gt;method, str_cstr(&amp;req-&gt;method))) <span class="k">continue</span>;
+    <span class="k">if</span> (match_pattern(route-&gt;pattern, str_cstr(&amp;req-&gt;path), req)) {
+      *handler = route-&gt;handler;
+      *ctx = route-&gt;ctx;
+      <span class="k">return</span> <span class="n">1</span>;
+    }
+  }
+  <span class="k">return</span> <span class="n">0</span>; <span class="c">// dispatch() answers 405 or the 404 page</span>
 }</pre>
 </section>
 
@@ -148,7 +154,7 @@
 <!-- Toolkit -->
 <section class="pt-16 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12">
   <div>
-    <div class="label text-accent mb-4">TOOLKIT // EXPERIMENTAL_STACK</div>
+    <h2 class="label text-accent mb-4">TOOLKIT // EXPERIMENTAL_STACK</h2>
     <div class="flex flex-wrap gap-2">
       <span class="tag tag-accent">C99</span>
       <span class="tag tag-accent">Pthreads</span>
@@ -164,7 +170,7 @@
     </div>
   </div>
   <div>
-    <div class="label mb-4">// PROFESSIONAL_STACK</div>
+    <h2 class="label mb-4">// PROFESSIONAL_STACK</h2>
     <div class="flex flex-wrap gap-2">
       <span class="tag">React</span>
       <span class="tag">Angular</span>
@@ -176,6 +182,7 @@
       <span class="tag">C#</span>
       <span class="tag">PHP</span>
       <span class="tag">Laravel</span>
+      <span class="tag">Go</span>
       <span class="tag">WordPress</span>
       <span class="tag">SignalR</span>
       <span class="tag">Azure</span>
@@ -199,9 +206,11 @@
     x-ref="scroller"
     class="p-5 font-mono text-[13px] leading-[1.7] text-ink min-h-[300px] max-h-[420px] overflow-y-auto cursor-text"
   >
-    <template x-for="(line, i) in history" :key="i">
-      <div x-html="line" class="whitespace-pre-wrap break-words"></div>
-    </template>
+    <div aria-live="polite" role="log" aria-label="terminal output">
+      <template x-for="(line, i) in history" :key="i">
+        <div x-html="line" class="whitespace-pre-wrap break-words"></div>
+      </template>
+    </div>
     <div class="flex items-center">
       <span class="text-accent select-none shrink-0">$&nbsp;</span>
       <input
@@ -327,8 +336,8 @@
 
           whoami() {
             this.println('<span class="text-accent">Alvaro Guzman</span>');
-            this.println('<span class="text-muted">Senior software engineer · Santo Domingo, DR</span>');
-            this.println('<span class="text-muted">Senior Fullstack — .NET / Angular / AI-LLM — Fintech &amp; Core Banking — 7+ years</span>');
+            this.println('<span class="text-muted">Senior software engineer · Santo Domingo, DO</span>');
+            this.println('<span class="text-muted">Senior Fullstack — Fintech &amp; Core Banking — .NET, Angular, Svelte, Vue, Laravel, Go, Odin — 7+ years</span>');
           },
 
           about() {
@@ -384,12 +393,18 @@
           },
 
           routes() {
-            const get = ["/", "/work", "/work/fintech-ai", "/work/systems", "/work/web", "/work/gamedev", "/projects/{slug}", "/writing", "/writing/{slug}", "/counter", "/todos", "/workshop", "/contact"];
+            const get = ["/", "/work", "/work/fintech-ai", "/work/systems", "/work/web", "/work/gamedev", "/contact", "/workshop", "/writing", "/counter", "/todos", "/robots.txt", "/sitemap.xml", "/projects/{slug}", "/writing/{slug}"];
+            const moved = ["/systems", "/gamedev", "/web", "/ai"];
             this.println('<span class="text-muted">GET routes:</span>');
             for (const r of get) this.println('<span class="text-accent">  GET    </span>' + r);
             this.println("");
+            this.println('<span class="text-muted">301 redirects (pre-restructure URLs):</span>');
+            for (const r of moved) this.println('<span class="text-accent">  GET    </span>' + r + ' <span class="text-muted">→ /work/…</span>');
+            this.println("");
             this.println('<span class="text-muted">POST routes:</span>');
             this.println('<span class="text-accent">  POST   </span>/api/contact');
+            this.println("");
+            this.println('<span class="text-muted">20 registrations in main.c; HEAD is answered by GET.</span>');
           },
 
           framework() {
@@ -397,11 +412,11 @@
             this.println("  source     : github.com/aag2807/copper-portfolio");
             this.println("  language   : C99");
             this.println("  threading  : pthreads, one thread per request");
-            this.println("  source loc : ~1,559 lines src + controllers");
+            this.println("  source loc : ~2,800 lines of C in src/ (.c + .h)");
             this.println("  http stack : raw socket(), no libevent / libuv");
-            this.println("  template   : handlebars-ish + &commat;csrf &commat;layout directives");
+            this.println("  template   : 6 directives — &#123;&#123;key&#125;&#125; &#123;&#123;&#123;raw&#125;&#125;&#125; #if/else #each &commat;layout &commat;csrf");
             this.println("  middleware : logging / static / ratelimit / csrf");
-            this.println("  deps       : libcurl + libcrypto (TLS to Resend)");
+            this.println("  deps       : no frameworks; libcurl + libcrypto for outbound email");
             this.println("  container  : debian:bookworm-slim, multi-stage");
           },
 
@@ -409,9 +424,9 @@
             this.println('<span class="text-accent">browser-side lua</span> <span class="text-muted">// wasmoon</span>');
             this.println("  engine      : Lua 5.4 compiled to WebAssembly (wasmoon)");
             this.println("  load model  : per-route, on-demand via data-lua-module");
-            this.println("  reactivity  : signal / effect / computed (~180 lines)");
+            this.println("  reactivity  : signal / effect / computed (~120-line library)");
             this.println("  dom         : hyperscript builder (h.lua)");
-            this.println("  bundle      : ~168 KiB framework + per-page module");
+            this.println("  bundle      : ~114 KiB framework + per-page module");
             this.println("  zero of    : virtual DOM, react, jsx");
           },
 
@@ -428,7 +443,7 @@
             this.println('<span class="text-accent">mail    </span>  aagn2807@gmail.com');
             this.println('<span class="text-accent">linkedin</span>  linkedin.com/in/aguzmandev');
             this.println('<span class="text-accent">github  </span>  github.com/aag2807');
-            this.println('<span class="text-accent">tz      </span>  AST (UTC-4) · Santo Domingo, DR');
+            this.println('<span class="text-accent">tz      </span>  AST (UTC-4) · Santo Domingo, DO');
           },
 
           date() {
@@ -451,13 +466,6 @@
       };
     }
 
-    // telemetry clock: one signal every 3s, starting from the boot count
-    (function () {
-      var el = document.getElementById("ticks");
-      if (!el) return;
-      var n = 21;
-      setInterval(function () { n += 1; el.textContent = n.toLocaleString(); }, 3000);
-    })();
   </script>
 </section>
 
@@ -472,10 +480,8 @@
     </div>
   </div>
   <div class="mono-sm leading-[2.1]">
-    <div>BOUNDARY MAPPED // 0x0A0A0B</div>
     <div>Operator: Alvaro Guzman</div>
     <div>Origin: Santo Domingo, DO</div>
     <div>Runtime: c-copper / wasmoon-lua</div>
-    <div class="text-accent">System_Health: OK</div>
   </div>
 </section>

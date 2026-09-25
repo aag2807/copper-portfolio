@@ -1,9 +1,9 @@
 ---
 slug: on-being-pragmatic
 title: On being pragmatic
-description: Correct and right are different things. Correct means the program does what it needs to do for the people who need it, at a cost they can afford. Right means it matches an idea the author had. Most of the damage in this industry lives in the gap.
+description: Correct and right are different things. Correct ships; right matches an idea the author had. Most of the damage in this industry lives in the gap.
 date: 2026-08-24
-tag: ENGINEERING
+tag: engineering
 tags: pragmatism, architecture, fintech, c-copper
 ---
 

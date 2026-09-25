@@ -8,11 +8,12 @@ typedef struct
     const char* view;
     const char* title;
     const char* desc;
+    const char* date; /* YYYY-MM-DD, for article:published_time */
 } WritingPost;
 
 static const WritingPost kWritingPosts[] = {
-    {"on-being-pragmatic", "writing/on-being-pragmatic.html", "On being pragmatic", "Correct and right are different things. Correct means the program does what it needs to do for the people who need it, at a cost they can afford. Right means it matches an idea the author had. Most of the damage in this industry lives in the gap."},
-    {"building-c-copper", "writing/building-c-copper.html", "Building c-copper: what a web framework in C teaches you", "Why I wrote the framework serving this page in C99 with zero dependencies, the decisions that mattered, and what the numbers say."},
+    {"on-being-pragmatic", "writing/on-being-pragmatic.html", "On being pragmatic", "Correct and right are different things. Correct ships; right matches an idea the author had. Most of the damage in this industry lives in the gap.", "2026-08-24"},
+    {"building-c-copper", "writing/building-c-copper.html", "Building c-copper: what a web framework in C teaches you", "Why I wrote the framework serving this page in C99 with no framework dependencies, the decisions that mattered, and what the numbers say.", "2026-07-25"},
 };
 
 #endif /* WRITING_MANIFEST_H */

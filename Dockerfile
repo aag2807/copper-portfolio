@@ -37,10 +37,12 @@ ENV DEBIAN_FRONTEND=noninteractive
 # ca-certificates: needed for outbound TLS to api.resend.com
 # libcurl4:        runtime for our libcurl Resend call (pulls libssl3 as a dep)
 # curl:            for the container healthcheck probe
+# tini:            PID 1 init — forwards SIGTERM and reaps zombies
 RUN apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates \
         libcurl4 \
         curl \
+        tini \
     && rm -rf /var/lib/apt/lists/*
 
 # Run as a non-root user. 8080 is unprivileged so this is fine.
@@ -59,4 +61,6 @@ EXPOSE 8080
 # .env is intentionally NOT baked in. Provide it at runtime via:
 #   docker run -v "$(pwd)/.env:/app/.env:ro" ...
 #   or via docker compose (see docker-compose.yml)
+# $PORT (set by Cloud Run) takes precedence over the argv port.
+ENTRYPOINT ["/usr/bin/tini", "--"]
 CMD ["./server", "8080"]

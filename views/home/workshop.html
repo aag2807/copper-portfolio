@@ -6,7 +6,7 @@
   </div>
   <p class="lede-muted max-w-[42ch]">
     Some shipped, some active, some research, some archived. The site you're on is one entry.
-    Status is the truth, not the heading above each block.
+    Each card's status label says where it actually stands, whatever its title suggests.
   </p>
 </section>
 
@@ -63,7 +63,7 @@ dom.mount(root, <span class="s">"#app"</span>)</pre>
   <a href="/projects/payment-gateways" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
     <div class="flex items-center justify-between gap-3 label"><span>FINTECH // [01]</span><span class="st-live">SHIPPED</span></div>
     <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">Payment gateway rails</div>
-    <div class="text-[14.5px] leading-[1.55] text-muted">60+ third-party payment providers behind one checkout — adapters, transaction state machine, fraud pipeline. +15% conversion. Case study →</div>
+    <div class="text-[14.5px] leading-[1.55] text-muted">60+ third-party payment providers behind one checkout — adapters, transaction state machine, fraud pipeline. Contributed to a measured +15% conversion. Case study →</div>
     <div class="mt-auto pt-4 label tracking-[.1em]">angular · .net · 60+ providers</div>
   </a>
 
@@ -72,7 +72,7 @@ dom.mount(root, <span class="s">"#app"</span>)</pre>
     <div class="flex items-center justify-between gap-3 label"><span>SYSTEMS // [00]</span><span class="st-live">LIVE</span></div>
     <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">c-copper</div>
     <div class="text-[14.5px] leading-[1.55] text-muted">The hand-written C MVC framework serving this page. Socket loop, pthread dispatch, pattern router, middleware chain, template engine. Case study →</div>
-    <div class="mt-auto pt-4 label tracking-[.1em]">c99 · pthreads · no deps</div>
+    <div class="mt-auto pt-4 label tracking-[.1em]">c99 · pthreads · no framework deps</div>
   </a>
   <a href="https://github.com/aag2807/lunar" target="_blank" rel="noreferrer" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
     <div class="flex items-center justify-between gap-3 label"><span>SYSTEMS // [01]</span><span class="st-live">ACTIVE</span></div>
@@ -86,7 +86,7 @@ dom.mount(root, <span class="s">"#app"</span>)</pre>
     <div class="text-[14.5px] leading-[1.55] text-muted">Razor-pages-inspired web framework in C. <span class="font-mono text-[.9em]">.cob</span> transpiles to C, compiles to <span class="font-mono text-[.9em]">.so</span>, hot-loads. Arena allocator, TOML config.</div>
     <div class="mt-auto pt-4 label tracking-[.1em]">c · transpiler · arena</div>
   </a>
-  <a href="/work/systems" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px] opacity-75 hover:opacity-100 transition-opacity">
+  <a href="/work/systems" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
     <div class="flex items-center justify-between gap-3 label"><span>SYSTEMS // [03]</span><span class="st-off">ARCHIVED</span></div>
     <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">Axon</div>
     <div class="text-[14.5px] leading-[1.55] text-muted">First pass at an on-premise LLM gateway in C#. Routing, request shaping, prompt template layering. Stays in the archive.</div>
@@ -123,7 +123,7 @@ dom.mount(root, <span class="s">"#app"</span>)</pre>
   <a href="/work/web" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
     <div class="flex items-center justify-between gap-3 label"><span>WEB // [00]</span><span class="st-live">LIVE</span></div>
     <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">wasmoon-bridge</div>
-    <div class="text-[14.5px] leading-[1.55] text-muted">Browser-side Lua runtime, mounted per route. Signals + hyperscript in ~180 lines of Lua; pages without a module ship zero wasmoon. Powers this site.</div>
+    <div class="text-[14.5px] leading-[1.55] text-muted">Browser-side Lua runtime, mounted per route. Signals + hyperscript in a ~120-line Lua library; pages without a module ship zero wasmoon. Powers this site.</div>
     <div class="mt-auto pt-4 label tracking-[.1em]">lua 5.4 → wasm · signals</div>
   </a>
   <a href="/work/web" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
