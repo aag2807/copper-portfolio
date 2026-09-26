@@ -1,4 +1,5 @@
 const { LuaFactory } = require("wasmoon");
+const { highlightLines } = require("./lua-highlight");
 
 const BASE = "/static/lua";
 // Self-hosted: without an argument wasmoon fetches glue.wasm from unpkg.com.
@@ -153,6 +154,9 @@ async function playground(pg, factory, runnerPath) {
   const $ = (sel) => pg.querySelector(sel);
   const editor = $("[data-pg-editor]");
   const gutter = $("[data-pg-gutter]");
+  const hl = $("[data-pg-hl]");
+  const band = $("[data-pg-band]");
+  const errBand = $("[data-pg-errband]");
   const sandbox = $("#sandbox");
   const out = $("[data-pg-console]");
   const status = $("[data-pg-status]");
@@ -198,18 +202,89 @@ async function playground(pg, factory, runnerPath) {
   }
 
   // -- editor chrome
+  // The textarea's text is transparent; the highlighted <pre> under it is
+  // repainted on every change and moved with the textarea's scroll offset.
   let errorLine = 0;
+  let lineH = 0;
+  let padTop = 0;
+  function measure() {
+    const cs = getComputedStyle(editor);
+    lineH = parseFloat(cs.lineHeight) || 22;
+    padTop = parseFloat(cs.paddingTop) || 0;
+    band.style.height = errBand.style.height = `${lineH}px`;
+  }
+  // One <div> per line; only the lines that differ from the last paint are
+  // replaced, so a keystroke re-lays out one line, not the whole file.
+  let painted = [];
+  const lineTpl = document.createElement("template");
+  function paint() {
+    const next = highlightLines(editor.value);
+    const prev = painted;
+    const max = Math.min(prev.length, next.length);
+    let head = 0;
+    while (head < max && prev[head] === next[head]) head++;
+    let tail = 0;
+    while (tail < max - head && prev[prev.length - 1 - tail] === next[next.length - 1 - tail]) tail++;
+    for (let i = prev.length - tail - 1; i >= head; i--) hl.children[i].remove();
+    const fresh = next.slice(head, next.length - tail);
+    if (fresh.length) {
+      lineTpl.innerHTML = fresh.map((l) => `<div>${l}</div>`).join("");
+      hl.insertBefore(lineTpl.content, hl.children[head] || null);
+    }
+    painted = next;
+  }
+  function caretLine() {
+    const v = editor.value;
+    const at = editor.selectionDirection === "backward" ? editor.selectionStart : editor.selectionEnd;
+    let n = 0;
+    for (let i = v.indexOf("\n"); i !== -1 && i < at; i = v.indexOf("\n", i + 1)) n++;
+    return n;
+  }
+  function placeBands() {
+    const y = padTop - editor.scrollTop;
+    band.style.transform = `translateY(${y + caretLine() * lineH}px)`;
+    errBand.hidden = !errorLine;
+    if (errorLine) errBand.style.transform = `translateY(${y + (errorLine - 1) * lineH}px)`;
+  }
+  let bandFrame = 0;
+  function queueBands() {
+    if (!bandFrame)
+      bandFrame = requestAnimationFrame(() => {
+        bandFrame = 0;
+        placeBands();
+      });
+  }
+  function syncScroll() {
+    hl.style.transform = `translate(${-editor.scrollLeft}px, ${-editor.scrollTop}px)`;
+    gutter.scrollTop = editor.scrollTop;
+    placeBands();
+  }
+  let gutterKey = "";
   function renderGutter() {
-    const n = editor.value.split("\n").length;
+    let n = 1;
+    for (let i = editor.value.indexOf("\n"); i !== -1; i = editor.value.indexOf("\n", i + 1)) n++;
+    if (`${n}:${errorLine}` === gutterKey) return placeBands(); // unchanged: skip the rebuild
+    gutterKey = `${n}:${errorLine}`;
     let html = "";
     for (let i = 1; i <= n; i++) html += i === errorLine ? `<span class="pg-gutter-err">${i}</span>\n` : `${i}\n`;
     gutter.innerHTML = html;
     gutter.scrollTop = editor.scrollTop;
+    placeBands();
   }
   function markError(msg) {
     const m = /playground\.lua:(\d+):/.exec(msg);
     errorLine = m ? Number(m[1]) : 0;
     renderGutter();
+  }
+  // every programmatic write to the editor goes through here
+  function setSource(text) {
+    editor.value = text;
+    editor.setSelectionRange(0, 0);
+    editor.scrollTop = 0;
+    editor.scrollLeft = 0;
+    autoClosed = 0;
+    paint();
+    syncScroll();
   }
   function renderSaved() {
     const edited = editor.value !== originals[current];
@@ -220,6 +295,7 @@ async function playground(pg, factory, runnerPath) {
   let saveTimer = 0;
   editor.addEventListener("input", () => {
     if (errorLine) errorLine = 0;
+    paint();
     renderGutter();
     clearTimeout(saveTimer);
     saveTimer = setTimeout(() => {
@@ -228,11 +304,23 @@ async function playground(pg, factory, runnerPath) {
       renderSaved();
     }, 250);
   });
-  editor.addEventListener("scroll", () => {
-    gutter.scrollTop = editor.scrollTop;
+  editor.addEventListener("scroll", syncScroll);
+  // the current-line band follows the caret, however it moved
+  document.addEventListener("selectionchange", queueBands);
+  editor.addEventListener("selectionchange", queueBands);
+  editor.addEventListener("keydown", queueBands);
+  editor.addEventListener("pointerup", queueBands);
+  editor.addEventListener("focus", queueBands);
+  window.addEventListener("resize", () => {
+    measure();
+    syncScroll();
   });
 
   // Tab inserts two spaces; Esc then Tab leaves the editor; Enter keeps indent.
+  // Brackets and quotes auto-close; typing the closer steps over one we added.
+  const PAIRS = { "(": ")", "[": "]", "{": "}", '"': '"', "'": "'" };
+  const CLOSERS = new Set([")", "]", "}", '"', "'"]);
+  let autoClosed = 0; // closers we inserted that the caret is still inside of
   let escaped = false;
   function insert(text) {
     editor.focus();
@@ -241,12 +329,38 @@ async function playground(pg, factory, runnerPath) {
       editor.dispatchEvent(new Event("input"));
     }
   }
+  editor.addEventListener("pointerdown", () => (autoClosed = 0));
+  editor.addEventListener("blur", () => (autoClosed = 0));
   editor.addEventListener("keydown", (e) => {
+    if (e.isComposing || e.keyCode === 229) return; // IME: leave every key alone
     if (e.key === "Escape") {
       escaped = true;
       return;
     }
-    if (e.key === "Tab" && !escaped && !e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey) {
+    const plain = !e.ctrlKey && !e.metaKey && !e.altKey;
+    const s = editor.selectionStart;
+    const collapsed = s === editor.selectionEnd;
+    const v = editor.value;
+    if (/^(Arrow|Home|End|Page)/.test(e.key)) autoClosed = 0;
+    if (plain && collapsed && autoClosed > 0 && CLOSERS.has(e.key) && v[s] === e.key && v[s - 1] !== "\\") {
+      e.preventDefault();
+      editor.setSelectionRange(s + 1, s + 1);
+      autoClosed--;
+    } else if (plain && collapsed && e.key in PAIRS && /^[\s)\]},;]?$/.test(v[s] || "") &&
+      !((e.key === '"' || e.key === "'") && /[\w\\"'\]]/.test(v[s - 1] || ""))) {
+      e.preventDefault();
+      insert(e.key + PAIRS[e.key]);
+      editor.setSelectionRange(s + 1, s + 1);
+      autoClosed++;
+    } else if (e.key === "Backspace" && plain && collapsed && autoClosed > 0 && s > 0 && PAIRS[v[s - 1]] === v[s]) {
+      e.preventDefault();
+      editor.setSelectionRange(s - 1, s + 1);
+      if (!document.execCommand || !document.execCommand("delete")) {
+        editor.setRangeText("", s - 1, s + 1, "end");
+        editor.dispatchEvent(new Event("input"));
+      }
+      autoClosed--;
+    } else if (e.key === "Tab" && !escaped && !e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey) {
       e.preventDefault();
       insert("  ");
     } else if (e.key === "Enter" && !e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey) {
@@ -326,9 +440,8 @@ async function playground(pg, factory, runnerPath) {
     presetButtons.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.pgPreset === id)));
     if (!(id in originals)) originals[id] = await fetchText(PRESETS[id].src);
     if (reset) store.del(`pg:src:${id}`);
-    editor.value = store.get(`pg:src:${id}`) ?? originals[id];
-    editor.scrollTop = 0;
     errorLine = 0;
+    setSource(store.get(`pg:src:${id}`) ?? originals[id]);
     renderGutter();
     renderSaved();
     $("[data-pg-file]").textContent = PRESETS[id].src.replace(`${BASE}/`, "");
@@ -350,6 +463,9 @@ async function playground(pg, factory, runnerPath) {
     }
   });
 
+  hl.replaceChildren();
+  measure();
+  paint();
   editor.disabled = false;
   await load(current);
 }

@@ -502,6 +502,31 @@ body > main, body > footer { position: relative; }
   line-height: 1.8;
 }
 .prose-article pre code { background: transparent; border: 0; padding: 0; font-size: inherit; color: inherit; }
+/* Article code, highlighted at build time by highlight.js (scripts/build-writing.mjs).
+   Same palette as the /playground editor; the code panel is dark in both themes,
+   so these colours were contrast-checked against #14181c and #080b0d (all >= 4.5:1). */
+.prose-article pre.hl .hljs-keyword,
+.prose-article pre.hl .hljs-meta .hljs-keyword { color: #8cc7a1; }              /* keywords: moss */
+.prose-article pre.hl .hljs-literal,
+.prose-article pre.hl .hljs-number { color: #e3a878; }                          /* true/false/null, numbers: copper */
+.prose-article pre.hl .hljs-string,
+.prose-article pre.hl .hljs-regexp,
+.prose-article pre.hl .hljs-template-tag { color: #d0b58c; }                    /* strings: sand */
+.prose-article pre.hl .hljs-char.escape_,
+.prose-article pre.hl .hljs-subst { color: #efd9b4; }                           /* escapes, interpolation */
+.prose-article pre.hl .hljs-comment { color: #8a959e; font-style: italic; }    /* comments */
+.prose-article pre.hl .hljs-title,
+.prose-article pre.hl .hljs-title.function_ { color: #f1f4f6; }                 /* function names */
+.prose-article pre.hl .hljs-built_in,
+.prose-article pre.hl .hljs-type,
+.prose-article pre.hl .hljs-title.class_,
+.prose-article pre.hl .hljs-meta { color: #9cc0d6; }                            /* builtins, types: steel */
+.prose-article pre.hl .hljs-variable,
+.prose-article pre.hl .hljs-property,
+.prose-article pre.hl .hljs-params,
+.prose-article pre.hl .hljs-attr { color: #c3ccd2; }                            /* names */
+.prose-article pre.hl .hljs-operator,
+.prose-article pre.hl .hljs-punctuation { color: #97a3ab; }                     /* operators */
 .prose-article blockquote {
   margin: 36px 0 0;
   padding: 24px 26px;
@@ -687,23 +712,33 @@ body > main, body > footer { position: relative; }
 .pg-preset[aria-pressed="true"] { color: var(--color-accent); border-color: var(--color-accent); background: var(--color-accent-soft); }
 .pg-kbd { font-size: 10px; opacity: .6; letter-spacing: .04em; }
 
-/* playground: editor (the .code panel, editable, with a line-number gutter) */
+/* playground: editor (the .code panel, editable, with a line-number gutter).
+   A transparent-text <textarea> sits over a highlighted <pre> with identical
+   metrics; the textarea stays the real input (selection, undo, IME, mobile).
+   Token colours are fixed, not themed: the panel is dark in both themes. */
 .pg-editor {
+  position: relative;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   height: clamp(360px, 62vh, 600px);
+  overflow: hidden;
   background: var(--color-code);
   color: var(--color-code-fg);
 }
-.pg-gutter, .pg-src {
+.pg-gutter, .pg-src, .pg-hl {
   margin: 0;
   padding: 18px 0;
   font-family: var(--font-mono);
   font-size: 12.5px;
-  line-height: 1.75;
+  font-weight: 400;
+  line-height: 22px; /* whole pixels: textarea and overlay round identically */
+  letter-spacing: 0;
+  font-variant-ligatures: none;
+  font-kerning: none;
   tab-size: 2;
 }
 .pg-gutter {
+  position: relative;
   overflow: hidden;
   padding-left: 14px;
   padding-right: 12px;
@@ -713,23 +748,61 @@ body > main, body > footer { position: relative; }
   user-select: none;
 }
 .pg-gutter-err { color: var(--color-code); background: #c98a5e; padding: 0 3px; margin-right: -3px; }
+.pg-code { position: relative; min-width: 0; }
+.pg-hl, .pg-src { padding-left: 16px; padding-right: 16px; white-space: pre; }
+.pg-hl {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  color: #c3ccd2; /* plain names and punctuation, a step under the calls */
+}
+.pg-hl > code { display: block; font: inherit; }
+.pg-hl > code > div { min-height: 22px; }
 .pg-src {
+  position: relative;
+  display: block;
   width: 100%;
   height: 100%;
-  padding-left: 16px;
-  padding-right: 16px;
   border: 0;
+  border-radius: 0;
   resize: none;
   outline: none;
   background: transparent;
-  color: inherit;
-  white-space: pre;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
   overflow: auto;
-  caret-color: #7fb493;
+  caret-color: #8cc7a1;
 }
-.pg-src::selection { background: color-mix(in srgb, #7fb493 35%, transparent); color: inherit; }
+.pg-src::selection { background: color-mix(in srgb, #8cc7a1 30%, transparent); color: transparent; -webkit-text-fill-color: transparent; }
 .pg-src:focus-visible { box-shadow: inset 0 0 0 2px var(--color-accent); }
-.pg-src:disabled { opacity: .6; }
+.pg-code:has(.pg-src:disabled) .pg-hl { opacity: .6; }
+/* current line (follows the caret while focused) and the error line */
+.pg-band {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 22px; /* the editor line-height; JS sets the measured value */
+  pointer-events: none;
+  opacity: 0;
+  background: color-mix(in srgb, var(--color-code-fg) 5.5%, transparent);
+  will-change: transform;
+}
+.pg-editor:focus-within .pg-band { opacity: 1; }
+.pg-band-err[hidden] { display: none; }
+.pg-editor .pg-band-err { opacity: 1; background: color-mix(in srgb, #c98a5e 13%, transparent); }
+/* tokens (contrast >= 4.5:1 on both #14181c and #080b0d; see the report) */
+.pg-hl .k { color: #8cc7a1; }                       /* keywords: moss */
+.pg-hl .v { color: #e3a878; }                       /* nil true false */
+.pg-hl .n { color: #e3a878; }                       /* numbers */
+.pg-hl .s { color: #d0b58c; }                       /* strings: sand */
+.pg-hl .e { color: #efd9b4; }                       /* escapes inside strings */
+.pg-hl .c { color: #8a959e; font-style: italic; }   /* comments */
+.pg-hl .f { color: #f1f4f6; }                       /* function names / calls */
+.pg-hl .m { color: #f1f4f6; }                       /* obj:method */
+.pg-hl .b { color: #9cc0d6; }                       /* builtins, dom, self */
+.pg-hl .o { color: #97a3ab; }                       /* operators */
 
 /* playground: preview + console */
 .pg-sandbox { padding: 28px; min-height: 240px; flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; }

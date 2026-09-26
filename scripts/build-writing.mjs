@@ -2,6 +2,15 @@
 // + views/writing/index.html + controllers/writing_manifest.h
 // Zero runtime deps preserved: the C server only ever serves generated HTML.
 import { marked } from "marked";
+import hljs from "highlight.js/lib/core";
+import hljsJavascript from "highlight.js/lib/languages/javascript";
+import hljsC from "highlight.js/lib/languages/c";
+import hljsCsharp from "highlight.js/lib/languages/csharp";
+import hljsSql from "highlight.js/lib/languages/sql";
+import hljsLua from "highlight.js/lib/languages/lua";
+import hljsBash from "highlight.js/lib/languages/bash";
+import hljsJson from "highlight.js/lib/languages/json";
+import hljsGo from "highlight.js/lib/languages/go";
 import { readFileSync, writeFileSync, readdirSync, mkdirSync, rmSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -57,6 +66,29 @@ const slugify = (s) =>
 
 const readMinutes = (md) => Math.max(1, Math.round(md.split(/\s+/).filter(Boolean).length / 220));
 
+// Code blocks are highlighted here, at build time, so posts ship coloured
+// HTML and no highlighting JavaScript. Only the languages the posts use are
+// registered; an unlabelled or unknown fence is left as plain escaped text.
+hljs.registerLanguage("javascript", hljsJavascript);
+hljs.registerLanguage("c", hljsC);
+hljs.registerLanguage("csharp", hljsCsharp);
+hljs.registerLanguage("sql", hljsSql);
+hljs.registerLanguage("lua", hljsLua);
+hljs.registerLanguage("bash", hljsBash);
+hljs.registerLanguage("json", hljsJson);
+hljs.registerLanguage("go", hljsGo);
+
+const escapeCode = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+function renderCode({ text, lang }) {
+  const language = (lang || "").trim().split(/\s+/)[0].toLowerCase();
+  if (language && hljs.getLanguage(language)) {
+    const { value } = hljs.highlight(text, { language, ignoreIllegals: true });
+    return `<pre class="hl"><code class="language-${language}">${value}</code></pre>\n`;
+  }
+  return `<pre><code>${escapeCode(text)}</code></pre>\n`;
+}
+
 // Heading ids for the in-page table of contents (marked >= 5 dropped headerIds).
 function renderWithToc(body) {
   const toc = [];
@@ -70,6 +102,7 @@ function renderWithToc(body) {
   // Block/inline HTML comments are author notes (e.g. a review checklist in a
   // draft): drop them so they never reach the served page.
   renderer.html = ({ text }) => (/^\s*<!--[\s\S]*?-->\s*$/.test(text) ? "" : text);
+  renderer.code = renderCode;
   const html = marked.parse(body, { renderer });
   return { html, toc };
 }

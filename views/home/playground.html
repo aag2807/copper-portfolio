@@ -32,9 +32,14 @@
         </div>
       </div>
       <div class="pg-editor">
+        <div class="pg-band" data-pg-band aria-hidden="true"></div>
+        <div class="pg-band pg-band-err" data-pg-errband aria-hidden="true" hidden></div>
         <pre class="pg-gutter" data-pg-gutter aria-hidden="true">1</pre>
-        <textarea class="pg-src" data-pg-editor spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off"
-          aria-label="Lua source" aria-describedby="pg-help" disabled>-- loading the Lua engine…</textarea>
+        <div class="pg-code">
+          <pre class="pg-hl" aria-hidden="true"><code data-pg-hl><span class="c">-- loading the Lua engine…</span></code></pre>
+          <textarea class="pg-src" data-pg-editor spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" wrap="off"
+            aria-label="Lua source" aria-describedby="pg-help" disabled>-- loading the Lua engine…</textarea>
+        </div>
       </div>
       <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 py-2.5 border-t border-rule mono-sm">
         <span><span data-pg-file>pages/counter.lua</span> · <span data-pg-saved>Unmodified</span></span>

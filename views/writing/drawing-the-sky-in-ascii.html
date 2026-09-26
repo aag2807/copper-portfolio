@@ -10,7 +10,7 @@
     <div class="flex items-center gap-4 font-mono text-[11px] tracking-[.14em] text-muted mb-6">
       <span class="text-accent">engineering</span>
       <span>2026-09-25</span>
-      <span>7 MIN</span>
+      <span>8 MIN</span>
     </div>
     <h1 class="text-[clamp(36px,4.6vw,60px)] leading-[1.02] tracking-[-.032em] font-semibold max-w-[26ch]">Drawing the sky in ASCII</h1>
     <p class="mt-6 font-serif text-[20px] leading-[1.55] text-muted max-w-[56ch]">How the Earth, Moon and stars behind this site are drawn: one canvas, a 1.7 KB map, alpha buckets, dirty rectangles, and a few things that went wrong.</p>
@@ -22,11 +22,18 @@
 <p>All of it is one canvas and one JavaScript file, no libraries. It&#39;s about 31 KB, or 11 KB gzipped. I want to write down how it works, because a few parts of it were harder than I expected and I learned something from each one.</p>
 <h2 id="the-earth-is-a-grid">The Earth is a grid</h2>
 <p>The globe is a grid of cells, one character per cell. Each cell is 0.6 by 1.25 times the font size, which is roughly the shape of a monospace character. For every cell inside the circle I work out where that point would sit on a sphere, and from there its latitude and longitude.</p>
-<pre><code class="language-js">var nx = (cx - globe.cx) / R, ny = -(cy - globe.cy) / R, r2 = nx * nx + ny * ny;
-if (r2 &gt; 1) continue;
-var nz = Math.sqrt(1 - r2);
-</code></pre>
-<p>On a unit sphere that point is also the surface normal, so shading is a dot product with a fixed light direction. Plain Lambert shading. Bright cells get dense characters like <code>#</code> and <code>%</code>, dim cells get <code>-</code> and <code>:</code>.</p>
+<pre class="hl"><code class="language-js"><span class="hljs-comment">// Where this cell sits on a unit disc centred on the globe (y points up).</span>
+<span class="hljs-keyword">var</span> x = (cellX - globe.<span class="hljs-property">cx</span>) / R;
+<span class="hljs-keyword">var</span> y = -(cellY - globe.<span class="hljs-property">cy</span>) / R;
+<span class="hljs-keyword">var</span> distanceSquared = x * x + y * y;
+<span class="hljs-keyword">if</span> (distanceSquared &gt; <span class="hljs-number">1</span>) <span class="hljs-keyword">continue</span>; <span class="hljs-comment">// outside the planet</span>
+
+<span class="hljs-comment">// Lift the point onto the sphere. On a unit sphere, that point is also</span>
+<span class="hljs-comment">// the surface normal, which is what the lighting needs.</span>
+<span class="hljs-keyword">var</span> z = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">sqrt</span>(<span class="hljs-number">1</span> - distanceSquared);</code></pre>
+<p>With the normal in hand, shading is one dot product against a fixed light direction. Plain Lambert shading:</p>
+<pre class="hl"><code class="language-js">shade.<span class="hljs-title function_">push</span>(<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">max</span>(<span class="hljs-number">0</span>, x * lightX + y * lightY + z * lightZ)); <span class="hljs-comment">// Lambert: normal . light</span></code></pre>
+<p>Bright cells get dense characters like <code>#</code> and <code>%</code>, dim cells get <code>-</code> and <code>:</code>.</p>
 <p>The continents come from a land mask of 144 by 72 bits, one bit per cell of an equirectangular map. I rasterised it from Natural Earth&#39;s 110 m land data with 3×3 supersampling and stored it in the script as a base64 string, around 1.7 KB. Turning the planet just means reading that mask with a different longitude offset. The geometry for every cell is computed once, on load and on resize, so a normal frame is mostly lookups.</p>
 <p>The Earth has a 23° axial tilt and the north pole leans a little toward you. Straight edge-on, a globe reads as a flat disc. One turn takes 150 seconds, and the rotation comes from the clock, so when you click to another page the planet continues from the same spot.</p>
 <h2 id="making-it-cheap">Making it cheap</h2>
@@ -34,24 +41,27 @@ var nz = Math.sqrt(1 - r2);
 <p>Three things brought it down.</p>
 <p>First, a glyph atlas. Every character in every colour gets drawn once into an offscreen canvas, and after that drawing a character is copying a small rectangle out of it. Much cheaper than having the browser render text thousands of times a frame.</p>
 <p>Second, alpha buckets. Changing the canvas opacity between draws costs more than you&#39;d think, so each glyph goes into one of 24 opacity buckets and I draw bucket by bucket, changing the opacity once per bucket.</p>
-<pre><code class="language-js">function push(alpha, tint, glyph, x, y) {
-  var b = Math.round((alpha / aMax) * (NB - 1));
-  if (b &lt;= 0) return false;
-  if (b &gt;= NB) b = NB - 1;
-  buckets[b].push(tint * GLYPHS.length + glyph, x, y);
-  return true;
-}
-</code></pre>
+<pre class="hl"><code class="language-js"><span class="hljs-comment">// Glyphs are grouped by opacity, so drawing a whole group costs a single</span>
+<span class="hljs-comment">// globalAlpha change. Returns false when the glyph is too faint to draw.</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">queueGlyph</span>(<span class="hljs-params">alpha, tint, glyph, x, y</span>) {
+  <span class="hljs-keyword">var</span> bucket = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>((alpha / aMax) * (<span class="hljs-variable constant_">ALPHA_BUCKETS</span> - <span class="hljs-number">1</span>));
+  <span class="hljs-keyword">if</span> (bucket &lt;= <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  <span class="hljs-keyword">if</span> (bucket &gt;= <span class="hljs-variable constant_">ALPHA_BUCKETS</span>) bucket = <span class="hljs-variable constant_">ALPHA_BUCKETS</span> - <span class="hljs-number">1</span>;
+  <span class="hljs-keyword">var</span> atlasIndex = tint * <span class="hljs-variable constant_">GLYPHS</span>.<span class="hljs-property">length</span> + glyph;
+  buckets[bucket].<span class="hljs-title function_">push</span>(atlasIndex, x, y);
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+}</code></pre>
 <p>Third, dirty rectangles. The globe only needs a full redraw when the rotation reaches the next column of the map, about four times a second. In between, the only thing changing near the planet is the glow under the cursor, so I clear and redraw only the cells inside this frame&#39;s glow and the previous one. Each star remembers the box it was drawn in and clears just that.</p>
 <p>On top of that there&#39;s a frame cap: 15 fps when idle, 30 fps while the glow is moving. On phones it&#39;s 8 fps and the globe redraws about once a second. Everything moves so slowly that you can&#39;t really see the difference.</p>
 <h2 id="the-glow">The glow</h2>
 <p>The hover effect is a smoothstep falloff around the pointer:</p>
-<pre><code class="language-js">function smooth(d) {
-  if (d &gt;= HOVER_R) return 0;
-  var k = 1 - d / HOVER_R;
-  return k * k * (3 - 2 * k);
-}
-</code></pre>
+<pre class="hl"><code class="language-js"><span class="hljs-comment">// How strongly the pointer glow affects a point: 1 right under the pointer,</span>
+<span class="hljs-comment">// easing down to 0 at HOVER_R. The easing curve is smoothstep.</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">glowStrength</span>(<span class="hljs-params">distance</span>) {
+  <span class="hljs-keyword">if</span> (distance &gt;= <span class="hljs-variable constant_">HOVER_R</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">var</span> t = <span class="hljs-number">1</span> - distance / <span class="hljs-variable constant_">HOVER_R</span>;
+  <span class="hljs-keyword">return</span> t * t * (<span class="hljs-number">3</span> - <span class="hljs-number">2</span> * t);
+}</code></pre>
 <p>Within 190 px of the cursor, characters get more opaque, switch to denser glyphs, and shift toward green on the Earth and copper on the Moon and stars. Nearby stars get pushed out a little. The glow follows an eased copy of the pointer position, so it lags a bit behind the mouse, and that lag is a big part of why it feels smooth.</p>
 <h2 id="what-went-wrong-along-the-way">What went wrong along the way</h2>
 <h3 id="too-faint">Too faint</h3>

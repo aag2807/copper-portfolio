@@ -16,12 +16,24 @@ All of it is one canvas and one JavaScript file, no libraries. It's about 31 KB,
 The globe is a grid of cells, one character per cell. Each cell is 0.6 by 1.25 times the font size, which is roughly the shape of a monospace character. For every cell inside the circle I work out where that point would sit on a sphere, and from there its latitude and longitude.
 
 ```js
-var nx = (cx - globe.cx) / R, ny = -(cy - globe.cy) / R, r2 = nx * nx + ny * ny;
-if (r2 > 1) continue;
-var nz = Math.sqrt(1 - r2);
+// Where this cell sits on a unit disc centred on the globe (y points up).
+var x = (cellX - globe.cx) / R;
+var y = -(cellY - globe.cy) / R;
+var distanceSquared = x * x + y * y;
+if (distanceSquared > 1) continue; // outside the planet
+
+// Lift the point onto the sphere. On a unit sphere, that point is also
+// the surface normal, which is what the lighting needs.
+var z = Math.sqrt(1 - distanceSquared);
 ```
 
-On a unit sphere that point is also the surface normal, so shading is a dot product with a fixed light direction. Plain Lambert shading. Bright cells get dense characters like `#` and `%`, dim cells get `-` and `:`.
+With the normal in hand, shading is one dot product against a fixed light direction. Plain Lambert shading:
+
+```js
+shade.push(Math.max(0, x * lightX + y * lightY + z * lightZ)); // Lambert: normal . light
+```
+
+Bright cells get dense characters like `#` and `%`, dim cells get `-` and `:`.
 
 The continents come from a land mask of 144 by 72 bits, one bit per cell of an equirectangular map. I rasterised it from Natural Earth's 110 m land data with 3×3 supersampling and stored it in the script as a base64 string, around 1.7 KB. Turning the planet just means reading that mask with a different longitude offset. The geometry for every cell is computed once, on load and on resize, so a normal frame is mostly lookups.
 
@@ -38,11 +50,14 @@ First, a glyph atlas. Every character in every colour gets drawn once into an of
 Second, alpha buckets. Changing the canvas opacity between draws costs more than you'd think, so each glyph goes into one of 24 opacity buckets and I draw bucket by bucket, changing the opacity once per bucket.
 
 ```js
-function push(alpha, tint, glyph, x, y) {
-  var b = Math.round((alpha / aMax) * (NB - 1));
-  if (b <= 0) return false;
-  if (b >= NB) b = NB - 1;
-  buckets[b].push(tint * GLYPHS.length + glyph, x, y);
+// Glyphs are grouped by opacity, so drawing a whole group costs a single
+// globalAlpha change. Returns false when the glyph is too faint to draw.
+function queueGlyph(alpha, tint, glyph, x, y) {
+  var bucket = Math.round((alpha / aMax) * (ALPHA_BUCKETS - 1));
+  if (bucket <= 0) return false;
+  if (bucket >= ALPHA_BUCKETS) bucket = ALPHA_BUCKETS - 1;
+  var atlasIndex = tint * GLYPHS.length + glyph;
+  buckets[bucket].push(atlasIndex, x, y);
   return true;
 }
 ```
@@ -56,10 +71,12 @@ On top of that there's a frame cap: 15 fps when idle, 30 fps while the glow is m
 The hover effect is a smoothstep falloff around the pointer:
 
 ```js
-function smooth(d) {
-  if (d >= HOVER_R) return 0;
-  var k = 1 - d / HOVER_R;
-  return k * k * (3 - 2 * k);
+// How strongly the pointer glow affects a point: 1 right under the pointer,
+// easing down to 0 at HOVER_R. The easing curve is smoothstep.
+function glowStrength(distance) {
+  if (distance >= HOVER_R) return 0;
+  var t = 1 - distance / HOVER_R;
+  return t * t * (3 - 2 * t);
 }
 ```
 

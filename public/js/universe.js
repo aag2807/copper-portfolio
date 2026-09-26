@@ -79,7 +79,7 @@
   var W = 0, H = 0, dpr = 1, cw = 6, ch = 12, aw = 0, ah = 0;
   var small = false, canHover = false, reduce = false;
   var globe = null, moon = null, stars = [];
-  var buckets = [], NB = 24;
+  var buckets = [], ALPHA_BUCKETS = 24;
   var ptr = { tx: -1e4, ty: -1e4, x: -1e4, y: -1e4, h: 0, th: 0, moved: 0 };
   var raf = 0, last = 0, t0 = 0, running = false, resizeTimer = 0;
   var mqReduce, mqHover;
@@ -180,35 +180,58 @@
       globe = { cx: W * 0.78, cy: H * 0.56, R: R };
     }
     var cols = Math.ceil((2 * R) / cw), rows = Math.ceil((2 * R) / ch);
-    var x0 = globe.cx - (cols * cw) / 2, y0 = globe.cy - (rows * ch) / 2;
-    var ll = Math.hypot(LIGHT[0], LIGHT[1], LIGHT[2]);
-    var lx = LIGHT[0] / ll, ly = LIGHT[1] / ll, lz = LIGHT[2] / ll;
-    var ct = Math.cos(TILT), st = Math.sin(TILT), cp = Math.cos(PITCH), sp = Math.sin(PITCH);
-    var px = [], py = [], v = [], u = [], shade = [], rim = [], cl = [], rw = [];
-    for (var j = 0; j < rows; j++) {
-      for (var i = 0; i < cols; i++) {
-        var cx = x0 + (i + 0.5) * cw, cy = y0 + (j + 0.5) * ch;
-        if (cx < -cw || cx > W + cw || cy < -ch || cy > H + ch) continue;
-        var nx = (cx - globe.cx) / R, ny = -(cy - globe.cy) / R, r2 = nx * nx + ny * ny;
-        if (r2 > 1) continue;
-        var nz = Math.sqrt(1 - r2);
-        // undo the roll (tilt about view z), then the pitch (about view x)
-        var ax = nx * ct - ny * st, ay = nx * st + ny * ct;
-        var by = ay * cp + nz * sp, bz = nz * cp - ay * sp;
-        var lat = Math.asin(Math.max(-1, Math.min(1, by))), lon = Math.atan2(ax, bz);
-        px.push(cx); py.push(cy); cl.push(i); rw.push(j);
-        v.push(Math.min(MASK_H - 1, Math.floor(((Math.PI / 2 - lat) / Math.PI) * MASK_H)));
-        u.push((lon / (2 * Math.PI) + 0.5) * MASK_W);
-        shade.push(Math.max(0, nx * lx + ny * ly + nz * lz));
-        rim.push(r2 > 0.93 ? 2 : (i + j) % 2 === 0 && (j % 2 === 0) ? 1 : 0); // limb, sparse ocean dither
+    var gridLeft = globe.cx - (cols * cw) / 2;
+    var gridTop = globe.cy - (rows * ch) / 2;
+
+    var lightLength = Math.hypot(LIGHT[0], LIGHT[1], LIGHT[2]);
+    var lightX = LIGHT[0] / lightLength, lightY = LIGHT[1] / lightLength, lightZ = LIGHT[2] / lightLength;
+    var cosTilt = Math.cos(TILT), sinTilt = Math.sin(TILT);
+    var cosPitch = Math.cos(PITCH), sinPitch = Math.sin(PITCH);
+
+    var screenX = [], screenY = [], mapRow = [], mapCol = [], shade = [], rim = [], gridCol = [], gridRow = [];
+
+    for (var row = 0; row < rows; row++) {
+      for (var col = 0; col < cols; col++) {
+        var cellX = gridLeft + (col + 0.5) * cw;
+        var cellY = gridTop + (row + 0.5) * ch;
+        var offScreen = cellX < -cw || cellX > W + cw || cellY < -ch || cellY > H + ch;
+        if (offScreen) continue;
+
+        // Where this cell sits on a unit disc centred on the globe (y points up).
+        var x = (cellX - globe.cx) / R;
+        var y = -(cellY - globe.cy) / R;
+        var distanceSquared = x * x + y * y;
+        if (distanceSquared > 1) continue; // outside the planet
+
+        // Lift the point onto the sphere. On a unit sphere, that point is also
+        // the surface normal, which is what the lighting needs.
+        var z = Math.sqrt(1 - distanceSquared);
+
+        // Undo the axial tilt (a roll around the view axis)...
+        var untiltedX = x * cosTilt - y * sinTilt;
+        var untiltedY = x * sinTilt + y * cosTilt;
+        // ...then the pitch that leans the north pole toward the viewer.
+        var northward = untiltedY * cosPitch + z * sinPitch;
+        var towardViewer = z * cosPitch - untiltedY * sinPitch;
+
+        var latitude = Math.asin(Math.max(-1, Math.min(1, northward)));
+        var longitude = Math.atan2(untiltedX, towardViewer);
+
+        screenX.push(cellX); screenY.push(cellY); gridCol.push(col); gridRow.push(row);
+        mapRow.push(Math.min(MASK_H - 1, Math.floor(((Math.PI / 2 - latitude) / Math.PI) * MASK_H)));
+        mapCol.push((longitude / (2 * Math.PI) + 0.5) * MASK_W);
+        shade.push(Math.max(0, x * lightX + y * lightY + z * lightZ)); // Lambert: normal . light
+        var onLimb = distanceSquared > 0.93;
+        var oceanDither = (col + row) % 2 === 0 && row % 2 === 0;
+        rim.push(onLimb ? 2 : oceanDither ? 1 : 0);
       }
     }
-    globe.n = px.length;
-    globe.px = new Float32Array(px); globe.py = new Float32Array(py);
-    globe.v = new Uint16Array(v); globe.u = new Float32Array(u);
+    globe.n = screenX.length;
+    globe.px = new Float32Array(screenX); globe.py = new Float32Array(screenY);
+    globe.v = new Uint16Array(mapRow); globe.u = new Float32Array(mapCol);
     globe.shade = new Float32Array(shade); globe.rim = new Uint8Array(rim);
-    globe.col = new Uint16Array(cl); globe.row = new Uint16Array(rw);
-    globe.x0 = x0; globe.y0 = y0; globe.cols = cols; globe.rows = rows;
+    globe.col = new Uint16Array(gridCol); globe.row = new Uint16Array(gridRow);
+    globe.x0 = gridLeft; globe.y0 = gridTop; globe.cols = cols; globe.rows = rows;
     globe.rot = NaN; globe.glow = null;
   }
 
@@ -320,18 +343,23 @@
     }
   }
 
-  function push(alpha, tint, glyph, x, y) {
-    var b = Math.round((alpha / aMax) * (NB - 1));
-    if (b <= 0) return false;
-    if (b >= NB) b = NB - 1;
-    buckets[b].push(tint * GLYPHS.length + glyph, x, y);
+  // Glyphs are grouped by opacity, so drawing a whole group costs a single
+  // globalAlpha change. Returns false when the glyph is too faint to draw.
+  function queueGlyph(alpha, tint, glyph, x, y) {
+    var bucket = Math.round((alpha / aMax) * (ALPHA_BUCKETS - 1));
+    if (bucket <= 0) return false;
+    if (bucket >= ALPHA_BUCKETS) bucket = ALPHA_BUCKETS - 1;
+    var atlasIndex = tint * GLYPHS.length + glyph;
+    buckets[bucket].push(atlasIndex, x, y);
     return true;
   }
 
-  function smooth(d) { // 1 at the pointer, 0 at HOVER_R, eased
-    if (d >= HOVER_R) return 0;
-    var k = 1 - d / HOVER_R;
-    return k * k * (3 - 2 * k);
+  // How strongly the pointer glow affects a point: 1 right under the pointer,
+  // easing down to 0 at HOVER_R. The easing curve is smoothstep.
+  function glowStrength(distance) {
+    if (distance >= HOVER_R) return 0;
+    var t = 1 - distance / HOVER_R;
+    return t * t * (3 - 2 * t);
   }
 
   // One globe cell -> glyph (G.gi), alpha (G.a), tint (G.tint); false if blank.
@@ -375,15 +403,15 @@
     return true;
   }
 
-  function clearBuckets() { for (var i = 0; i < NB; i++) buckets[i].length = 0; }
+  function clearBuckets() { for (var i = 0; i < ALPHA_BUCKETS; i++) buckets[i].length = 0; }
 
   // Draw queued glyphs, one globalAlpha change per bucket.
   function flush(c) {
     var ng = GLYPHS.length;
-    for (var b = 1; b < NB; b++) {
+    for (var b = 1; b < ALPHA_BUCKETS; b++) {
       var q = buckets[b];
       if (!q.length) continue;
-      c.globalAlpha = (b / (NB - 1)) * aMax;
+      c.globalAlpha = (b / (ALPHA_BUCKETS - 1)) * aMax;
       for (var k = 0; k < q.length; k += 3) {
         var id = q[k], col = id % ng, row = (id - col) / ng;
         c.drawImage(atlas, col * aw, row * ah, aw, ah,
@@ -436,8 +464,8 @@
     for (i = 0; i < B.n; i++) {
       var col = B.col[i], row = B.row[i];
       if (col < c0 || col >= c1 || row < r0 || row >= r1) continue;
-      var f = lit ? smooth(Math.hypot(B.px[i] - mx, B.py[i] - my)) * h : 0;
-      if (fn(i, rot, f)) push(G.a, G.tint, G.gi, B.px[i], B.py[i]);
+      var f = lit ? glowStrength(Math.hypot(B.px[i] - mx, B.py[i] - my)) * h : 0;
+      if (fn(i, rot, f)) queueGlyph(G.a, G.tint, G.gi, B.px[i], B.py[i]);
     }
     if (clip) {
       ctx.save(); ctx.beginPath(); ctx.rect(clip[0], clip[1], clip[2], clip[3]); ctx.clip();
@@ -484,7 +512,7 @@
       var tw = reduce ? 0.8 : 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(t * st.w + st.p));
       var sa = aStar * st.a * tw, stint = 0, tox = 0, toy = 0;
       if (h > 0.005) {
-        var qx = st.x - mx, qy = st.y - my, sd = Math.hypot(qx, qy), sf = smooth(sd) * h;
+        var qx = st.x - mx, qy = st.y - my, sd = Math.hypot(qx, qy), sf = glowStrength(sd) * h;
         if (sf > 0) {
           sa += (hoverPeak - sa) * sf;
           stint = TINTS - 1 + Math.min(TINTS - 1, Math.ceil(sf * (TINTS - 1)));
@@ -492,7 +520,7 @@
         }
       }
       if (dt) { var e = 1 - Math.exp(-dt * 6); st.ox += (tox - st.ox) * e; st.oy += (toy - st.oy) * e; }
-      if (push(sa, stint, st.g, sx, sy)) {
+      if (queueGlyph(sa, stint, st.g, sx, sy)) {
         st.bx = Math.round(sx * dpr - aw / 2); st.by = Math.round(sy * dpr - ah / 2); st.bw = aw;
       }
     }
@@ -562,7 +590,7 @@
     if (!canvas || !canvas.getContext) return;
     ctx = canvas.getContext("2d");
     if (!ctx || !window.atob) return fail();
-    for (var i = 0; i < NB; i++) buckets.push([]);
+    for (var i = 0; i < ALPHA_BUCKETS; i++) buckets.push([]);
     mask = decodeMask();
     if (CITY_ON) cities = buildCities();
     mqReduce = matchMedia("(prefers-reduced-motion: reduce)");
