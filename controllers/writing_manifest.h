@@ -12,6 +12,7 @@ typedef struct
 } WritingPost;
 
 static const WritingPost kWritingPosts[] = {
+    {"drawing-the-sky-in-ascii", "writing/drawing-the-sky-in-ascii.html", "Drawing the sky in ASCII", "How the Earth, Moon and stars behind this site are drawn: one canvas, a 1.7 KB map, alpha buckets, dirty rectangles, and a few things that went wrong.", "2026-09-25"},
     {"on-being-pragmatic", "writing/on-being-pragmatic.html", "On being pragmatic", "Correct and right are different things. Correct ships; right matches an idea the author had. Most of the damage in this industry lives in the gap.", "2026-08-24"},
     {"building-c-copper", "writing/building-c-copper.html", "Building c-copper: what a web framework in C teaches you", "Why I wrote the framework serving this page in C99 with no framework dependencies, the decisions that mattered, and what the numbers say.", "2026-07-25"},
 };

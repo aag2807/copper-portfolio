@@ -1,0 +1,135 @@
+<!-- generated from writing/drawing-the-sky-in-ascii.md — do not edit by hand -->
+<div id="read-progress" aria-hidden="true"></div>
+
+<div class="flex items-center gap-2 py-5 mono-sm tracking-[.1em]">
+  <a href="/writing" class="hover:text-accent transition-colors">← Writing</a>
+</div>
+
+<article class="border-t border-rule">
+  <header class="pt-12 pb-10 lg:pt-[52px] border-b border-rule max-w-[78ch]">
+    <div class="flex items-center gap-4 font-mono text-[11px] tracking-[.14em] text-muted mb-6">
+      <span class="text-accent">engineering</span>
+      <span>2026-09-25</span>
+      <span>7 MIN</span>
+    </div>
+    <h1 class="text-[clamp(36px,4.6vw,60px)] leading-[1.02] tracking-[-.032em] font-semibold max-w-[26ch]">Drawing the sky in ASCII</h1>
+    <p class="mt-6 font-serif text-[20px] leading-[1.55] text-muted max-w-[56ch]">How the Earth, Moon and stars behind this site are drawn: one canvas, a 1.7 KB map, alpha buckets, dirty rectangles, and a few things that went wrong.</p>
+  </header>
+
+  <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_240px] gap-12 lg:gap-16 pt-12">
+    <div class="prose-article">
+<p>Behind every page on this site there is a slowly turning Earth made of text characters, a Moon, and a sky full of little star clusters. Move your mouse over them and they glow. Switch to night mode and the Earth&#39;s dark side lights up with cities.</p>
+<p>It is one canvas and one JavaScript file with no dependencies. The file is about 31 KB, or 11 KB gzipped. This post is about how it works, the parts that fought back, and why it was one of the most satisfying things I have built for this site.</p>
+<h2 id="the-earth-is-a-spreadsheet">The Earth is a spreadsheet</h2>
+<p>The globe is a grid of cells, one glyph per cell. Each cell is 0.6 by 1.25 times the font size, which is the shape of a monospace character. For every cell inside the circle, I work out where that point sits on a sphere, then which latitude and longitude it lands on.</p>
+<pre><code class="language-js">var nx = (cx - globe.cx) / R, ny = -(cy - globe.cy) / R, r2 = nx * nx + ny * ny;
+if (r2 &gt; 1) continue;
+var nz = Math.sqrt(1 - r2);
+</code></pre>
+<p>That gives a surface normal for free. The dot product of the normal with a fixed light direction is the shading, the old Lambert rule from every graphics course. Bright cells get dense glyphs like <code>#</code> and <code>%</code>. Dim cells get <code>-</code> and <code>:</code>.</p>
+<p>The continents come from a land mask: 144 by 72 bits, one per cell of an equirectangular map, rasterised from Natural Earth&#39;s 110 m land data with 3×3 supersampling. It is stored as a base64 string of about 1.7 KB inside the script. To turn the planet, I only change the longitude offset I read the mask with. The geometry of every cell is computed once, when the page loads or resizes. After that, a frame is mostly table lookups.</p>
+<p>The planet has a 23° axial tilt and tips its north pole slightly toward you, because a globe seen perfectly edge-on looks like a flat disc. One full turn takes 150 seconds. The rotation is derived from the wall clock, so when you move between pages the Earth picks up exactly where it was.</p>
+<h2 id="drawing-thousands-of-glyphs-cheaply">Drawing thousands of glyphs cheaply</h2>
+<p>The first version cleared the canvas and drew every glyph on every frame. On the machine I tested it on, that cost 60 to 80 ms per frame. A background that eats the main thread is a background that makes the whole site feel slow.</p>
+<p>Three changes fixed it.</p>
+<p><strong>A glyph atlas.</strong> Every glyph in every colour is drawn once into an offscreen canvas. Drawing a character becomes copying a small rectangle, which is much cheaper than asking the browser to lay out text thousands of times per frame.</p>
+<p><strong>Alpha buckets.</strong> Changing the canvas opacity between draws is surprisingly expensive, so glyphs are sorted into 24 opacity buckets and drawn bucket by bucket, with one opacity change each.</p>
+<pre><code class="language-js">function push(alpha, tint, glyph, x, y) {
+  var b = Math.round((alpha / aMax) * (NB - 1));
+  if (b &lt;= 0) return false;
+  if (b &gt;= NB) b = NB - 1;
+  buckets[b].push(tint * GLYPHS.length + glyph, x, y);
+  return true;
+}
+</code></pre>
+<p><strong>Dirty rectangles.</strong> The globe only needs a full redraw when its rotation moves to the next column of the map, about four times a second. Between those, the only thing that changes near the planet is the glow under your cursor, so I clear and redraw just the grid cells inside this frame&#39;s glow and last frame&#39;s. Stars remember the box they were drawn in and clear only that.</p>
+<p>The frame rate is capped at 15 fps when nothing is happening and 30 fps while the glow is moving. On phones it drops to 8 fps and the globe redraws about once a second. The motion is slow enough that nobody can tell.</p>
+<h2 id="the-glow">The glow</h2>
+<p>The hover effect is a smoothstep falloff around the pointer:</p>
+<pre><code class="language-js">function smooth(d) {
+  if (d &gt;= HOVER_R) return 0;
+  var k = 1 - d / HOVER_R;
+  return k * k * (3 - 2 * k);
+}
+</code></pre>
+<p>Inside the 190 px radius, glyphs gain opacity, step up to denser characters, and tint toward moss green on the Earth and copper on the Moon and stars. Stars also get pushed gently outward. The pointer position is eased, so the glow trails your cursor a little. That small delay is what makes it feel soft, like light spilling from the pointer.</p>
+<h2 id="things-that-fought-back">Things that fought back</h2>
+<p><strong>It was too polite.</strong> The first version was so faint you could barely tell it was there. Keeping body text readable pushed every opacity down, and the result looked like a smudge on the screen. I raised the base opacity, gave land a permanent green tint and made the glow much stronger. Then the text had problems, so see-through panels got a frosted background that keeps the sky visible but blurred behind the words.</p>
+<p><strong>The galaxy.</strong> The left side of the page felt empty, so I drew a spiral galaxy there: logarithmic spiral arms, a bright core, per-cell noise for speckle. It was technically correct. It also looked like someone had wiped a dirty thumb across the page. Flattened arms in a character grid turn into horizontal bands, and no amount of tuning made it read as a galaxy. I deleted it.</p>
+<p><strong>The Moon was the answer.</strong> It pairs with the Earth, and it has a property that made it cheap: the Moon is tidally locked, so we always see the same face. Its maria sit roughly where the real ones are, and 26 craters, plus Tycho and Copernicus, have dark floors and bright rims. Since nothing on it ever turns, every cell&#39;s glyph and opacity is computed once. After that the Moon costs nothing until your cursor touches it.</p>
+<p><strong>Stars erasing things.</strong> Each star clears its old box before drawing its new position. When stars drifted over the galaxy, and later the Moon, they punched little holes in it that stayed until the next full redraw. Stars now skip the discs of both bodies.</p>
+<p><strong>The cache.</strong> At one point I changed the script, refreshed, and saw nothing new. The server was telling browsers to keep static files for 24 hours without asking again. My files have no content hash in their names, so the right answer is to let the browser revalidate every time with an ETag. When nothing changed, the reply is an empty 304.</p>
+<p><strong>Night mode and reading.</strong> At night the glyphs get brighter, add their light together where they overlap, and carry a small glow baked into the atlas. It looks great on the home page. Behind a long article it made paragraphs hard to read. Reading pages now set one attribute on the page body and the whole sky dims to 45%.</p>
+<p><strong>Lighthouse.</strong> An audit showed the background script as the largest single CPU cost while the page loads. The sky now waits for the page to finish loading and for the browser to be idle before it starts. Nobody needs a planet in the first 200 milliseconds.</p>
+<h2 id="night-lights">Night lights</h2>
+<p>In dark mode, land on the unlit side of the Earth can hold a city light: coastal cells more often than inland ones, and none on the polar caps. Each light twinkles on its own slow period of 5 to 14 seconds, and the lights are tied to the map, so they rotate with the planet and come on as each region crosses into night. It is fake, in the sense that the lights are random and there are no real cities in the data. I still catch myself watching them.</p>
+<h2 id="being-careful-with-it">Being careful with it</h2>
+<p>A moving background is a gamble with the people reading the page, so the script tries to lose gracefully.</p>
+<ul>
+<li>With reduced motion turned on, it draws one still frame, centred on the Caribbean, and never animates.</li>
+<li>When the tab is hidden, it stops completely.</li>
+<li>The canvas never receives clicks, so it cannot block links, text selection or the terminal on the home page.</li>
+<li>If anything throws, the canvas removes itself and the page looks exactly as it would without it.</li>
+</ul>
+<h2 id="why-i-liked-building-it">Why I liked building it</h2>
+<p>Most of my work is systems that move money. They succeed by being boring, and their best days are the ones nobody notices. This was the opposite: a problem where I could see every decision on the screen within a second of making it.</p>
+<p>It was also a reminder of how far careful arithmetic goes. The whole sky is a grid, a dot product, a bitmap of the continents and a list of opacities, running on a plain 2D canvas in a browser that is very good at copying small rectangles. When I got the renderer to redraw only what changed and saw the frame cost fall to almost nothing, it felt like the same pleasure I get from a query plan that finally uses the index.</p>
+<p>The whole thing lives in <a href="https://github.com/aag2807/copper-portfolio/blob/main/public/js/universe.js"><code>public/js/universe.js</code></a>. The constants at the top control nearly everything: opacity, speed, glow radius, star density and the Moon&#39;s phase. Change a few numbers and you get a different sky.</p>
+
+      <div class="mt-12 pt-6 border-t border-rule flex flex-wrap gap-2.5 font-sans">
+        <a href="/writing" class="btn btn-sm btn-outline">← All writing</a>
+        <a href="/contact" class="btn btn-sm btn-ghost">Get in touch →</a>
+      </div>
+    </div>
+
+    <aside class="lg:sticky lg:top-24 self-start flex flex-col gap-3.5 order-first lg:order-none">
+      <nav aria-label="Contents" class="panel p-5">
+        <div class="label mb-3.5">CONTENTS</div>
+        <div class="flex flex-col gap-2.5 text-[13.5px] leading-[1.45]">
+          <a href="#the-earth-is-a-spreadsheet" class="hover:text-accent transition-colors">The Earth is a spreadsheet</a>
+          <a href="#drawing-thousands-of-glyphs-cheaply" class="hover:text-accent transition-colors">Drawing thousands of glyphs cheaply</a>
+          <a href="#the-glow" class="hover:text-accent transition-colors">The glow</a>
+          <a href="#things-that-fought-back" class="hover:text-accent transition-colors">Things that fought back</a>
+          <a href="#night-lights" class="hover:text-accent transition-colors">Night lights</a>
+          <a href="#being-careful-with-it" class="hover:text-accent transition-colors">Being careful with it</a>
+          <a href="#why-i-liked-building-it" class="hover:text-accent transition-colors">Why I liked building it</a>
+        </div>
+      </nav>
+      <div class="panel-plain p-5">
+        <div class="label mb-3.5">Filed under</div>
+        <div class="flex flex-wrap gap-[7px]">
+          <span class="tag tag-sm tag-accent">canvas</span>
+          <span class="tag tag-sm">javascript</span>
+          <span class="tag tag-sm">rendering</span>
+          <span class="tag tag-sm">c-copper</span>
+        </div>
+      </div>
+    </aside>
+  </div>
+</article>
+
+<nav aria-label="More posts" class="rule-grid grid-cols-1 md:grid-cols-2 my-16">
+  <a href="/writing/on-being-pragmatic" class="p-7 block">
+    <div class="label mb-3">← PREVIOUS</div>
+    <div class="text-[19px] font-semibold tracking-[-.015em] leading-[1.25]">On being pragmatic</div>
+  </a>
+  <a href="/writing" class="p-7 block md:text-right">
+    <div class="label mb-3">ALL POSTS →</div>
+    <div class="text-[19px] font-semibold tracking-[-.015em] leading-[1.25]">Writing</div>
+  </a>
+</nav>
+
+<script>
+  (function () {
+    var bar = document.getElementById("read-progress");
+    if (!bar) return;
+    var h = document.documentElement;
+    function tick() {
+      var max = h.scrollHeight - h.clientHeight;
+      bar.style.width = (max > 0 ? Math.min(100, (h.scrollTop / max) * 100) : 0).toFixed(1) + "%";
+    }
+    window.addEventListener("scroll", tick, { passive: true });
+    window.addEventListener("resize", tick);
+    tick();
+  })();
+</script>
