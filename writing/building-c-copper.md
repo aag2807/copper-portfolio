@@ -7,7 +7,7 @@ tag: systems
 tags: c99, mvc, pthreads, wasmoon
 ---
 
-The page you're reading was routed, rendered, and delivered by roughly 2,800 lines of C99 I wrote myself. No nginx in front doing the real work, no framework underneath, no framework dependencies (libcurl is linked only to send the contact form's email) — `accept()` to template interpolation, every byte assembled by code in one repo.
+The page you're reading was routed, rendered, and delivered by roughly 3,500 lines of C99 I wrote myself. No nginx in front doing the real work, no framework underneath, no framework dependencies (libcurl is linked only to send the contact form's email, zlib only to gzip responses) — `accept()` to template interpolation, every byte assembled by code in one repo.
 
 This is not because C is the right tool for a portfolio site. It's because after seven years of shipping on .NET and Angular — where the socket loop, the router, and the view engine are all somebody else's excellent work — I wanted to know exactly what lives under the abstractions I use every day. The honest way to find out is to build the whole lifecycle yourself and then run it in production.
 

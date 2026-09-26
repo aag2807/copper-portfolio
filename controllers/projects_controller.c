@@ -12,12 +12,12 @@ static const struct
     const char* title;
     const char* desc;
 } kProjects[] = {
-    {"c-copper", "projects/c-copper.html", "c-copper — a web framework in C",
-     "Case study: the hand-written C99 MVC framework serving this site. Architecture, decisions, and measured throughput."},
-    {"llm-gateway", "projects/llm-gateway.html", "On-prem LLM gateway for banking",
-     "Case study: multi-provider LLM routing, RAG pipelines, and multi-agent orchestration with zero external data egress."},
+    {"c-copper", "projects/c-copper.html", "c-copper — a web server in C",
+     "Case study: the hand-written C99 server and MVC framework behind this site. Architecture, decisions, measured throughput and live render telemetry."},
+    {"llm-gateway", "projects/llm-gateway.html", "On-prem LLM gateway for a bank",
+     "Freelance case study: an on-premise LLM gateway for a bank in C#/.NET. Multi-provider routing, RAG and multi-agent orchestration with zero external data egress."},
     {"payment-gateways", "projects/payment-gateways.html", "60+ payment gateway integrations",
-     "Case study: checkout, transaction processing, and fraud handling across 60+ payment providers in regulated fintech."},
+     "Case study from ATL Software: checkout, transaction processing and fraud handling across 60+ payment providers; contributed to a +15% conversion."},
 };
 
 ACTION(projects_show)
@@ -33,6 +33,7 @@ ACTION(projects_show)
                     {"title", "text", kProjects[i].title, NULL},
                     {"path", "text", str_cstr(&req->path), NULL},
                     {"description", "text", kProjects[i].desc, NULL},
+                    {"sky", "text", "dim", NULL}, /* long-form reading: universe.js dims */
                     {NULL, NULL, NULL, NULL},
                 };
                 response_status(res, 200, "OK");

@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <strings.h>
 
 #ifdef _WIN32
 #include <winsock2.h>
@@ -74,6 +75,34 @@ void response_redirect_permanent(Response* res, const char* url)
     str_free(&res->status_text);
     res->status_text = str_from("Moved Permanently");
     response_header(res, "Location", url);
+}
+
+int response_get_header(const Response* res, const char* key, char* out, size_t cap)
+{
+    if (cap) out[0] = '\0';
+    size_t klen = strlen(key);
+    const char* p = res->headers.data;
+    const char* end = p ? p + res->headers.len : NULL;
+    while (p && p < end)
+    {
+        const char* eol = memchr(p, '\r', (size_t)(end - p));
+        if (!eol) eol = end;
+        if ((size_t)(eol - p) > klen && strncasecmp(p, key, klen) == 0 && p[klen] == ':')
+        {
+            const char* v = p + klen + 1;
+            while (v < eol && *v == ' ') v++;
+            size_t n = (size_t)(eol - v);
+            if (cap)
+            {
+                if (n >= cap) n = cap - 1;
+                memcpy(out, v, n);
+                out[n] = '\0';
+            }
+            return 1;
+        }
+        p = eol + 2; // skip "\r\n"
+    }
+    return 0;
 }
 
 void response_flush(Response* res, int fd)

@@ -1,5 +1,52 @@
 @import "tailwindcss";
 
+/* ----------------------------------------------------------------------------
+   Self-hosted IBM Plex (SIL OFL 1.1, public/fonts/OFL.txt), latin subset only,
+   and only the faces the site renders: Sans 400-600 (one variable file),
+   Mono 400 + 600, Serif 400 (+ italic, fetched only if a post uses <em>).
+   Mono italic (code comments) stays browser-synthesised, as it was before.
+---------------------------------------------------------------------------- */
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-style: normal;
+  font-weight: 100 700;
+  font-display: swap;
+  src: url("/static/fonts/ibm-plex-sans-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/static/fonts/ibm-plex-mono-latin-400-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/static/fonts/ibm-plex-mono-latin-600-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "IBM Plex Serif";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/static/fonts/ibm-plex-serif-latin-400-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "IBM Plex Serif";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/static/fonts/ibm-plex-serif-latin-400-italic.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 /* class sources: server templates + browser-side lua/js modules */
 @source "../views";
 @source "../js";
@@ -25,11 +72,63 @@
   --color-copper-soft: #efe1d8;
   --color-code: #14181c;
   --color-code-fg: #dfe5e8;
+  --color-lift: #ffffff;      /* hover surface, one step above card */
+  --color-on-accent: #ffffff; /* text on a solid accent fill */
+  --color-on-ink: #ffffff;    /* text on a solid ink fill (hover states) */
+  --color-line: #9aa4ab;      /* diagram node borders */
+}
+
+/* ----------------------------------------------------------------------------
+   Night theme. The same token names, redefined, so every utility (bg-paper,
+   text-muted, border-rule, bg-paper/92 ...) follows without dark: variants.
+   Two copies on purpose: an explicit choice (data-theme, set by the inline
+   bootstrap in layout.html before first paint) and the system default when no
+   choice is stored. Keep them identical; scripts/contrast check reads the first.
+---------------------------------------------------------------------------- */
+:root { color-scheme: light; }
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-paper: #0d1114;
+  --color-card: #151b20;
+  --color-ink: #e6e9ec;
+  --color-muted: #9aa6ae;
+  --color-rule: #26313a;
+  --color-accent: #7fb392;
+  --color-accent-soft: #19271f;
+  --color-copper: #d08a5e;
+  --color-copper-soft: #2a1d15;
+  --color-code: #080b0d;
+  --color-code-fg: #dfe5e8;
+  --color-lift: #1c242a;
+  --color-on-accent: #0d1114;
+  --color-on-ink: #0d1114;
+  --color-line: #4a5862;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --color-paper: #0d1114;
+    --color-card: #151b20;
+    --color-ink: #e6e9ec;
+    --color-muted: #9aa6ae;
+    --color-rule: #26313a;
+    --color-accent: #7fb392;
+    --color-accent-soft: #19271f;
+    --color-copper: #d08a5e;
+    --color-copper-soft: #2a1d15;
+    --color-code: #080b0d;
+    --color-code-fg: #dfe5e8;
+    --color-lift: #1c242a;
+    --color-on-accent: #0d1114;
+    --color-on-ink: #0d1114;
+    --color-line: #4a5862;
+  }
 }
 
 /* ---- base (layered so component classes can override it) ---- */
 @layer base {
-  html { scroll-behavior: smooth; }
+  /* html carries the background too, so nothing flashes white between pages */
+  html { scroll-behavior: smooth; background: var(--color-paper); }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
   body {
@@ -39,7 +138,7 @@
     text-wrap: pretty;
   }
   a { color: inherit; text-decoration: none; }
-  ::selection { background: var(--color-accent); color: #fff; }
+  ::selection { background: var(--color-accent); color: var(--color-on-accent); }
   :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
 }
 
@@ -165,9 +264,9 @@
   }
   .btn-sm { padding: 11px 16px; font-size: 11.5px; }
   .btn-ink { background: var(--color-ink); color: var(--color-paper); border-color: var(--color-ink); }
-  .btn-ink:hover { background: var(--color-accent); border-color: var(--color-accent); color: #fff; }
-  .btn-accent { background: var(--color-accent); color: #fff; border-color: var(--color-accent); }
-  .btn-accent:hover { background: var(--color-ink); border-color: var(--color-ink); color: #fff; }
+  .btn-ink:hover { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-on-accent); }
+  .btn-accent { background: var(--color-accent); color: var(--color-on-accent); border-color: var(--color-accent); }
+  .btn-accent:hover { background: var(--color-ink); border-color: var(--color-ink); color: var(--color-on-ink); }
   .btn-outline { border-color: var(--color-ink); color: var(--color-ink); background: transparent; }
   .btn-outline:hover { border-color: var(--color-accent); color: var(--color-accent); }
   .btn-ghost { border-color: var(--color-rule); color: var(--color-muted); background: transparent; }
@@ -191,7 +290,7 @@
   }
   .rule-grid > * { background: var(--color-card); min-width: 0; }
   .rule-grid > a { transition: background-color .18s ease; }
-  .rule-grid > a:hover { background: #fff; }
+  .rule-grid > a:hover { background: var(--color-lift); }
 
   /* editorial list row (work index, writing index) */
   .row {
@@ -332,6 +431,10 @@ nav a[aria-current="page"] { color: var(--color-accent); }
 #universe.on { opacity: 1; }
 @media (prefers-reduced-motion: reduce) { #universe { transition: none; } }
 body > main, body > footer { position: relative; }
+/* once the universe has been shown in this tab (sessionStorage flag set by
+   universe.js, read by the head bootstrap), later pages show it without the
+   fade, so navigating never dips the background */
+.u-seen #universe { transition: none; }
 
 /* ---- reading progress (writing posts) ---- */
 #read-progress {
@@ -413,3 +516,328 @@ body > main, body > footer { position: relative; }
 .prose-article table { width: 100%; border-collapse: collapse; margin-top: 26px; font-family: var(--font-sans); font-size: 15px; }
 .prose-article th, .prose-article td { border: 1px solid var(--color-rule); padding: 10px 12px; text-align: left; vertical-align: top; }
 .prose-article th { background: var(--color-card); font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--color-muted); }
+
+/* ----------------------------------------------------------------------------
+   Theme toggle (header). Icon-only; the label lives in aria-label/title.
+---------------------------------------------------------------------------- */
+.theme-toggle {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; margin: -6px -8px -6px 0;
+  color: var(--color-muted); background: transparent; border: 0; cursor: pointer;
+  transition: color .18s ease;
+}
+.theme-toggle:hover { color: var(--color-accent); }
+.theme-toggle svg { width: 15px; height: 15px; display: block; }
+.theme-toggle .i-sun { display: none; }
+:root[data-theme="dark"] .theme-toggle .i-sun { display: block; }
+:root[data-theme="dark"] .theme-toggle .i-moon { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle .i-sun { display: block; }
+  :root:not([data-theme="light"]) .theme-toggle .i-moon { display: none; }
+}
+@media (max-width: 767px) { .theme-toggle { width: 44px; height: 44px; margin: 0 -12px 0 0; } }
+
+/* ----------------------------------------------------------------------------
+   Cross-document page transitions. The header is its own snapshot and holds
+   still; the page cross-fades with a short upward slide. The universe canvas
+   is its own snapshot too and does not animate: its rotation follows the
+   clock, so the old and new frames are the same picture.
+---------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  body > header { view-transition-name: site-header; }
+  #universe { view-transition-name: universe; }
+  ::view-transition-group(site-header),
+  ::view-transition-group(universe),
+  ::view-transition-old(universe),
+  ::view-transition-new(universe) { animation: none; }
+  ::view-transition-old(site-header) { display: none; }
+  ::view-transition-new(site-header) { animation: none; }
+  ::view-transition-old(root) { animation: vt-out .16s ease-in both; }
+  ::view-transition-new(root) { animation: vt-in .26s cubic-bezier(.2, .7, .2, 1) both; }
+}
+@keyframes vt-out { to { opacity: 0; } }
+@keyframes vt-in { from { opacity: 0; transform: translateY(8px); } }
+
+/* ----------------------------------------------------------------------------
+   Night theme: mermaid diagrams are baked at build time with the light palette
+   and ID-scoped styles, so re-point their colours at the tokens (dark only;
+   light keeps the baked values untouched).
+---------------------------------------------------------------------------- */
+:root[data-theme="dark"] .diagram :is(svg, .label text, .cluster-label text, .cluster text, .flowchartTitleText) { fill: var(--color-ink) !important; }
+:root[data-theme="dark"] .diagram :is(span, .label, .nodeLabel, .edgeLabel) { color: var(--color-ink) !important; }
+:root[data-theme="dark"] .diagram :is(.node rect, .node circle, .node ellipse, .node polygon, .node path) { fill: var(--color-card) !important; stroke: var(--color-line) !important; }
+:root[data-theme="dark"] .diagram :is(.cluster rect) { fill: color-mix(in srgb, var(--color-card) 55%, var(--color-paper)) !important; stroke: var(--color-rule) !important; }
+:root[data-theme="dark"] .diagram :is(.edgeLabel, .edgeLabel p, .labelBkg) { background-color: var(--color-paper) !important; }
+:root[data-theme="dark"] .diagram :is(.edgeLabel rect) { fill: var(--color-paper) !important; }
+:root[data-theme="dark"] .diagram :is(.flowchart-link, .edgePath .path) { stroke: var(--color-accent) !important; }
+:root[data-theme="dark"] .diagram :is(.marker, .arrowMarkerPath, .arrowheadPath) { fill: var(--color-accent) !important; stroke: var(--color-accent) !important; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .diagram :is(svg, .label text, .cluster-label text, .cluster text, .flowchartTitleText) { fill: var(--color-ink) !important; }
+  :root:not([data-theme="light"]) .diagram :is(span, .label, .nodeLabel, .edgeLabel) { color: var(--color-ink) !important; }
+  :root:not([data-theme="light"]) .diagram :is(.node rect, .node circle, .node ellipse, .node polygon, .node path) { fill: var(--color-card) !important; stroke: var(--color-line) !important; }
+  :root:not([data-theme="light"]) .diagram :is(.cluster rect) { fill: color-mix(in srgb, var(--color-card) 55%, var(--color-paper)) !important; stroke: var(--color-rule) !important; }
+  :root:not([data-theme="light"]) .diagram :is(.edgeLabel, .edgeLabel p, .labelBkg) { background-color: var(--color-paper) !important; }
+  :root:not([data-theme="light"]) .diagram :is(.edgeLabel rect) { fill: var(--color-paper) !important; }
+  :root:not([data-theme="light"]) .diagram :is(.flowchart-link, .edgePath .path) { stroke: var(--color-accent) !important; }
+  :root:not([data-theme="light"]) .diagram :is(.marker, .arrowMarkerPath, .arrowheadPath) { fill: var(--color-accent) !important; stroke: var(--color-accent) !important; }
+}
+
+/* theme switch (toggle click): a plain cross-fade of everything, header included */
+@media (prefers-reduced-motion: no-preference) {
+  html.vt-theme::view-transition-old(root),
+  html.vt-theme::view-transition-old(site-header),
+  html.vt-theme::view-transition-old(universe) { display: block; animation: vt-out .32s ease both; }
+  html.vt-theme::view-transition-new(root),
+  html.vt-theme::view-transition-new(site-header),
+  html.vt-theme::view-transition-new(universe) { animation: vt-fade .32s ease both; }
+}
+@keyframes vt-fade { from { opacity: 0; } }
+
+/* night: text sits over a luminous sky, so give it a soft halo of the page
+   colour; it is invisible on flat surfaces and separates text from glyphs */
+:root[data-theme="dark"] body > main { text-shadow: 0 0 3px var(--color-paper), 0 0 10px var(--color-paper); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) body > main { text-shadow: 0 0 3px var(--color-paper), 0 0 10px var(--color-paper); }
+}
+:root[data-theme="dark"] body > main :is(.panel, .panel-accent, .panel-plain, .bg-card, .rule-grid, .row:hover, .code, pre, .btn, .tag, .ic, .field, svg) { text-shadow: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) body > main :is(.panel, .panel-accent, .panel-plain, .bg-card, .rule-grid, .row:hover, .code, pre, .btn, .tag, .ic, .field, svg) { text-shadow: none; }
+}
+
+/* ----------------------------------------------------------------------------
+   Recruiter fast path (home): hero title, availability list, outcome labels,
+   experience timeline. Colours come from the tokens above only.
+---------------------------------------------------------------------------- */
+.hero-title {
+  font-size: clamp(34px, 4.3vw, 60px);
+  line-height: 1.02;
+  letter-spacing: -.032em;
+  font-weight: 600;
+  margin: 0;
+  text-wrap: balance;
+}
+.avail > div {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--color-rule);
+}
+.avail > div:last-child { border-bottom: 0; }
+.avail dt {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  padding-top: 3px;
+}
+.avail dd { margin: 0; font-size: 15px; line-height: 1.45; color: var(--color-ink); }
+.outcome { font-size: 14px; line-height: 1.45; color: var(--color-ink); max-width: 30ch; }
+
+.timeline > li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 6px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--color-rule);
+}
+@media (min-width: 768px) {
+  .timeline > li { grid-template-columns: 150px minmax(0, 1fr) minmax(0, 1.35fr); gap: 32px; padding: 22px 0; }
+}
+.tl-when {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: .04em;
+  color: var(--color-ink);
+  padding-top: 3px;
+  white-space: nowrap;
+}
+.tl-role { font-size: 17px; line-height: 1.35; font-weight: 600; letter-spacing: -.01em; margin: 0; }
+.tl-at { display: block; color: var(--color-accent); font-weight: 600; }
+.tl-type {
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .06em;
+  color: var(--color-muted);
+}
+.tl-what { margin: 0; font-size: 15px; line-height: 1.6; color: var(--color-muted); }
+.tl-link { color: var(--color-accent); white-space: nowrap; }
+.tl-link:hover { color: var(--color-ink); }
+
+/* ----------------------------------------------------------------------------
+   Lua demos: /playground (editor, preview, console) and /reconcile (ledger vs
+   settlement tables, verdict badges). Colours come from the tokens above only.
+---------------------------------------------------------------------------- */
+/* playground: presets */
+.pg-presets { display: flex; flex-wrap: wrap; gap: 4px; }
+.pg-preset {
+  padding: 8px 11px;
+  border: 1px solid transparent;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: .06em;
+  color: var(--color-muted);
+  cursor: pointer;
+  transition: color .18s ease, border-color .18s ease, background-color .18s ease;
+}
+.pg-preset:hover { color: var(--color-ink); border-color: var(--color-rule); }
+.pg-preset[aria-pressed="true"] { color: var(--color-accent); border-color: var(--color-accent); background: var(--color-accent-soft); }
+.pg-kbd { font-size: 10px; opacity: .6; letter-spacing: .04em; }
+
+/* playground: editor (the .code panel, editable, with a line-number gutter) */
+.pg-editor {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  height: clamp(360px, 62vh, 600px);
+  background: var(--color-code);
+  color: var(--color-code-fg);
+}
+.pg-gutter, .pg-src {
+  margin: 0;
+  padding: 18px 0;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.75;
+  tab-size: 2;
+}
+.pg-gutter {
+  overflow: hidden;
+  padding-left: 14px;
+  padding-right: 12px;
+  text-align: right;
+  color: color-mix(in srgb, var(--color-code-fg) 38%, transparent);
+  border-right: 1px solid color-mix(in srgb, var(--color-code-fg) 10%, transparent);
+  user-select: none;
+}
+.pg-gutter-err { color: var(--color-code); background: #c98a5e; padding: 0 3px; margin-right: -3px; }
+.pg-src {
+  width: 100%;
+  height: 100%;
+  padding-left: 16px;
+  padding-right: 16px;
+  border: 0;
+  resize: none;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  white-space: pre;
+  overflow: auto;
+  caret-color: #7fb493;
+}
+.pg-src::selection { background: color-mix(in srgb, #7fb493 35%, transparent); color: inherit; }
+.pg-src:focus-visible { box-shadow: inset 0 0 0 2px var(--color-accent); }
+.pg-src:disabled { opacity: .6; }
+
+/* playground: preview + console */
+.pg-sandbox { padding: 28px; min-height: 240px; flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; }
+.pg-sandbox > * { width: 100%; max-width: 30rem; }
+.pg-empty { font-family: var(--font-mono); font-size: 12px; color: var(--color-muted); text-align: center; margin: 0 auto; }
+.pg-console {
+  height: 190px;
+  overflow: auto;
+  padding: 12px 0;
+  background: var(--color-paper);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.65;
+}
+.pg-line { padding: 1px 20px; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--color-ink); }
+.pg-info { color: var(--color-muted); }
+.pg-err {
+  margin: 4px 0;
+  padding: 6px 20px 6px 17px;
+  border-left: 3px solid var(--color-copper);
+  background: var(--color-copper-soft);
+  color: var(--color-copper);
+}
+.pg-err-tag {
+  display: inline-block;
+  margin-right: 10px;
+  font-size: 9.5px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* reconcile: tables */
+.rc-table { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 12.5px; }
+.rc-table th {
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--color-rule);
+  font-size: 9.5px;
+  font-weight: 400;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  text-align: left;
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+.rc-table td { padding: 5px 8px; border-bottom: 1px solid var(--color-rule); vertical-align: middle; }
+.rc-table th:first-child, .rc-table td:first-child { padding-left: 20px; }
+.rc-table th:last-child, .rc-table td:last-child { padding-right: 20px; }
+.rc-table tbody tr:last-child td { border-bottom: 0; }
+.rc-table .rc-num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.rc-table:not(.rc-results) { min-width: 540px; }
+.rc-in {
+  width: 100%;
+  min-width: 0;
+  padding: 5px 6px;
+  border: 1px solid transparent;
+  border-bottom-color: var(--color-rule);
+  background: transparent;
+  font: inherit;
+  color: var(--color-ink);
+  transition: border-color .18s ease, background-color .18s ease;
+}
+.rc-in:hover { border-color: var(--color-rule); background: var(--color-lift); }
+.rc-in:focus { outline: 2px solid var(--color-accent); outline-offset: -1px; background: var(--color-lift); }
+.rc-in[aria-invalid="true"] { border-color: var(--color-copper); color: var(--color-copper); }
+input.rc-in:not(.rc-num) { width: calc(8ch + 18px); }
+input.rc-num { width: 11ch; }
+.rc-sel { cursor: pointer; }
+.rc-sel option { background: var(--color-card); color: var(--color-ink); }
+.rc-mark-cell { width: 1%; }
+.rc-mark {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 18px; height: 18px;
+  font-size: 11px; font-weight: 600;
+  border: 1px solid currentColor;
+}
+.rc-mark-ok { color: var(--color-accent); }
+.rc-mark-bad { color: var(--color-copper); background: var(--color-copper-soft); }
+.rc-x-cell { width: 1%; }
+.rc-x { padding: 2px 6px; color: var(--color-muted); font-size: 15px; line-height: 1; border: 1px solid transparent; cursor: pointer; }
+.rc-x:hover { color: var(--color-copper); border-color: var(--color-copper); }
+.rc-add { font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; color: var(--color-muted); cursor: pointer; }
+.rc-add:hover { color: var(--color-accent); }
+
+/* reconcile: summary + results */
+.rc-stat { font-family: var(--font-sans); font-size: 30px; line-height: 1; letter-spacing: -.03em; font-weight: 600; font-variant-numeric: tabular-nums; }
+.rc-stat-sm { font-size: 14px; line-height: 1.4; color: var(--color-ink); font-variant-numeric: tabular-nums; }
+.rc-results td { padding-top: 11px; padding-bottom: 11px; }
+.rc-reason { font-family: var(--font-sans); font-size: 14px; line-height: 1.45; color: var(--color-ink); min-width: 24ch; }
+.rc-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border: 1px solid currentColor;
+  font-size: 10px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.rc-ok { color: var(--color-accent); background: var(--color-accent-soft); }
+.rc-bad { color: var(--color-copper); background: var(--color-copper-soft); }
+@keyframes rc-flash { from { background: var(--color-accent-soft); } }
+.rc-flip td { animation: rc-flash 1.4s ease-out; }
+@media (prefers-reduced-motion: reduce) { .rc-flip td { animation: none; } }
+/* phones: each result becomes a two-line card (reference + verdict, then reason) */
+@media (max-width: 639px) {
+  .rc-results thead { display: none; }
+  .rc-results tr { display: grid; grid-template-columns: auto 1fr; gap: 8px 12px; align-items: center; padding: 12px 20px; border-bottom: 1px solid var(--color-rule); }
+  .rc-results tbody tr:last-child { border-bottom: 0; }
+  .rc-results td, .rc-results td:first-child, .rc-results td:last-child { padding: 0; border: 0; }
+  .rc-results td.rc-reason { grid-column: 1 / -1; min-width: 0; }
+}

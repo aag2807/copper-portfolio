@@ -18,7 +18,12 @@ function M.signal(initial)
 			return
 		end
 		value = v
+		-- snapshot first: an effect that runs here may subscribe new effects
+		local queue = {}
 		for fn in pairs(subs) do
+			queue[#queue + 1] = fn
+		end
+		for _, fn in ipairs(queue) do
 			fn()
 		end
 	end

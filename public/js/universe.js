@@ -10,6 +10,8 @@
   var FPS_IDLE = 15;          // frame cap otherwise (rotation + twinkle are slow)
   var ROT_PERIOD = 150;       // seconds per full turn of the globe
   var ROT_STEPS = 4;          // globe redraws per mask column (~3.8/s); lower = cheaper
+  var FPS_TOUCH = 8;          // idle frame cap on touch / no-hover devices (phones)
+  var ROT_STEPS_TOUCH = 1;    // globe redraws ~1/s on phones: same motion, far less CPU
   var TILT = 0.41;            // axial tilt (rad), leans the pole to the right
   var PITCH = 0.22;           // tips the north pole toward the viewer (rad)
   var LIGHT = [-0.62, 0.42, 0.66]; // light direction (x right, y up, z to viewer)
@@ -39,6 +41,30 @@
   var MOON_EARTHSHINE = 0.16; // how much of the night side still shows (0 = none)
   var MOON_TINT = 0;          // resting tint (0 = silver ink, 1-3 = toward copper)
 
+  // night theme (dark tokens): the ink token is then a light paper colour, so
+  // the same atlas turns luminous; these replace the day values above
+  var A_LAND_N = 0.44;        // A_LAND at night
+  var A_OCEAN_N = 0.18;       // A_OCEAN at night
+  var A_STAR_N = 0.75;        // A_STAR at night
+  var A_MOON_N = 0.38;        // A_MOON at night: a brighter Moon
+  var HOVER_PEAK_N = 0.9;     // HOVER_PEAK at night
+  var A_MAX_N = 1;            // A_MAX at night
+  var NIGHT_DIM_SMALL = 0.5; // phones at night: Earth + Moon sit behind body text, so dim them
+  var READ_DIM = 0.45;        // pages with <body data-sky="dim"> (long-form reading): Earth, Moon
+                              // and stars at this fraction of their usual brightness, both themes
+  var LAND_FLOOR = 0.45;      // alpha share kept by unlit land (day)
+  var LAND_FLOOR_N = 0.2;     // same at night: darker night side so city lights read
+  var GLOW_N = 2;              // glow radius baked into the night atlas (CSS px); 0 = none
+  var GLOW_A_N = 1;           // glow strength (shadow alpha)
+  var ADDITIVE_N = true;      // night glyphs add light ('lighter'), so glows overlap softly
+  // city lights: sparse warm glyphs on land on the Earth's night side (night only)
+  var CITY_ON = true;
+  var CITY_INLAND = 0.16;     // chance an inland land cell holds a light
+  var CITY_COAST = 0.5;       // chance a coastal land cell holds a light
+  var CITY_DUSK = 0.1;        // lights come on where the shade drops below this
+  var A_CITY = 0.95;          // peak alpha of a light
+  var CITY_TWINKLE = 0.45;    // twinkle depth (0 = steady); period 5-14 s per light
+
   var GLYPHS = ".:-=+*#%@·";          // atlas glyphs (index 9 = middle dot)
   var STAR_GLYPHS = [0, 0, 0, 0, 0, 9, 9, 9, 5, 6]; // '.' mostly, then '·', '+', '*'
   var TINTS = 4;                           // tint steps per hue (0 = ink)
@@ -57,6 +83,10 @@
   var ptr = { tx: -1e4, ty: -1e4, x: -1e4, y: -1e4, h: 0, th: 0, moved: 0 };
   var raf = 0, last = 0, t0 = 0, running = false, resizeTimer = 0;
   var mqReduce, mqHover;
+  // live values: the day constants, or their night variants (see applyTheme)
+  var night = false, aLand = A_LAND, aOcean = A_OCEAN, aStar = A_STAR, aMoon = A_MOON,
+      hoverPeak = HOVER_PEAK, aMax = A_MAX, landFloor = LAND_FLOOR, pad = 0, tnow = 0;
+  var cities = null; // per mask cell: 0 = no light, else twinkle phase (rad) + 1
 
   function fail() {
     running = false;
@@ -70,6 +100,18 @@
     var n = parseInt(m[1], 16);
     return [n >> 16, (n >> 8) & 255, n & 255];
   }
+  function applyTheme() { // night = the page background token is dark
+    var p = hex("--color-paper", "#e9ecef");
+    night = (0.2126 * p[0] + 0.7152 * p[1] + 0.0722 * p[2]) / 255 < 0.35;
+    aLand = night ? A_LAND_N : A_LAND; aOcean = night ? A_OCEAN_N : A_OCEAN;
+    aStar = night ? A_STAR_N : A_STAR; aMoon = night ? A_MOON_N : A_MOON;
+    hoverPeak = night ? HOVER_PEAK_N : HOVER_PEAK; aMax = night ? A_MAX_N : A_MAX;
+    landFloor = night ? LAND_FLOOR_N : LAND_FLOOR;
+    if (night && small) { aLand *= NIGHT_DIM_SMALL; aOcean *= NIGHT_DIM_SMALL; aMoon *= NIGHT_DIM_SMALL; }
+    if (document.body && document.body.getAttribute("data-sky") === "dim") {
+      aLand *= READ_DIM; aOcean *= READ_DIM; aMoon *= READ_DIM; aStar *= READ_DIM;
+    }
+  }
   function mix(a, b, t) {
     return "rgb(" + Math.round(a[0] + (b[0] - a[0]) * t) + "," +
       Math.round(a[1] + (b[1] - a[1]) * t) + "," + Math.round(a[2] + (b[2] - a[2]) * t) + ")";
@@ -81,6 +123,22 @@
     return out;
   }
 
+  /* City lights live on the map (they turn with the Earth), not on the screen.
+     Coasts get more; the polar caps (above ~65N, below ~55S) get none. */
+  function buildCities() {
+    var rand = rnd(1882), out = new Float32Array(MASK_W * MASK_H);
+    for (var y = 10; y < 58; y++) {
+      for (var x = 0; x < MASK_W; x++) {
+        var i = y * MASK_W + x;
+        if (!mask[i]) continue;
+        var coast = !mask[i - MASK_W] || !mask[i + MASK_W] ||
+          !mask[y * MASK_W + (x + 1) % MASK_W] || !mask[y * MASK_W + (x + MASK_W - 1) % MASK_W];
+        if (rand() < (coast ? CITY_COAST : CITY_INLAND)) out[i] = 1 + rand() * 2 * Math.PI;
+      }
+    }
+    return out;
+  }
+
   /* Glyph atlas: rows = tint (ink, ink->moss x3, ink->copper x3), cols = glyph. */
   function buildAtlas() {
     var ink = hex("--color-ink", "#14181c"),
@@ -88,7 +146,10 @@
         copper = hex("--color-copper", "#a4623a");
     var fs = small ? FONT_PX_SMALL : FONT_PX;
     cw = fs * 0.6; ch = Math.round(fs * 1.25);
-    aw = Math.ceil(cw * dpr) + 2; ah = Math.ceil(ch * dpr) + 2;
+    // night: every cell gets room for a glow baked in once here (cheaper than
+    // shadowBlur per draw); pad is in device px on each side
+    pad = night && GLOW_N > 0 ? Math.ceil(GLOW_N * dpr) + 2 : 0;
+    aw = Math.ceil(cw * dpr) + 2 + 2 * pad; ah = Math.ceil(ch * dpr) + 2 + 2 * pad;
     atlas = document.createElement("canvas");
     atlas.width = aw * GLYPHS.length; atlas.height = ah * (TINTS * 2 - 1);
     var a = atlas.getContext("2d");
@@ -97,7 +158,14 @@
     for (var r = 0; r < TINTS * 2 - 1; r++) {
       var hue = r < TINTS ? moss : copper, k = r < TINTS ? r : r - TINTS + 1;
       a.fillStyle = mix(ink, hue, k / (TINTS - 1));
-      for (var g = 0; g < GLYPHS.length; g++) a.fillText(GLYPHS[g], g * aw + aw / 2, r * ah + ah / 2);
+      if (pad) {
+        a.shadowColor = a.fillStyle.replace("rgb(", "rgba(").replace(")", "," + GLOW_A_N + ")");
+        a.shadowBlur = GLOW_N * dpr * 1.4;
+      }
+      for (var g = 0; g < GLYPHS.length; g++) {
+        a.fillText(GLYPHS[g], g * aw + aw / 2, r * ah + ah / 2);
+        if (pad) a.fillText(GLYPHS[g], g * aw + aw / 2, r * ah + ah / 2); // second pass: a fuller halo
+      }
     }
   }
 
@@ -191,9 +259,9 @@
         var lit = Math.max(0, nx * lx + ny * ly + nz * lz);
         var b = lit > 0.02 ? (0.45 + 0.55 * Math.pow(lit, 0.5)) * alb * 0.85 : MOON_EARTHSHINE * alb * 0.6;
         var g = -1, a = 0;
-        if (b > 0.07) { g = Math.min(8, 1 + Math.round(b * 6.5)); a = A_MOON * (0.3 + 0.7 * Math.min(1, b)); }
-        else if (r2 > 0.9) { g = 0; a = A_MOON * 0.35; }  // outline of the night side
-        else if (b > 0.02) { g = 0; a = A_MOON * 0.25; }  // earthshine
+        if (b > 0.07) { g = Math.min(8, 1 + Math.round(b * 6.5)); a = aMoon * (0.3 + 0.7 * Math.min(1, b)); }
+        else if (r2 > 0.9) { g = 0; a = aMoon * 0.35; }  // outline of the night side
+        else if (b > 0.02) { g = 0; a = aMoon * 0.25; }  // earthshine
         px.push(x); py.push(y); cl.push(i); rw.push(j); gi.push(g); al.push(a);
       }
     }
@@ -253,7 +321,7 @@
   }
 
   function push(alpha, tint, glyph, x, y) {
-    var b = Math.round((alpha / A_MAX) * (NB - 1));
+    var b = Math.round((alpha / aMax) * (NB - 1));
     if (b <= 0) return false;
     if (b >= NB) b = NB - 1;
     buckets[b].push(tint * GLYPHS.length + glyph, x, y);
@@ -272,14 +340,20 @@
   function cell(i, rot, f) {
     var g = globe, uu = Math.floor(g.u[i] + rot) % MASK_W;
     if (uu < 0) uu += MASK_W;
-    var land = mask[g.v[i] * MASK_W + uu], s = g.shade[i], gi = -1, a = 0;
-    if (land) { gi = 2 + Math.round(s * 5); a = A_LAND * (0.45 + 0.55 * s); }
-    else if (g.rim[i] === 2 || (g.rim[i] && s > 0.2)) { gi = 0; a = A_OCEAN * (0.4 + 0.6 * s); }
+    var mi = g.v[i] * MASK_W + uu, land = mask[mi], s = g.shade[i], gi = -1, a = 0;
+    if (land) { gi = 2 + Math.round(s * 5); a = aLand * (landFloor + (1 - landFloor) * s); }
+    else if (g.rim[i] === 2 || (g.rim[i] && s > 0.2)) { gi = 0; a = aOcean * (0.4 + 0.6 * s); }
     else if (f > 0.2) gi = 0; // the glow reveals the rest of the ocean
     if (gi < 0) return false;
     G.tint = land ? LAND_TINT : 0;
+    var c = land && night && cities && s < CITY_DUSK ? cities[mi] : 0;
+    if (c) { // a city light: warm copper '.' or '·', slow deterministic twinkle
+      var tw = reduce ? 1 : 1 - CITY_TWINKLE * (0.5 + 0.5 * Math.sin(tnow * (0.45 + (c % 1) * 0.8) + c));
+      gi = c > 6.9 ? 4 : c > 3.4 ? 9 : 0; G.tint = 2 * (TINTS - 1); // mostly '.' and '·', a few '+' metros
+      a = A_CITY * tw * Math.min(1, (CITY_DUSK - s) / (CITY_DUSK * 0.5));
+    }
     if (f > 0) {
-      a += ((land ? HOVER_PEAK : HOVER_PEAK * 0.6) - a) * f;
+      a += ((land ? hoverPeak : hoverPeak * 0.6) - a) * f;
       G.tint = Math.max(G.tint, Math.min(TINTS - 1, Math.ceil(f * (TINTS - 1))));
       gi = Math.min(land ? 8 : 1, gi + Math.round(f * 2));
     }
@@ -293,7 +367,7 @@
     if (gi < 0) { if (f > 0.3) { gi = 0; a = 0; } else return false; } // glow reveals the night side
     G.tint = MOON_TINT ? TINTS - 1 + MOON_TINT : 0;
     if (f > 0) {
-      a += (HOVER_PEAK - a) * f;
+      a += (hoverPeak - a) * f;
       G.tint = TINTS - 1 + Math.max(MOON_TINT, Math.min(TINTS - 1, Math.ceil(f * (TINTS - 1))));
       gi = Math.min(8, gi + Math.round(f * 2));
     }
@@ -309,7 +383,7 @@
     for (var b = 1; b < NB; b++) {
       var q = buckets[b];
       if (!q.length) continue;
-      c.globalAlpha = (b / (NB - 1)) * A_MAX;
+      c.globalAlpha = (b / (NB - 1)) * aMax;
       for (var k = 0; k < q.length; k += 3) {
         var id = q[k], col = id % ng, row = (id - col) / ng;
         c.drawImage(atlas, col * aw, row * ah, aw, ah,
@@ -322,7 +396,8 @@
 
   function rotation() { // longitude offset in mask columns; surface moves west -> east
     if (reduce) return (STATIC_LON / 360) * MASK_W;
-    return Math.round((((Date.now() / 1000) / ROT_PERIOD) % 1) * -MASK_W * ROT_STEPS) / ROT_STEPS;
+    var k = canHover ? ROT_STEPS : ROT_STEPS_TOUCH;
+    return Math.round((((Date.now() / 1000) / ROT_PERIOD) % 1) * -MASK_W * k) / k;
   }
 
   // Dirty-rect renderer: nothing is cleared that is not redrawn this frame.
@@ -345,8 +420,18 @@
       r1 = Math.min(B.rows, Math.ceil((Math.max(a[3], b[3]) - B.y0) / ch));
       B.glow = cur;
       if (c1 <= c0 || r1 <= r0) return;
-      var X0 = Math.floor((B.x0 + c0 * cw) * dpr), Y0 = Math.floor((B.y0 + r0 * ch) * dpr);
-      ctx.clearRect(X0, Y0, Math.ceil((B.x0 + c1 * cw) * dpr) - X0, Math.ceil((B.y0 + r1 * ch) * dpr) - Y0);
+      // night glyphs carry a glow halo of `pad` device px: clear that much
+      // further out, repaint the ring of neighbours whose halos reach in, and
+      // clip, so nothing outside the rect is drawn twice
+      var X0 = Math.floor((B.x0 + c0 * cw) * dpr) - pad, Y0 = Math.floor((B.y0 + r0 * ch) * dpr) - pad;
+      var X1 = Math.ceil((B.x0 + c1 * cw) * dpr) + pad, Y1 = Math.ceil((B.y0 + r1 * ch) * dpr) + pad;
+      ctx.clearRect(X0, Y0, X1 - X0, Y1 - Y0);
+      if (pad) {
+        var ec = Math.ceil(pad / dpr / cw) + 1, er = Math.ceil(pad / dpr / ch) + 1;
+        c0 = Math.max(0, c0 - ec); c1 = Math.min(B.cols, c1 + ec);
+        r0 = Math.max(0, r0 - er); r1 = Math.min(B.rows, r1 + er);
+        var clip = [X0, Y0, X1 - X0, Y1 - Y0];
+      }
     } else B.glow = cur;
     for (i = 0; i < B.n; i++) {
       var col = B.col[i], row = B.row[i];
@@ -354,13 +439,20 @@
       var f = lit ? smooth(Math.hypot(B.px[i] - mx, B.py[i] - my)) * h : 0;
       if (fn(i, rot, f)) push(G.a, G.tint, G.gi, B.px[i], B.py[i]);
     }
+    if (clip) {
+      ctx.save(); ctx.beginPath(); ctx.rect(clip[0], clip[1], clip[2], clip[3]); ctx.clip();
+      flush(ctx);
+      ctx.restore();
+    }
   }
 
   function frame(now, dt, full) {
     var i, h = ptr.h, mx = ptr.x, my = ptr.y, g = globe;
     var t = (now - t0) / 1000, rot = rotation();
+    tnow = Date.now() / 1000; // wall clock, so city lights carry across pages
 
     ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.globalCompositeOperation = night && ADDITIVE_N ? "lighter" : "source-over";
     clearBuckets();
     full = full || rot !== g.rot;
     if (full) {
@@ -368,15 +460,16 @@
       for (i = 0; i < stars.length; i++) stars[i].bw = 0;
       g.rot = rot;
     }
-    paintBody(g, rot, full, h, mx, my, cell);
-    if (moon) paintBody(moon, 0, full, h, mx, my, moonCell);
-
-    // stars: clear every previous glyph box first, then queue the new ones
+    // stars: clear every previous glyph box first (before the bodies, which
+    // may flush early at night), then queue the new ones below
     for (i = 0; i < stars.length; i++) {
       var st = stars[i];
       if (st.bw) ctx.clearRect(st.bx, st.by, st.bw, ah);
       st.bw = 0;
     }
+    paintBody(g, rot, full, h, mx, my, cell);
+    if (moon) paintBody(moon, 0, full, h, mx, my, moonCell);
+
     var R2 = (g.R + ch) * (g.R + ch);
     for (i = 0; i < stars.length; i++) {
       st = stars[i];
@@ -389,11 +482,11 @@
       var dx = sx - g.cx, dy = sy - g.cy;
       if (dx * dx + dy * dy < R2 || inMoon(sx, sy, ch)) continue;
       var tw = reduce ? 0.8 : 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(t * st.w + st.p));
-      var sa = A_STAR * st.a * tw, stint = 0, tox = 0, toy = 0;
+      var sa = aStar * st.a * tw, stint = 0, tox = 0, toy = 0;
       if (h > 0.005) {
         var qx = st.x - mx, qy = st.y - my, sd = Math.hypot(qx, qy), sf = smooth(sd) * h;
         if (sf > 0) {
-          sa += (HOVER_PEAK - sa) * sf;
+          sa += (hoverPeak - sa) * sf;
           stint = TINTS - 1 + Math.min(TINTS - 1, Math.ceil(sf * (TINTS - 1)));
           if (sd > 0.01) { tox = (qx / sd) * STAR_PUSH * sf; toy = (qy / sd) * STAR_PUSH * sf; }
         }
@@ -411,7 +504,7 @@
     if (!running) return;
     var active = now - ptr.moved < 1500 || Math.abs(ptr.th - ptr.h) > 0.01;
     var dtms = now - last;
-    if (dtms >= 1000 / (active ? FPS_ACTIVE : FPS_IDLE) - 2) {
+    if (dtms >= 1000 / (active ? FPS_ACTIVE : canHover ? FPS_IDLE : FPS_TOUCH) - 2) {
       var dt = Math.min(0.1, dtms / 1000);
       last = now;
       var e = 1 - Math.exp(-dt * HOVER_EASE);
@@ -439,6 +532,7 @@
     small = W < 768;
     canHover = !!(mqHover && mqHover.matches) && !reduce;
     canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+    applyTheme();
     buildAtlas(); buildGlobe(); buildMoon(); buildStars();
     if (!canHover) { ptr.th = 0; ptr.h = 0; }
     frame(performance.now(), 0, true);
@@ -470,12 +564,17 @@
     if (!ctx || !window.atob) return fail();
     for (var i = 0; i < NB; i++) buckets.push([]);
     mask = decodeMask();
+    if (CITY_ON) cities = buildCities();
     mqReduce = matchMedia("(prefers-reduced-motion: reduce)");
     mqHover = matchMedia("(hover: hover) and (pointer: fine)");
     reduce = mqReduce.matches;
     t0 = performance.now();
     layout();
     canvas.classList.add("on");
+    try { sessionStorage.setItem("u-seen", "1"); } catch (e) {} // later pages skip the fade-in
+    // night/day switch (header toggle, or the OS theme while no choice is stored):
+    // rebuild synchronously so a view-transition snapshot already has the new sky
+    document.addEventListener("themechange", function () { try { layout(); } catch (e) { fail(); } });
     window.addEventListener("resize", onResize, { passive: true });
     if (window.visualViewport) visualViewport.addEventListener("resize", onResize, { passive: true });
     window.addEventListener("pointermove", onPointer, { passive: true });
@@ -491,7 +590,14 @@
   }
 
   function boot() {
-    var go = function () { try { init(); } catch (e) { fail(); } };
+    var run = function () { try { init(); } catch (e) { fail(); } };
+    // wait for load + an idle moment so the sky never competes with first paint / input
+    var go = function () {
+      var idle = function () {
+        if (window.requestIdleCallback) requestIdleCallback(run, { timeout: 1200 }); else setTimeout(run, 200);
+      };
+      if (document.readyState === "complete") idle(); else window.addEventListener("load", idle, { once: true });
+    };
     var fonts = document.fonts;
     if (!fonts || !fonts.load) return go();
     var done = false, once = function () { if (!done) { done = true; go(); } };

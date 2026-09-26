@@ -7,7 +7,7 @@ ACTION(work_index)
         {"title", "text", "Work", NULL},
         {"path", "text", str_cstr(&req->path), NULL},
         {"description", "text",
-         "Fintech & applied AI, systems & languages, web runtimes, and gamedev — everything Alvaro Guzman builds, by domain.",
+         "Alvaro Guzman's work by domain: payments and banking software, applied AI, systems and languages, web runtimes and gamedev. Career timeline included.",
          NULL},
         {"worknav", "text", "1", NULL},
         {NULL, NULL, NULL, NULL},

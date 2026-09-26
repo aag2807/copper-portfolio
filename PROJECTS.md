@@ -7,15 +7,15 @@ Everything on [alvaro-guzman.com](https://alvaro-guzman.com), across all tabs.
 
 ## Fintech · Applied AI (professional) — [/work/fintech-ai](https://alvaro-guzman.com/work/fintech-ai)
 
-Employer and client names withheld; specifics under NDA.
+Employers are named on the home page's career timeline ([/#experience](https://alvaro-guzman.com/#experience)); client and bank names stay private, specifics under NDA.
 
-| # | Project | Stack | Status | Case study |
-|---|---------|-------|--------|------------|
-| 00 | **On-prem LLM gateway** | C# · .NET · RAG · multi-agent | `active` | [/projects/llm-gateway](https://alvaro-guzman.com/projects/llm-gateway) |
-| 01 | **Payment gateway integrations** | Angular · Ionic · .NET · 60+ providers | `shipped` | [/projects/payment-gateways](https://alvaro-guzman.com/projects/payment-gateways) |
+| # | Project | Stack | Status | Context | Case study |
+|---|---------|-------|--------|---------|------------|
+| 00 | **On-prem LLM gateway** | C# · .NET · RAG · multi-agent | `active` | Freelance engagement | [/projects/llm-gateway](https://alvaro-guzman.com/projects/llm-gateway) |
+| 01 | **Payment gateway integrations** | Angular · Ionic · .NET · 60+ providers | `shipped` | ATL Software, Jun 2022 – Aug 2024 | [/projects/payment-gateways](https://alvaro-guzman.com/projects/payment-gateways) |
 
-- **On-prem LLM gateway** — On-premise LLM platform for a bank, architected in C#/.NET. Multi-provider model routing, RAG pipelines with vector search, multi-agent orchestration, and zero external data egress by construction.
-- **Payment gateway integrations** — 60+ third-party payment provider APIs behind a single e-commerce checkout: adapter contract per provider, transaction state machine with idempotency keys, fraud pipeline ahead of capture, verified and reconciled webhooks. Checkout work contributed to a measured +15% conversion.
+- **On-prem LLM gateway** — Freelance engagement. On-premise LLM platform for a bank, architected in C#/.NET. Multi-provider model routing, RAG pipelines with vector search, multi-agent orchestration, and zero external data egress by construction.
+- **Payment gateway integrations** — At ATL Software. 60+ third-party payment provider APIs behind a single e-commerce checkout: adapter contract per provider, transaction state machine with idempotency keys, fraud pipeline ahead of capture, verified and reconciled webhooks. Checkout work contributed to a measured +15% conversion.
 
 ## Systems · Frameworks · Languages — [/work/systems](https://alvaro-guzman.com/work/systems)
 
@@ -26,7 +26,7 @@ Employer and client names withheld; specifics under NDA.
 | 02 | **Cobre** | C · .cob → .so transpiler · arena | `in_dev` | — |
 | 03 | **Axon** | C# · LLM gateway | `archived` | — |
 
-- **c-copper** — The hand-written C MVC framework serving the portfolio itself. Socket loop with pthread dispatch, pattern-matching router with param binding, linked-list middleware chain, handlebars-style template engine with six directives. ~2,800 lines of C in `src/` (.c + .h), 20 registered HTTP routes, zero framework dependencies; libcurl for outbound email.
+- **c-copper** — The hand-written C MVC framework serving the portfolio itself. Socket loop with pthread dispatch, pattern-matching router with param binding, linked-list middleware chain, handlebars-style template engine with six directives. ~3,500 lines of C in `src/` (.c + .h), 23 registered HTTP routes (including `GET /api/status`), gzip via zlib, live render telemetry in every page footer, zero framework dependencies; libcurl for outbound email.
 - **Lunar** — Statically-typed superset of Lua: compiler, LSP, bundler, and test framework, all in Go. TypeScript-for-Lua, end to end. Types on top of Lua semantics, so a codebase that outgrows plain Lua stays readable for the next person.
 - **Cobre** — Razor-pages-inspired web framework in C. `.cob` source files transpile to `.gen.c`, then compile to `.so` and hot-load. Arena allocator with a `Str` type, `goto cleanup` error handling, TOML config. The opinionated successor to c-copper.
 - **Axon** — First pass at an on-premise LLM gateway in C#. Routing, request shaping, prompt template layering. Useful exercise in API surface design and provider abstraction; stays in the archive.
@@ -55,7 +55,7 @@ Local-first: running against a self-hosted Ollama daemon (`mxbai-embed-large` em
 | 01 | **Scrum Dashboard** | Angular · .NET · SignalR · D3 · OpenRouter | `shipped` | |
 | 02 | **Enterprise Web Work** | Angular · .NET · WordPress · 60+ payment APIs | `ongoing` | NDA |
 
-- **wasmoon-bridge** — Browser-side Lua runtime, mounted per route. Pages declare a `data-lua-module` attribute; a wasmoon-compiled Lua engine boots in the browser, fetches only that module, and runs it. No virtual DOM, no React — signals + hyperscript in a ~120-line Lua library. Pages without a module ship zero wasmoon.
+- **wasmoon-bridge** — Browser-side Lua runtime, mounted per route. Pages declare a `data-lua-module` attribute; a wasmoon-compiled Lua engine boots in the browser, fetches only that module, and runs it. No virtual DOM, no React — signals + hyperscript in a ~120-line Lua library. Pages without a module ship zero wasmoon. Live demos: `/counter`, `/todos`, `/playground` (edit and run Lua in the browser, loop-guarded), `/reconcile` (ledger vs provider settlement report, matched by reference, integer cents).
 - **Scrum Dashboard** — Real-time sprint board with AI assist, over Jira Cloud. SignalR streams delta updates so the board reacts the instant tickets move; a D3 force graph lays out tag-association clusters across the backlog; an OpenRouter-backed chat assistant answers sprint-state questions inline.
 - **Enterprise Web Work** — Fintech, banking, and multilingual WordPress at scale. Angular and .NET applications inside banking environments; 60+ payment-API integrations spanning fintech rails; enterprise WordPress with localized content, custom plugins, and legacy-system integrations. Client names withheld — walkthrough available under NDA.
 

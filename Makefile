@@ -2,6 +2,12 @@ CC = gcc
 # Production flags: hardening on, no debug info. `make DEBUG=1` for a -g -O0 build.
 CFLAGS = -Wall -Wextra -Wformat=2 -O2 -MMD -MP \
          -fstack-protector-strong -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2
+# Commit baked into /api/status. `make BUILD_SHA=abc123` overrides. Only
+# src/telemetry.o sees the define; `make clean` after switching commits.
+BUILD_SHA ?= $(shell git rev-parse --short HEAD 2>/dev/null || echo dev)
+ifeq ($(strip $(BUILD_SHA)),)
+    BUILD_SHA := dev
+endif
 ifdef DEBUG
     CFLAGS := $(filter-out -O2 -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2,$(CFLAGS)) -g -O0
 endif
@@ -9,12 +15,12 @@ endif
 # Detect Windows (cmd.exe + mingw32-make sets OS=Windows_NT) vs POSIX.
 ifeq ($(OS),Windows_NT)
     EXE     := .exe
-    LDFLAGS := -lpthread -lws2_32 -lcurl -lcrypto
+    LDFLAGS := -lpthread -lws2_32 -lcurl -lcrypto -lz
     RM      := del /Q /F
     FixPath  = $(subst /,\,$1)
 else
     EXE     :=
-    LDFLAGS := -lpthread -lcurl -lcrypto
+    LDFLAGS := -lpthread -lcurl -lcrypto -lz
     RM      := rm -f
     FixPath  = $1
 endif
@@ -38,6 +44,8 @@ $(TARGET): main.o $(OBJ)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
+
+src/telemetry.o: CFLAGS += -DBUILD_SHA=\"$(BUILD_SHA)\"
 
 tests/test_%$(EXE): tests/test_%.c $(SRC:.c=.o)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
@@ -84,7 +92,8 @@ AR_REPO        := $(REGION)-docker.pkg.dev/$(GCLOUD_PROJECT)/c-copper/server
 
 docker-build:
 	@test -n "$(GCLOUD_PROJECT)" || (echo "GCLOUD_PROJECT is empty. Run 'gcloud config set project <id>' or pass GCLOUD_PROJECT=<id>." && exit 1)
-	docker build -t $(AR_REPO):$(TAG) -t $(AR_REPO):latest .
+	docker build --build-arg BUILD_SHA=$(shell git rev-parse --short HEAD 2>/dev/null || echo dev) \
+	  -t $(AR_REPO):$(TAG) -t $(AR_REPO):latest .
 
 docker-push: docker-build
 	docker push $(AR_REPO):$(TAG)

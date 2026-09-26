@@ -1,5 +1,7 @@
 #include "server.h"
 
+#include "telemetry.h"
+
 #include <arpa/inet.h>
 #include <errno.h>
 #include <pthread.h>
@@ -64,8 +66,9 @@ static const char* reason_for(int code)
     }
 }
 
-static void send_error(int fd, int code)
+static void send_error(int fd, int code, const struct timespec* start)
 {
+    telemetry_count_request();
     Response res;
     response_init(&res, fd);
     response_status(&res, code, reason_for(code));
@@ -73,6 +76,7 @@ static void send_error(int fd, int code)
     str_appendf(&body, "<h1>%d - %s</h1>", code, reason_for(code));
     response_html(&res, str_cstr(&body));
     str_free(&body);
+    telemetry_finish(NULL, &res, start);
     response_flush(&res, fd);
     response_cleanup(&res);
 }
@@ -211,9 +215,14 @@ static void* handle_client(void* arg)
     int status = 0;
     size_t bytes_read = buffer ? read_request(fd, buffer, &status) : 0;
 
+    // Render time runs from the parsed request to just before the flush; for
+    // requests rejected before parsing it starts once they have been read.
+    struct timespec start;
+    clock_gettime(CLOCK_MONOTONIC, &start);
+
     if (status)
     {
-        send_error(fd, status);
+        send_error(fd, status, &start);
     }
     else if (bytes_read > 0)
     {
@@ -228,12 +237,14 @@ static void* handle_client(void* arg)
 
         if (rc)
         {
-            send_error(fd, rc);
+            send_error(fd, rc, &start);
         }
         else
         {
             // Stamp the client's IP for downstream middleware (rate limiting, etc.)
             set_client_ip(&req, &job->client_addr);
+            telemetry_count_request();
+            clock_gettime(CLOCK_MONOTONIC, &start);
 
             // Create a response
             Response res;
@@ -246,7 +257,8 @@ static void* handle_client(void* arg)
                 middleware_run(s->pipeline, &req, &res, s->router);
             }
 
-            // flush responses to socket
+            // Telemetry tokens, Server-Timing, gzip; then flush to the socket.
+            telemetry_finish(&req, &res, &start);
             response_flush(&res, fd);
             response_cleanup(&res);
         }

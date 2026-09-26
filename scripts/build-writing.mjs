@@ -2,7 +2,7 @@
 // + views/writing/index.html + controllers/writing_manifest.h
 // Zero runtime deps preserved: the C server only ever serves generated HTML.
 import { marked } from "marked";
-import { readFileSync, writeFileSync, readdirSync, mkdirSync } from "node:fs";
+import { readFileSync, writeFileSync, readdirSync, mkdirSync, rmSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -12,7 +12,14 @@ const OUT = join(root, "views", "writing");
 mkdirSync(OUT, { recursive: true });
 
 // Frontmatter keys: slug, title, description, date (required);
-// tag (e.g. SYSTEMS / AI-LLM / WEB), tags (comma list) (optional).
+// tag (e.g. SYSTEMS / AI-LLM / WEB), tags (comma list), draft (true) (optional).
+//
+// Drafts: `draft: true` posts are skipped entirely (no view, not in the index,
+// the C manifest or prev/next links) unless DRAFTS=1 is set. With DRAFTS=1 they
+// are built with a visible draft eyebrow, a robots noindex meta and highlighted
+// [CONFIRM: ...] review marks. A non-draft post containing "[CONFIRM" fails the
+// build, so an unreviewed claim can never ship.
+const INCLUDE_DRAFTS = process.env.DRAFTS === "1";
 function parseFrontmatter(raw) {
   const m = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
   if (!m) throw new Error("missing frontmatter block");
@@ -60,13 +67,36 @@ function renderWithToc(body) {
     if (depth === 2) toc.push({ id, text: inner });
     return `<h${depth} id="${id}">${inner}</h${depth}>\n`;
   };
+  // Block/inline HTML comments are author notes (e.g. a review checklist in a
+  // draft): drop them so they never reach the served page.
+  renderer.html = ({ text }) => (/^\s*<!--[\s\S]*?-->\s*$/.test(text) ? "" : text);
   const html = marked.parse(body, { renderer });
   return { html, toc };
 }
 
+// Wrap [CONFIRM: ...] review markers in a visible highlight (draft builds only).
+const markConfirms = (html) =>
+  html.replace(
+    /\[CONFIRM:[^\]]*\]/g,
+    (m) => `<mark class="confirm" style="background:#fde68a;color:#1c1917;padding:0 .2em;border-radius:2px">${m}</mark>`,
+  );
+
 const posts = [];
+const skippedDrafts = [];
 for (const f of readdirSync(SRC).filter((f) => f.endsWith(".md")).sort()) {
-  const { meta, body } = parseFrontmatter(readFileSync(join(SRC, f), "utf8"));
+  const raw = readFileSync(join(SRC, f), "utf8");
+  const { meta, body } = parseFrontmatter(raw);
+  const draft = meta.draft === "true";
+  if (!draft && raw.includes("[CONFIRM")) {
+    console.error(`${f}: contains "[CONFIRM" markers but is not a draft; resolve them or set draft: true`);
+    process.exit(1);
+  }
+  if (draft && !INCLUDE_DRAFTS) {
+    skippedDrafts.push(f);
+    // Remove a view left behind by an earlier DRAFTS=1 build.
+    if (/^[a-z0-9-]+$/.test(meta.slug || "")) rmSync(join(OUT, `${meta.slug}.html`), { force: true });
+    continue;
+  }
   for (const k of ["slug", "title", "description", "date"])
     if (!meta[k]) throw new Error(`${f}: frontmatter missing "${k}"`);
   if (!/^[a-z0-9-]+$/.test(meta.slug)) throw new Error(`${f}: slug must be [a-z0-9-]`);
@@ -76,7 +106,8 @@ for (const f of readdirSync(SRC).filter((f) => f.endsWith(".md")).sort()) {
   posts.push({
     ...meta,
     file: f,
-    html: neutralize(html),
+    html: draft ? markConfirms(neutralize(html)) : neutralize(html),
+    draft,
     toc,
     tag: meta.tag || "NOTES",
     tags: (meta.tags || "").split(",").map((t) => t.trim()).filter(Boolean),
@@ -100,7 +131,7 @@ ${p.toc.map((t) => `          <a href="#${t.id}" class="hover:text-accent transi
     : "";
   const tagsHtml = p.tags.length
     ? `      <div class="panel-plain p-5">
-        <div class="label mb-3.5">FILED_UNDER</div>
+        <div class="label mb-3.5">Filed under</div>
         <div class="flex flex-wrap gap-[7px]">
 ${p.tags.map((t, j) => `          <span class="tag tag-sm${j === 0 ? " tag-accent" : ""}">${escapeHtml(t)}</span>`).join("\n")}
         </div>
@@ -114,22 +145,21 @@ ${p.tags.map((t, j) => `          <span class="tag tag-sm${j === 0 ? " tag-accen
   </a>`
       : `  <a href="/writing" class="p-7 block${dir === "next" ? " md:text-right" : ""}">
     <div class="label mb-3">${dir === "next" ? "ALL POSTS →" : "← ALL POSTS"}</div>
-    <div class="text-[19px] font-semibold tracking-[-.015em] leading-[1.25]">~/writing</div>
+    <div class="text-[19px] font-semibold tracking-[-.015em] leading-[1.25]">Writing</div>
   </a>`;
 
   writeFileSync(
     join(OUT, `${p.slug}.html`),
     `<!-- generated from writing/${p.file} — do not edit by hand -->
-<div id="read-progress" aria-hidden="true"></div>
+${p.draft ? '<meta name="robots" content="noindex">\n' : ""}<div id="read-progress" aria-hidden="true"></div>
 
 <div class="flex items-center gap-2 py-5 mono-sm tracking-[.1em]">
-  <a href="/writing" class="hover:text-accent transition-colors">← ~/writing</a>
-  <span>/${p.slug}</span>
+  <a href="/writing" class="hover:text-accent transition-colors">← Writing</a>
 </div>
 
 <article class="border-t border-rule">
   <header class="pt-12 pb-10 lg:pt-[52px] border-b border-rule max-w-[78ch]">
-    <div class="flex items-center gap-4 font-mono text-[11px] tracking-[.14em] text-muted mb-6">
+${p.draft ? '    <div class="eyebrow mb-4" style="color:#b45309">DRAFT — NOT PUBLISHED</div>\n' : ""}    <div class="flex items-center gap-4 font-mono text-[11px] tracking-[.14em] text-muted mb-6">
       <span class="text-accent">${escapeHtml(p.tag)}</span>
       <span>${escapeHtml(p.date)}</span>
       <span>${p.read} MIN</span>
@@ -142,7 +172,7 @@ ${p.tags.map((t, j) => `          <span class="tag tag-sm${j === 0 ? " tag-accen
     <div class="prose-article">
 ${p.html}
       <div class="mt-12 pt-6 border-t border-rule flex flex-wrap gap-2.5 font-sans">
-        <a href="/writing" class="btn btn-sm btn-outline">← back to ~/writing</a>
+        <a href="/writing" class="btn btn-sm btn-outline">← All writing</a>
         <a href="/contact" class="btn btn-sm btn-ghost">Get in touch →</a>
       </div>
     </div>
@@ -183,7 +213,7 @@ writeFileSync(
   `<!-- generated by scripts/build-writing.mjs — do not edit by hand -->
 <section class="pt-12 pb-10 lg:pt-[72px] grid grid-cols-1 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] gap-8 lg:gap-12 items-end border-b border-rule">
   <div>
-    <div class="eyebrow mb-6">04_WRITING // NOTES_FROM_THE_BUILD</div>
+    <div class="eyebrow mb-6">Writing</div>
     <h1 class="display max-w-[16ch]">Notes from writing it myself.</h1>
   </div>
   <p class="lede-muted max-w-[42ch]">
@@ -212,13 +242,13 @@ ${posts
 
   <aside class="flex flex-col gap-3.5">
     <div class="panel-accent">
-      <div class="label text-accent mb-3">WRITING_ABOUT</div>
+      <div class="label text-accent mb-3">Topics</div>
       <div class="flex flex-wrap gap-[7px]">
 ${topics.map((t) => `        <span class="tag tag-sm tag-accent">${escapeHtml(t)}</span>`).join("\n")}
       </div>
     </div>
     <div class="panel">
-      <div class="label mb-3">PIPELINE</div>
+      <div class="label mb-3">How it's built</div>
       <p class="text-[15px] leading-[1.6] text-muted">Markdown in the repo, compiled to HTML at build time, served by the C framework like everything else. No newsletter, no tracking.</p>
       <a href="https://github.com/aag2807/copper-portfolio/tree/main/writing" target="_blank" rel="noreferrer" class="btn btn-sm btn-outline mt-4">writing/*.md →</a>
     </div>
@@ -256,4 +286,6 @@ ${posts
 `,
 );
 
+if (skippedDrafts.length)
+  console.log(`writing: skipped ${skippedDrafts.length} draft(s) (set DRAFTS=1 to build): ${skippedDrafts.join(", ")}`);
 console.log(`writing: ${posts.length} post(s) -> views/writing/ + controllers/writing_manifest.h`);

@@ -1,7 +1,6 @@
 <div class="pt-8 pb-14 flex flex-col gap-6">
   <div class="flex items-center gap-2 mono-sm tracking-[.1em]">
-    <a href="/workshop" class="hover:text-accent transition-colors">← ~/workshop</a>
-    <span>/todos</span>
+    <a href="/workshop" class="hover:text-accent transition-colors">← Workshop</a>
   </div>
   <h1 class="h3">Todo list, in Lua on WASM</h1>
 
@@ -9,7 +8,7 @@
     <!-- Mount target -->
     <div class="flex flex-col">
       <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-5 py-3.5 border-b border-rule label">
-        <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-accent"></span>wasmoon // pages/todolist.lua</span>
+        <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-accent"></span>Running now · pages/todolist.lua</span>
         <span class="normal-case tracking-[.06em]">data-lua-module="pages/todolist"</span>
       </div>
       <div class="p-8 min-h-[300px]">
@@ -19,7 +18,10 @@
 
     <!-- Source -->
     <div class="flex flex-col">
-      <div class="px-5 py-3.5 border-b border-rule label">SOURCE</div>
+      <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-5 py-3.5 border-b border-rule label">
+        <span>Source (excerpt)</span>
+        <a href="/static/lua/pages/todolist.lua" class="normal-case tracking-[.06em] hover:text-accent transition-colors">full file →</a>
+      </div>
       <pre class="code code-sm flex-1"><span class="k">local</span> items, setItems = reactive.signal({})
 <span class="k">local</span> draft, setDraft = reactive.signal(<span class="s">""</span>)
 

@@ -23,6 +23,9 @@ void response_html(Response* res, const char* html);
 void response_bytes(Response* res, const char* content_type, const void* data, size_t len);
 void response_redirect(Response* res, const char* url);
 void response_redirect_permanent(Response* res, const char* url);
+// Copies the value of the first `key` header set so far (case-insensitive)
+// into `out`. Returns 1 if found, 0 otherwise (out is then "").
+int response_get_header(const Response* res, const char* key, char* out, size_t cap);
 void response_flush(Response* res, int fd);
 void response_cleanup(Response* res);
 

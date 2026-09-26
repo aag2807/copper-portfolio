@@ -7,6 +7,8 @@ module.exports = {
 		new CopyPlugin({
 			patterns: [
 				{ from: "js/lua", to: path.resolve(__dirname, "public/lua") },
+				// Self-hosted Lua engine: wasmoon would otherwise fetch it from unpkg.
+				{ from: "node_modules/wasmoon/dist/glue.wasm", to: path.resolve(__dirname, "public/framework") },
 			],
 		}),
 	],

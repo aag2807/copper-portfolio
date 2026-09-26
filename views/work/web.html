@@ -1,9 +1,9 @@
 <!-- Hero -->
 <section class="pt-12 pb-10 lg:pt-[66px] border-b border-rule">
-  <a href="/work" class="mono-sm tracking-[.14em] hover:text-accent transition-colors">← 02_WORK</a>
+  <a href="/work" class="mono-sm tracking-[.14em] hover:text-accent transition-colors">← Work</a>
   <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] gap-8 lg:gap-12 items-end mt-7">
     <div>
-      <div class="eyebrow text-accent mb-5">[0x03] WEB // BROWSER_RUNTIME</div>
+      <div class="eyebrow text-accent mb-5">Web · browser runtime</div>
       <h1 class="display max-w-[20ch]">Lua, in the browser, mounted per route.</h1>
     </div>
     <p class="lede-muted">
@@ -13,21 +13,21 @@
     </p>
   </div>
   <div class="rule-grid grid-cols-1 sm:grid-cols-3 mt-11">
-    <div class="p-5"><div class="label mb-2">[01] SERVER</div><div class="font-mono text-[13px] text-accent leading-[1.6]">stamps body<br />data-lua-module="..."</div></div>
-    <div class="p-5"><div class="label mb-2">[02] BOOT.JS</div><div class="font-mono text-[13px] text-accent leading-[1.6]">reads attr,<br />mounts library + page</div></div>
-    <div class="p-5"><div class="label mb-2">[03] WASMOON</div><div class="font-mono text-[13px] text-accent leading-[1.6]">lua.doFile()<br />renders into #app</div></div>
+    <div class="p-5"><div class="label mb-2">1 · Server</div><div class="font-mono text-[13px] text-accent leading-[1.6]">stamps body<br />data-lua-module="..."</div></div>
+    <div class="p-5"><div class="label mb-2">2 · boot.js</div><div class="font-mono text-[13px] text-accent leading-[1.6]">reads attr,<br />mounts library + page</div></div>
+    <div class="p-5"><div class="label mb-2">3 · wasmoon</div><div class="font-mono text-[13px] text-accent leading-[1.6]">lua.doFile()<br />renders into #app</div></div>
   </div>
 </section>
 
 <!-- Live demos -->
 <section class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.45fr)] gap-8 lg:gap-14 py-12 lg:py-[60px] border-b border-rule">
   <div>
-    <h2 class="label sec-label flex items-center gap-2">01 // LIVE_DEMOS <span class="w-1.5 h-1.5 rounded-full bg-accent" aria-hidden="true"></span></h2>
+    <h2 class="label sec-label flex items-center gap-2">Live demos <span class="w-1.5 h-1.5 rounded-full bg-accent" aria-hidden="true"></span></h2>
   </div>
   <div class="flex flex-col gap-6">
     <a href="/counter" class="rule-grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] group">
       <div class="p-6 flex flex-col">
-        <div class="label text-accent">[demo_01]</div>
+        <div class="label text-accent">Demo 1</div>
         <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-3">Reactive counter</div>
         <p class="text-[14.5px] leading-[1.55] text-muted mt-2.5">A single signal driving a text node and two button handlers. The whole demo is ~30 lines of Lua.</p>
         <span class="btn btn-sm btn-ink self-start mt-auto group-hover:bg-accent group-hover:border-accent">Run demo →</span>
@@ -48,7 +48,7 @@ dom.mount(root, <span class="s">"#app"</span>)</pre>
     </a>
     <a href="/todos" class="rule-grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] group">
       <div class="p-6 flex flex-col">
-        <div class="label text-accent">[demo_02]</div>
+        <div class="label text-accent">Demo 2</div>
         <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-3">Mutable list with effect</div>
         <p class="text-[14.5px] leading-[1.55] text-muted mt-2.5">A reactive.effect re-renders the list whenever the signal changes. Input wired via dom.on event bridging.</p>
         <span class="btn btn-sm btn-ink self-start mt-auto group-hover:bg-accent group-hover:border-accent">Run demo →</span>
@@ -64,12 +64,44 @@ reactive.effect(<span class="k">function</span>()
     <span class="k">end</span>
 <span class="k">end</span>)</pre>
     </a>
+    <a href="/playground" class="rule-grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] group">
+      <div class="p-6 flex flex-col">
+        <div class="label text-accent">Demo 3</div>
+        <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-3">Lua playground</div>
+        <p class="text-[14.5px] leading-[1.55] text-muted mt-2.5">Edit and run any module in the browser. Each run gets a fresh engine; a count hook stops runaway loops, and the two demos above run in it unmodified.</p>
+        <span class="btn btn-sm btn-ink self-start mt-auto group-hover:bg-accent group-hover:border-accent">Open playground →</span>
+      </div>
+      <pre class="code code-sm"><span class="c">-- pages/playground.lua (excerpt)</span>
+<span class="k">function</span> playground.run()
+    <span class="k">local</span> src = __src
+    __src = <span class="k">nil</span>
+    <span class="k">local</span> chunk, err = load(src, <span class="s">"@playground.lua"</span>, <span class="s">"t"</span>)
+    <span class="k">if not</span> chunk <span class="k">then return</span> err <span class="k">end</span>
+    debug.sethook(trip, <span class="s">""</span>, LIMIT)
+    <span class="k">local</span> ok, e = pcall(chunk)
+    debug.sethook()
+    <span class="k">if not</span> ok <span class="k">then return</span> tostring(e) <span class="k">end</span>
+<span class="k">end</span></pre>
+    </a>
+    <a href="/reconcile" class="rule-grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] group">
+      <div class="p-6 flex flex-col">
+        <div class="label text-accent">Demo 4</div>
+        <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-3">Reconciliation checker</div>
+        <p class="text-[14.5px] leading-[1.55] text-muted mt-2.5">A ledger matched against a provider settlement report. Integer cents, one verdict per reference, verdicts re-run as you edit.</p>
+        <span class="btn btn-sm btn-ink self-start mt-auto group-hover:bg-accent group-hover:border-accent">Run demo →</span>
+      </div>
+      <pre class="code code-sm"><span class="c">-- pages/reconcile.lua (excerpt)</span>
+<span class="k">elseif</span> l.amount ~= s.amount <span class="k">then</span>
+    verdict = <span class="s">"Amount mismatch"</span>
+    reason = string.format(<span class="s">"Settled %s than the ledger: %s vs %s %s"</span>,
+        gap(s.amount - l.amount, l.currency), money(s.amount), money(l.amount), l.currency)</pre>
+    </a>
   </div>
 </section>
 
 <!-- Runtime facts -->
 <section class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.45fr)] gap-8 lg:gap-14 py-12 lg:py-[60px] border-b border-rule">
-  <div><div class="label sec-label">02 // RUNTIME_TOPOLOGY</div></div>
+  <div><div class="label sec-label">Runtime topology</div></div>
   <div>
     <h2 class="h3 max-w-[26ch]">Pages without a module ship zero wasmoon.</h2>
     <p class="mt-5 text-[17px] leading-[1.65] text-muted max-w-[62ch]">
@@ -96,20 +128,20 @@ reactive.effect(<span class="k">function</span>()
 
 <!-- Selected web builds -->
 <section class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.45fr)] gap-8 lg:gap-14 py-12 lg:py-[60px] border-b border-rule">
-  <div><h2 class="label sec-label">03 // SELECTED_WEB_BUILDS</h2></div>
+  <div><h2 class="label sec-label">Selected web builds</h2></div>
   <div class="flex flex-col gap-8">
     <div class="ruled">
       <div class="flex items-baseline justify-between gap-3">
-        <div class="flex items-baseline gap-3.5"><span class="font-mono text-[11px] tracking-[.12em] text-accent">[build_01]</span><h3 class="h4">Real-time sprint board with AI assist</h3></div>
-        <span class="label st-live shrink-0">SHIPPED</span>
+        <div class="flex items-baseline gap-3.5"><span class="font-mono text-[11px] tracking-[.12em] text-accent">01</span><h3 class="h4">Real-time sprint board with AI assist</h3></div>
+        <span class="label st-live shrink-0">Shipped</span>
       </div>
       <p class="body-muted mt-3.5 max-w-[60ch]">Live sprint board over Jira Cloud. SignalR streams delta updates so the board reacts the instant tickets move. A D3 force graph lays out tag-association clusters across the backlog. An OpenRouter-backed chat assistant answers sprint-state questions inline.</p>
       <div class="flex flex-wrap gap-1.5 mt-4"><span class="tag tag-sm">Angular</span><span class="tag tag-sm">.NET</span><span class="tag tag-sm">SignalR</span><span class="tag tag-sm">D3</span><span class="tag tag-sm">Jira Cloud</span><span class="tag tag-sm">OpenRouter</span></div>
     </div>
     <div class="ruled">
       <div class="flex items-baseline justify-between gap-3">
-        <div class="flex items-baseline gap-3.5"><span class="font-mono text-[11px] tracking-[.12em] text-accent">[build_02]</span><h3 class="h4">Fintech, banking, and multilingual WordPress at scale</h3></div>
-        <span class="label st-wip shrink-0">ONGOING · NDA</span>
+        <div class="flex items-baseline gap-3.5"><span class="font-mono text-[11px] tracking-[.12em] text-accent">02</span><h3 class="h4">Fintech, banking, and multilingual WordPress at scale</h3></div>
+        <span class="label st-wip shrink-0">Ongoing · NDA</span>
       </div>
       <p class="body-muted mt-3.5 max-w-[60ch]">Angular and .NET applications inside banking environments. Over sixty payment-API integrations spanning fintech rails. Multilingual WordPress at enterprise scale — localized content, custom plugins, integrations against legacy systems. Client names withheld; happy to walk through any of it under NDA.</p>
       <div class="flex flex-wrap gap-1.5 mt-4"><span class="tag tag-sm">Angular</span><span class="tag tag-sm">.NET</span><span class="tag tag-sm">WordPress</span><span class="tag tag-sm">payment APIs</span><span class="tag tag-sm">i18n</span><span class="tag tag-sm">banking</span></div>

@@ -2,39 +2,74 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <!-- theme bootstrap: runs before any CSS or paint, so a stored night/day
+         choice never flashes the other theme. No stored choice = follow the OS. -->
+    <script>
+      (function (d) {
+        var KEY = "theme", COLORS = { light: "#e9ecef", dark: "#0d1114" };
+        try { var t = localStorage.getItem(KEY); if (t === "light" || t === "dark") d.dataset.theme = t; } catch (e) {}
+        try { if (sessionStorage.getItem("u-seen")) d.classList.add("u-seen"); } catch (e) {}
+        var mq = window.matchMedia ? matchMedia("(prefers-color-scheme: dark)") : null;
+        function current() { return d.dataset.theme || (mq && mq.matches ? "dark" : "light"); }
+        function sync() { // toggle state + browser chrome colour follow the effective theme
+          var th = current(), b = document.getElementById("theme-toggle");
+          if (b) b.setAttribute("aria-pressed", th === "dark" ? "true" : "false");
+          if (d.dataset.theme) document.querySelectorAll('meta[name="theme-color"]').forEach(function (m) { m.content = COLORS[th]; });
+        }
+        function apply(th) {
+          d.dataset.theme = th;
+          try { localStorage.setItem(KEY, th); } catch (e) {}
+          sync();
+          document.dispatchEvent(new CustomEvent("themechange", { detail: { theme: th } }));
+        }
+        document.addEventListener("DOMContentLoaded", sync);
+        if (mq && mq.addEventListener) mq.addEventListener("change", function () {
+          if (!d.dataset.theme) { sync(); document.dispatchEvent(new CustomEvent("themechange", { detail: { theme: current() } })); }
+        });
+        document.addEventListener("click", function (e) {
+          if (!e.target.closest || !e.target.closest("#theme-toggle")) return;
+          var next = current() === "dark" ? "light" : "dark";
+          var still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+          if (!document.startViewTransition || still) return apply(next);
+          d.classList.add("vt-theme");
+          var vt = document.startViewTransition(function () { apply(next); });
+          vt.ready.catch(function () {}); // skipped (e.g. a navigation started): the theme still applies
+          vt.finished.finally(function () { d.classList.remove("vt-theme"); });
+        });
+      })(document.documentElement);
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{title}} — Alvaro Guzman</title>
-    <meta name="description" content="{{#if description}}{{description}}{{else}}Alvaro Guzman, senior fullstack engineer for fintech and core banking: .NET, Angular, Svelte, Vue, Laravel, Go, Odin, applied AI. Served by his own C framework.{{/if}}" />
+    <meta name="description" content="{{#if description}}{{description}}{{else}}Alvaro Guzman, senior full-stack engineer for payments and banking software: .NET, Angular, TypeScript. 7+ years, 60+ payment integrations shipped. Santo Domingo, UTC−4.{{/if}}" />
     <meta name="author" content="Alvaro Guzman" />
     <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
     {{#if path}}<link rel="canonical" href="https://alvaro-guzman.com{{path}}" />{{/if}}
-    <meta name="theme-color" content="#e9ecef" />
+    <meta name="theme-color" content="#e9ecef" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0d1114" media="(prefers-color-scheme: dark)" />
     <!-- social sharing -->
     <meta property="og:type" content="{{#if ogType}}{{ogType}}{{else}}website{{/if}}" />
     {{#if published}}<meta property="article:published_time" content="{{published}}" />
     <meta property="article:author" content="Alvaro Guzman" />{{/if}}
     <meta property="og:site_name" content="Alvaro Guzman" />
     <meta property="og:title" content="{{title}} — Alvaro Guzman" />
-    <meta property="og:description" content="{{#if description}}{{description}}{{else}}Alvaro Guzman, senior fullstack engineer for fintech and core banking: .NET, Angular, Svelte, Vue, Laravel, Go, Odin, applied AI. Served by his own C framework.{{/if}}" />
+    <meta property="og:description" content="{{#if description}}{{description}}{{else}}Alvaro Guzman, senior full-stack engineer for payments and banking software: .NET, Angular, TypeScript. 7+ years, 60+ payment integrations shipped. Santo Domingo, UTC−4.{{/if}}" />
     {{#if path}}<meta property="og:url" content="https://alvaro-guzman.com{{path}}" />{{/if}}
     <meta property="og:image" content="https://alvaro-guzman.com/static/og.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Alvaro Guzman — senior fullstack engineer: fintech, .NET and applied AI. 7+ years. alvaro-guzman.com" />
+    <meta property="og:image:alt" content="Alvaro Guzman — senior full-stack engineer for payments and banking software. .NET, Angular, TypeScript. 7+ years. alvaro-guzman.com" />
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="preload" href="/static/fonts/ibm-plex-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/static/fonts/ibm-plex-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="/static/app.css" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "Person",
         "name": "Alvaro Guzman",
-        "jobTitle": "Senior Fullstack Software Engineer",
+        "jobTitle": "Senior Full-Stack Engineer",
+        "worksFor": { "@type": "Organization", "name": "Clarika Software + Innovation" },
+        "knowsAbout": [".NET", "C#", "Angular", "TypeScript", "Payment gateway integration", "Banking software", "Retrieval-augmented generation", "Azure", "C"],
         "url": "https://alvaro-guzman.com",
         "email": "mailto:aagn2807@gmail.com",
         "address": { "@type": "PostalAddress", "addressLocality": "Santo Domingo", "addressCountry": "DO" },
@@ -42,41 +77,51 @@
         "sameAs": ["https://github.com/aag2807", "https://www.linkedin.com/in/aguzmandev/"]
       }
     </script>
-    <script defer src="/static/alpine.js"></script>
+    {{#if alpine}}<script defer src="/static/alpine.js"></script>{{/if}}
     {{#if luaModule}}<script defer src="/static/framework/lua-framework.js"></script>{{/if}}
     <script defer src="/static/js/universe.js"></script>
   </head>
   <body
     class="min-h-[100dvh] flex flex-col bg-paper text-ink font-sans"
     {{#if luaModule}}data-lua-module="{{luaModule}}"{{/if}}
+    {{#if sky}}data-sky="{{sky}}"{{/if}}
   >
     <a href="#main" class="skip-link">Skip to content</a>
     <canvas id="universe" aria-hidden="true"></canvas>
     <header class="sticky top-0 z-50 border-b border-rule bg-paper/92 backdrop-blur-md">
-      <div class="max-w-[1280px] mx-auto w-full px-5 sm:px-8 flex flex-col md:flex-row md:items-center md:justify-between md:gap-6 md:py-5">
+      <div class="relative max-w-[1280px] mx-auto w-full px-5 sm:px-8 flex flex-col md:flex-row md:items-center md:justify-between md:gap-6 md:py-5">
         <!-- identity row (own row on phones) -->
-        <div class="flex items-center md:items-baseline justify-between md:justify-start gap-3.5 h-11 md:h-auto shrink-0">
-          <a href="/" class="font-mono text-[13px] tracking-[.14em] font-semibold hover:text-accent transition-colors">A_GUZMAN</a>
-          <span class="font-mono text-[11px] tracking-[.1em] text-copper">c-copper v0.5</span>
+        <div class="flex items-center md:items-baseline justify-between md:justify-start gap-3.5 h-11 md:h-auto shrink-0 pr-10 md:pr-0 md:mr-auto">
+          <a href="/" class="font-mono text-[13px] tracking-[.14em] font-semibold uppercase hover:text-accent transition-colors">Alvaro Guzman</a>
+          <span class="hidden sm:inline font-mono text-[11px] tracking-[.1em] text-copper">c-copper v0.5</span>
+          <!-- résumé: in the identity row on phones -->
+          <a href="/static/cv/alvaro-guzman-cv.pdf" download="Alvaro_Guzman_CV.pdf" class="md:hidden ml-auto btn btn-sm btn-outline !px-3 !py-2 !text-[11px]">Résumé ↓</a>
         </div>
         <!-- nav row (full-width scroll strip on phones, inline on desktop) -->
         <nav aria-label="Main" class="topnav nav-scroll -mx-5 px-5 sm:-mx-8 sm:px-8 md:mx-0 md:px-0 border-t border-rule/70 md:border-t-0 flex items-stretch md:items-center gap-5 sm:gap-[22px] overflow-x-auto font-mono text-[12px] tracking-[.08em] text-muted min-w-0 h-11 md:h-auto">
-          <a href="/"         class="shrink-0 flex items-center hover:text-accent transition-colors">01_Home</a>
-          <a href="/work"     class="shrink-0 flex items-center hover:text-accent transition-colors">02_Work</a>
-          <a href="/workshop" class="shrink-0 flex items-center hover:text-accent transition-colors">03_Workshop</a>
-          <a href="/writing"  class="shrink-0 flex items-center hover:text-accent transition-colors">04_Writing</a>
-          <a href="/contact"  class="shrink-0 flex items-center hover:text-accent transition-colors">05_Connect</a>
+          <a href="/"         class="shrink-0 flex items-center hover:text-accent transition-colors">Home</a>
+          <a href="/work"     class="shrink-0 flex items-center hover:text-accent transition-colors">Work</a>
+          <a href="/workshop" class="shrink-0 flex items-center hover:text-accent transition-colors">Workshop</a>
+          <a href="/writing"  class="shrink-0 flex items-center hover:text-accent transition-colors">Writing</a>
+          <a href="/contact"  class="shrink-0 flex items-center hover:text-accent transition-colors">Contact</a>
         </nav>
+        <!-- résumé: after the nav on desktop (a button, not a nav item: Contact stays the last nav link) -->
+        <a href="/static/cv/alvaro-guzman-cv.pdf" download="Alvaro_Guzman_CV.pdf" class="hidden md:inline-flex shrink-0 btn btn-sm btn-outline !px-3.5 !py-2.5">Résumé ↓</a>
+        <!-- night/day toggle: top-right of the identity row on phones, after the nav on desktop -->
+        <button type="button" id="theme-toggle" class="theme-toggle absolute top-0 right-5 sm:right-8 md:static" aria-label="Dark theme" aria-pressed="false" title="Toggle dark theme">
+          <svg class="i-moon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M13.2 10.1A5.6 5.6 0 0 1 5.9 2.8a5.6 5.6 0 1 0 7.3 7.3Z" stroke-linejoin="round"/></svg>
+          <svg class="i-sun" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="2.9"/><path d="M8 1.2v1.6M8 13.2v1.6M1.2 8h1.6M13.2 8h1.6M3.2 3.2l1.1 1.1M11.7 11.7l1.1 1.1M3.2 12.8l1.1-1.1M11.7 4.3l1.1-1.1"/></svg>
+        </button>
       </div>
       {{#if worknav}}
       <!-- /work sub-nav -->
       <div class="border-t border-rule/70 bg-card/80">
         <nav aria-label="Work sections" class="subnav nav-scroll max-w-[1280px] mx-auto w-full px-5 sm:px-8 h-9 flex items-center gap-5 overflow-x-auto font-mono text-[11px] tracking-[.08em] text-muted">
-          <span class="select-none shrink-0 text-muted" aria-hidden="true">~/work $</span>
-          <a href="/work/fintech-ai" class="shrink-0 hover:text-accent transition-colors">fintech-ai</a>
-          <a href="/work/systems"    class="shrink-0 hover:text-accent transition-colors">systems</a>
-          <a href="/work/web"        class="shrink-0 hover:text-accent transition-colors">web</a>
-          <a href="/work/gamedev"    class="shrink-0 hover:text-accent transition-colors">gamedev</a>
+          <a href="/work"            class="shrink-0 hover:text-accent transition-colors">Overview</a>
+          <a href="/work/fintech-ai" class="shrink-0 hover:text-accent transition-colors">Fintech &amp; AI</a>
+          <a href="/work/systems"    class="shrink-0 hover:text-accent transition-colors">Systems</a>
+          <a href="/work/web"        class="shrink-0 hover:text-accent transition-colors">Web</a>
+          <a href="/work/gamedev"    class="shrink-0 hover:text-accent transition-colors">Gamedev</a>
         </nav>
       </div>
       {{/if}}
@@ -89,10 +134,17 @@
     <footer class="border-t border-rule">
       <div class="max-w-[1280px] mx-auto w-full px-5 sm:px-8 py-8 flex flex-wrap gap-x-8 gap-y-3 items-center justify-between font-mono text-[11px] tracking-[.08em] text-muted">
         <div class="flex flex-wrap gap-x-6 gap-y-2">
-          <span>Operator: Alvaro Guzman</span>
-          <span>Origin: Santo Domingo, DO · AST (UTC−4)</span>
-          <span class="hidden md:inline">Runtime: c-copper / wasmoon-lua</span>
+          <span>Alvaro Guzman · Santo Domingo, DO · UTC−4</span>
+          <a href="mailto:aagn2807@gmail.com" class="hover:text-accent transition-colors">Email</a>
+          <a href="https://www.linkedin.com/in/aguzmandev/" target="_blank" rel="noreferrer" class="hover:text-accent transition-colors">LinkedIn</a>
+          <a href="https://github.com/aag2807" target="_blank" rel="noreferrer" class="hover:text-accent transition-colors">GitHub</a>
         </div>
+        <!-- live telemetry: the server replaces the c: tokens at send time -->
+        <p class="max-w-[72ch] leading-[1.7]">
+          Rendered in <span class="text-ink"><!--c:render_us--> ms</span> by
+          <a href="/projects/c-copper" class="text-copper underline underline-offset-2 decoration-1 hover:text-accent transition-colors">c-copper v0.5</a>, a hand-written C server.
+          Request #<span class="text-ink"><!--c:requests--></span> since this instance woke up <span class="text-ink"><!--c:uptime--></span> ago.
+        </p>
       </div>
     </footer>
 

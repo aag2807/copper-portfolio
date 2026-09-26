@@ -2,8 +2,7 @@
 <div id="read-progress" aria-hidden="true"></div>
 
 <div class="flex items-center gap-2 py-5 mono-sm tracking-[.1em]">
-  <a href="/writing" class="hover:text-accent transition-colors">← ~/writing</a>
-  <span>/building-c-copper</span>
+  <a href="/writing" class="hover:text-accent transition-colors">← Writing</a>
 </div>
 
 <article class="border-t border-rule">
@@ -19,7 +18,7 @@
 
   <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_240px] gap-12 lg:gap-16 pt-12">
     <div class="prose-article">
-<p>The page you&#39;re reading was routed, rendered, and delivered by roughly 2,800 lines of C99 I wrote myself. No nginx in front doing the real work, no framework underneath, no framework dependencies (libcurl is linked only to send the contact form&#39;s email) — <code>accept()</code> to template interpolation, every byte assembled by code in one repo.</p>
+<p>The page you&#39;re reading was routed, rendered, and delivered by roughly 3,500 lines of C99 I wrote myself. No nginx in front doing the real work, no framework underneath, no framework dependencies (libcurl is linked only to send the contact form&#39;s email, zlib only to gzip responses) — <code>accept()</code> to template interpolation, every byte assembled by code in one repo.</p>
 <p>This is not because C is the right tool for a portfolio site. It&#39;s because after seven years of shipping on .NET and Angular — where the socket loop, the router, and the view engine are all somebody else&#39;s excellent work — I wanted to know exactly what lives under the abstractions I use every day. The honest way to find out is to build the whole lifecycle yourself and then run it in production.</p>
 <h2 id="the-shape-of-the-thing">The shape of the thing</h2>
 <p>c-copper is a small MVC framework: a pthread-per-request socket loop, a linked-list middleware chain (logging → static files → rate limiting → CSRF → router), a route table with <code>{param}</code> binding matched via <code>strtok_r</code>, and a handlebars-style template engine with a two-pass layout render. Controllers are plain C functions behind an <code>ACTION</code> macro; views are HTML files with <code>&#123;&#123;key&#125;&#125;</code>, <code>&#123;&#123;{key&#125;&#125;}</code>, <code>#if</code>/<code>else</code>, <code>#each</code>, <code>&#64;layout</code> and <code>&#64;csrf</code>.</p>
@@ -42,7 +41,7 @@
 <p>Source is on <a href="https://github.com/aag2807/copper-portfolio">GitHub</a>, and the architecture diagrams are in <a href="/projects/c-copper">the c-copper case study</a>.</p>
 
       <div class="mt-12 pt-6 border-t border-rule flex flex-wrap gap-2.5 font-sans">
-        <a href="/writing" class="btn btn-sm btn-outline">← back to ~/writing</a>
+        <a href="/writing" class="btn btn-sm btn-outline">← All writing</a>
         <a href="/contact" class="btn btn-sm btn-ghost">Get in touch →</a>
       </div>
     </div>
@@ -58,7 +57,7 @@
         </div>
       </nav>
       <div class="panel-plain p-5">
-        <div class="label mb-3.5">FILED_UNDER</div>
+        <div class="label mb-3.5">Filed under</div>
         <div class="flex flex-wrap gap-[7px]">
           <span class="tag tag-sm tag-accent">c99</span>
           <span class="tag tag-sm">mvc</span>
@@ -73,7 +72,7 @@
 <nav aria-label="More posts" class="rule-grid grid-cols-1 md:grid-cols-2 my-16">
   <a href="/writing" class="p-7 block">
     <div class="label mb-3">← ALL POSTS</div>
-    <div class="text-[19px] font-semibold tracking-[-.015em] leading-[1.25]">~/writing</div>
+    <div class="text-[19px] font-semibold tracking-[-.015em] leading-[1.25]">Writing</div>
   </a>
   <a href="/writing/on-being-pragmatic" class="p-7 block md:text-right">
     <div class="label text-accent mb-3">NEXT →</div>

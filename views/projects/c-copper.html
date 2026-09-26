@@ -1,13 +1,13 @@
 <!-- Hero -->
 <section class="pt-12 pb-10 lg:pt-[66px] border-b border-rule">
-  <a href="/work/systems" class="mono-sm tracking-[.14em] hover:text-accent transition-colors">← 02_WORK / SYSTEMS</a>
+  <a href="/work/systems" class="mono-sm tracking-[.14em] hover:text-accent transition-colors">← Work / Systems</a>
   <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] gap-8 lg:gap-12 items-end mt-7">
     <div>
-      <div class="eyebrow text-accent mb-5">[0x02] SYSTEMS // C_COPPER</div>
+      <div class="eyebrow text-accent mb-5">Personal project · the server behind this site</div>
       <h1 class="display max-w-[20ch]">A web framework in C, from the socket up.</h1>
     </div>
     <p class="lede-muted">
-      The page you're reading was routed, rendered, and sent by ~2,800 lines of C99 with zero framework dependencies; libcurl handles outbound email.
+      The page you're reading was routed, rendered, and sent by ~3,500 lines of C99 with zero framework dependencies; libcurl handles outbound email and zlib compresses responses.
       Not because C is the right tool for a portfolio — because owning every layer from <code class="ic">accept()</code>
       to template interpolation is the most honest way to show what "full stack" means.
     </p>
@@ -24,7 +24,7 @@
 
 <!-- 01 Problem -->
 <section class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.45fr)] gap-8 lg:gap-14 py-12 lg:py-[60px] border-b border-rule">
-  <div><div class="label sec-label">01 // THE_PROBLEM</div></div>
+  <div><div class="label sec-label">The problem</div></div>
   <div>
     <h2 class="h3 max-w-[26ch]">Every framework hides the interesting parts.</h2>
     <p class="mt-5 text-[17px] leading-[1.65] max-w-[62ch]">
@@ -34,14 +34,14 @@
     </p>
     <p class="mt-[18px] text-[17px] leading-[1.65] text-muted max-w-[62ch]">
       Constraints: C99 + pthreads. No libevent, no framework dependencies; libcurl is linked only to send the contact
-      form's email. Every byte of the HTTP response is assembled by code in this repo.
+      form's email, and zlib only to gzip responses. Every byte of the HTTP response is assembled by code in this repo.
     </p>
   </div>
 </section>
 
 <!-- 02 Architecture -->
 <section class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.45fr)] gap-8 lg:gap-14 py-12 lg:py-[60px] border-b border-rule">
-  <div><div class="label sec-label">02 // ARCHITECTURE</div></div>
+  <div><div class="label sec-label">Architecture</div></div>
   <div>
     <h2 class="h3 max-w-[26ch]">One thread per request, one linked list per concern.</h2>
     <p class="mt-5 text-[17px] leading-[1.65] max-w-[62ch]">
@@ -65,7 +65,7 @@
 
 <!-- 03 Decisions -->
 <section class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.45fr)] gap-8 lg:gap-14 py-12 lg:py-[60px] border-b border-rule">
-  <div><h2 class="label sec-label">03 // DECISIONS</h2></div>
+  <div><h2 class="label sec-label">Decisions</h2></div>
   <div class="flex flex-col gap-[34px]">
     <div class="ruled">
       <div class="flex items-baseline gap-3.5"><span class="font-mono text-[11px] tracking-[.12em] text-accent">D1</span><h3 class="h4 text-[21px]">Thread-per-request over an event loop</h3></div>
@@ -88,18 +88,27 @@
 
 <!-- 04 Numbers -->
 <section class="py-12 lg:py-[60px] border-b border-rule">
-  <h2 class="label mb-6">04 // NUMBERS</h2>
+  <h2 class="label mb-6">Numbers</h2>
   <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
     <div><div class="stat-lg">~1,900/s</div><div class="body-muted mt-3 max-w-[34ch]">Dynamic renders per second, full template.</div></div>
     <div><div class="stat-lg">~3,700/s</div><div class="body-muted mt-3 max-w-[34ch]">Static file responses per second.</div></div>
     <div><div class="stat-lg">23 / 65ms</div><div class="body-muted mt-3 max-w-[34ch]">p50 / p99 dynamic latency under load.</div></div>
-    <div><div class="stat-lg">0</div><div class="body-muted mt-3 max-w-[34ch]">Framework dependencies; libcurl for outbound email.</div></div>
+    <div><div class="stat-lg">0</div><div class="body-muted mt-3 max-w-[34ch]">Framework dependencies; libcurl for email, zlib for gzip.</div></div>
   </div>
   <div class="rule-grid grid-cols-2 md:grid-cols-4 mt-9">
-    <div class="p-5"><div class="stat">~2,800</div><div class="label mt-2.5">lines of C, src/ (.c + .h)</div></div>
-    <div class="p-5"><div class="stat">20</div><div class="label mt-2.5">http routes registered</div></div>
-    <div class="p-5"><div class="stat">~64KB</div><div class="label mt-2.5">stripped server binary</div></div>
-    <div class="p-5"><div class="stat">~34KB</div><div class="label mt-2.5">total CSS shipped</div></div>
+    <div class="p-5"><div class="stat">~3,500</div><div class="label mt-2.5">lines of C, src/ (.c + .h)</div></div>
+    <div class="p-5"><div class="stat">21</div><div class="label mt-2.5">http routes registered</div></div>
+    <div class="p-5"><div class="stat">~76KB</div><div class="label mt-2.5">stripped server binary</div></div>
+    <div class="p-5"><div class="stat">~9KB</div><div class="label mt-2.5">CSS over the wire, gzipped</div></div>
+  </div>
+  <div class="mt-9 panel-accent flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div>
+      <div class="label text-accent mb-2">Live, from this instance</div>
+      <p class="text-[16px] leading-[1.6]">This page was rendered in <span class="font-semibold"><!--c:render_us--> ms</span>. It is request
+        #<span class="font-semibold"><!--c:requests--></span> since this instance woke up <span class="font-semibold"><!--c:uptime--></span> ago.
+        Cloud Run scales to zero, so the count resets when the instance sleeps.</p>
+    </div>
+    <a href="/api/status" class="btn btn-sm btn-outline shrink-0">/api/status →</a>
   </div>
   <p class="mt-8 font-mono text-[11.5px] leading-[1.7] tracking-[.04em] text-muted max-w-[70ch]">
     Benchmark: hey, 50 concurrent connections, 10s runs (median of 3), Intel N100 (4 cores) under WSL2 — laptop-class
@@ -111,11 +120,11 @@
 <!-- Prev / next -->
 <nav aria-label="Source and writeup" class="rule-grid grid-cols-1 md:grid-cols-2 my-12 lg:my-[60px]">
   <a href="https://github.com/aag2807/copper-portfolio" target="_blank" rel="noreferrer" class="p-7 block">
-    <div class="label mb-3">SOURCE</div>
+    <div class="label mb-3">Source</div>
     <div class="text-[20px] font-semibold tracking-[-.015em]">github.com/aag2807/copper-portfolio →</div>
   </a>
   <a href="/writing/building-c-copper" class="p-7 block md:text-right">
-    <div class="label text-accent mb-3">READ THE WRITEUP →</div>
+    <div class="label text-accent mb-3">Read the writeup →</div>
     <div class="text-[20px] font-semibold tracking-[-.015em]">Building c-copper: what a web framework in C teaches you</div>
   </a>
 </nav>

@@ -1,231 +1,220 @@
-<!-- Hero -->
-<section class="grid grid-cols-1 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)] gap-10 lg:gap-14 pt-12 pb-12 lg:pt-[76px] lg:pb-16 border-b border-rule">
+<!-- Hero: positioning, proof, next step. Availability sits beside it. -->
+<section class="grid grid-cols-1 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] gap-8 lg:gap-14 pt-9 pb-9 lg:pt-14 lg:pb-12">
   <div>
-    <div class="eyebrow flex items-center gap-2.5 mb-8">
+    <div class="eyebrow flex items-center gap-2.5 mb-5 lg:mb-7">
       <span class="w-[7px] h-[7px] rounded-full bg-accent inline-block shrink-0"></span>
-      <span>ALVARO_GUZMAN // INDEX — SANTO DOMINGO, DO 18.4861°N</span>
+      <span><span class="hidden sm:inline">Alvaro Guzman · </span>Santo Domingo, DO · UTC−4</span>
     </div>
-    <h1 class="display-lg max-w-[15ch]">BUILT THE STACK FROM SCRATCH.</h1>
-    <p class="mt-7 font-mono text-[13px] leading-[1.7] tracking-[.02em] text-muted max-w-[52ch]">
-      Senior Fullstack — Fintech &amp; Core Banking — .NET · Angular · Svelte · Vue · Laravel · Go · Odin — 7+ years
+    <h1 class="hero-title max-w-[21ch]">Senior full-stack engineer for payments and banking software.</h1>
+    <p class="lede mt-5 lg:mt-7 max-w-[58ch]">
+      .NET, Angular and TypeScript for 7+ years. I've shipped 60+ payment integrations, led a multi-country
+      enterprise platform, and now build RAG and AI-agent developer tooling at Clarika.
+      <span class="hidden sm:inline">Full working-day overlap with US Eastern.</span>
     </p>
-    <p class="lede mt-6">
-      I build enterprise software for banks and payment providers — systems that move money and get audited.
-      60+ payment-gateway integrations shipped inside regulated environments; currently building an on-prem AI/LLM
-      gateway for banking — RAG, multi-agent orchestration, zero data egress. Day to day that means .NET and Angular,
-      plus Svelte, Vue, Laravel and Go; Odin and C when the work sits closer to the metal; cloud infra on Azure.
-    </p>
-    <p class="lede mt-5">
-      This page is served by
-      <a href="/projects/c-copper" class="text-copper border-b border-copper hover:text-ink hover:border-ink transition-colors">c-copper</a>,
-      a web framework I wrote in C, with a Lua runtime compiled to WASM on the frontend. It's how I keep the
-      fundamentals sharp.
-    </p>
-    <p lang="es" class="mt-6 pl-4 border-l-2 border-rule text-[15px] leading-[1.6] text-muted max-w-[56ch]">
-      <span class="font-mono text-[11px] tracking-[.12em]" aria-hidden="true">[es]</span>
-      Desarrollador de software senior — sistemas, fintech e IA aplicada. Construyo desde cero: frameworks web en C,
-      compiladores en Go, integraciones bancarias.
-    </p>
-    <div class="flex flex-wrap gap-3 mt-9">
-      <a href="/counter" class="btn btn-ink">Run Counter Demo</a>
-      <a href="https://github.com/aag2807/copper-portfolio" target="_blank" rel="noreferrer" class="btn btn-outline">Inspect Framework →</a>
-      <a href="/static/cv/alvaro-guzman-cv.pdf" download="Alvaro_Guzman_CV.pdf" class="btn btn-ghost">Download CV ↓</a>
+    <div class="flex flex-wrap gap-2.5 sm:gap-3 mt-6 lg:mt-8">
+      <a href="/static/cv/alvaro-guzman-cv.pdf" download="Alvaro_Guzman_CV.pdf" class="btn btn-ink">Download résumé ↓</a>
+      <a href="/contact" class="btn btn-outline">Contact me</a>
+      <a href="#work" class="btn btn-ghost hidden sm:inline-flex">Case studies</a>
     </div>
+    <p class="hidden sm:block mt-6 mono-sm leading-[1.7] max-w-[62ch]">
+      This site runs on <a href="/projects/c-copper" class="text-copper border-b border-copper hover:text-accent hover:border-accent transition-colors">c-copper</a>,
+      a web server I wrote in C. The footer shows how long it took to render this page.
+    </p>
   </div>
 
-  <aside class="flex flex-col gap-3.5">
-    <div class="panel">
-      <h2 class="label mb-[18px]">SYSTEMS_STATUS</h2>
-      <div class="grid grid-cols-2 gap-[18px]">
-        <a href="/projects/c-copper" class="group">
-          <div class="stat group-hover:text-accent transition-colors">~2,800</div>
-          <div class="label mt-2 leading-[1.5]">LINES OF C<br />framework core, src/</div>
-        </a>
-        <a href="/work/web" class="group">
-          <div class="stat text-accent">~120</div>
-          <div class="label mt-2 leading-[1.5]">LINES OF LUA<br />browser runtime library</div>
-        </a>
-        <a href="/projects/payment-gateways" class="group">
-          <div class="stat group-hover:text-accent transition-colors">60+</div>
-          <div class="label mt-2 leading-[1.5]">PAYMENT<br />integrations</div>
-        </a>
-        <a href="/work/systems" class="group">
-          <div class="stat group-hover:text-accent transition-colors">20</div>
-          <div class="label mt-2 leading-[1.5]">ROUTES<br />served by this binary</div>
-        </a>
-      </div>
+  <aside aria-labelledby="availability" class="panel !p-0 self-start">
+    <div class="flex items-center justify-between gap-3 px-5 pt-5 pb-3.5 border-b border-rule">
+      <h2 id="availability" class="label">Availability</h2>
+      <span class="label text-accent flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-accent pulse-dot"></span>Open to offers</span>
     </div>
-    <div class="panel-accent">
-      <h2 class="label text-accent mb-3">CURRENT_FOCUS</h2>
-      <div class="text-[16px] leading-[1.5]">Browser-side Lua runtime<br />Per-route module loading via WASM</div>
-    </div>
-    <div class="panel-plain">
-      <h2 class="label mb-3">AVAILABLE_FOR</h2>
-      <div class="font-mono text-[12px] leading-[1.9]">senior_ic<br />applied_ai<br />systems_engineering</div>
-      <div class="mt-4 text-[14px] leading-[1.55] text-muted">Remote across EU &amp; LATAM time zones; AST (UTC−4).</div>
-    </div>
+    <dl class="avail px-5 pb-2">
+      <div><dt>Role</dt><dd>Senior or Staff IC</dd></div>
+      <div><dt>Engagement</dt><dd>Full-time via employer of record, or long-term contract</dd></div>
+      <div><dt>Time zone</dt><dd>UTC−4. Full US Eastern overlap; EU afternoons</dd></div>
+      <div><dt>Languages</dt><dd>English, fluent and professional. Spanish, native</dd></div>
+      <div><dt>Replies</dt><dd>Within 24 hours</dd></div>
+    </dl>
   </aside>
 </section>
 
-<!-- Core modules -->
-<section class="pt-16">
-  <div class="flex items-baseline justify-between gap-6 mb-7">
-    <h2 class="h2">Core modules</h2>
-    <a href="/work" class="mono-sm tracking-[.12em] hover:text-accent transition-colors shrink-0">ALL_WORK →</a>
+<!-- Outcomes -->
+<section aria-label="Outcomes" class="rule-grid grid-cols-2 lg:grid-cols-4">
+  <a href="/projects/payment-gateways" class="p-5 lg:p-6">
+    <div class="stat">60+</div>
+    <div class="outcome mt-2.5">payment APIs integrated, maintained and scaled <span class="text-muted">· ATL Software</span></div>
+  </a>
+  <a href="/projects/payment-gateways" class="p-5 lg:p-6">
+    <div class="stat">+15%</div>
+    <div class="outcome mt-2.5">conversion; my checkout work contributed <span class="text-muted">· ATL Software</span></div>
+  </a>
+  <a href="#experience" class="p-5 lg:p-6">
+    <div class="stat">Led</div>
+    <div class="outcome mt-2.5">2RConnect, a multi-country enterprise platform <span class="text-muted">· Wepsys</span></div>
+  </a>
+  <a href="#experience" class="p-5 lg:p-6">
+    <div class="stat">7+ yrs</div>
+    <div class="outcome mt-2.5">full-stack .NET and Angular, remote and on-site</div>
+  </a>
+</section>
+
+<!-- Experience -->
+<section id="experience" class="pt-16 lg:pt-20 scroll-mt-24">
+  <div class="flex flex-wrap items-end justify-between gap-x-6 gap-y-3 mb-6">
+    <div>
+      <div class="label mb-3">Experience</div>
+      <h2 class="h2">Where I've worked.</h2>
+    </div>
+    <a href="/static/cv/alvaro-guzman-cv.pdf" download="Alvaro_Guzman_CV.pdf" class="mono-sm tracking-[.12em] hover:text-accent transition-colors shrink-0">Full résumé (PDF) ↓</a>
   </div>
-  <div class="rule-grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))]">
-    <a href="/work/fintech-ai" class="p-6 pb-[30px] flex flex-col gap-3 min-h-[236px]">
-      <div class="label text-accent">[0x01]</div>
-      <div class="eyebrow tracking-[.12em]">AI_FINTECH</div>
-      <div class="text-[24px] tracking-[-.02em] font-semibold mt-auto">BANKING_LLM</div>
-      <div class="text-[14px] leading-[1.5] text-muted">On-prem LLM gateway, RAG pipelines, 60+ payment integrations.</div>
+
+  <ol class="timeline border-t border-ink">
+    <li>
+      <div class="tl-when">Aug 2024 – Present</div>
+      <div>
+        <h3 class="tl-role">Software Developer <span class="tl-at">Clarika Software + Innovation</span></h3>
+        <div class="tl-type">Full-time · Remote</div>
+      </div>
+      <p class="tl-what">Enterprise apps in .NET and modern frontends. Design and architecture decisions across distributed teams; internal developer tools built on RAG pipelines and AI agents, for autonomous and supervised development.</p>
+    </li>
+    <li>
+      <div class="tl-when">2024 – Present</div>
+      <div>
+        <h3 class="tl-role">Full-Stack Developer <span class="tl-at">InsolTech</span></h3>
+        <div class="tl-type">Part-time contract · Remote</div>
+      </div>
+      <p class="tl-what">International banking applications and B2B migration projects in Angular and .NET, plus performance work on JavaScript and C# codebases.</p>
+    </li>
+    <li>
+      <div class="tl-when">Jun 2022 – Aug 2024</div>
+      <div>
+        <h3 class="tl-role">Full-Stack Developer <span class="tl-at">ATL Software</span></h3>
+        <div class="tl-type">Full-time · Santo Domingo</div>
+      </div>
+      <p class="tl-what">Integrated, maintained and scaled 60+ third-party payment APIs: checkout flows, transaction processing, fraud handling. Built the Ionic Angular commerce app; contributed to a 15% increase in conversion. <a href="/projects/payment-gateways" class="tl-link">Case study →</a></p>
+    </li>
+    <li>
+      <div class="tl-when">Dec 2021 – Dec 2024</div>
+      <div>
+        <h3 class="tl-role">Full-Stack Developer <span class="tl-at">Wepsys</span></h3>
+        <div class="tl-type">Full-time contractor · Santo Domingo</div>
+      </div>
+      <p class="tl-what">Led development and scaling of 2RConnect, a multi-country enterprise application serving users across several international markets. Architected its Angular and .NET apps with teams in several countries.</p>
+    </li>
+    <li>
+      <div class="tl-when">Apr 2021 – Dec 2021</div>
+      <div>
+        <h3 class="tl-role">Frontend Developer <span class="tl-at">Centros Tecnológicos Comunitarios</span></h3>
+        <div class="tl-type">Hybrid · Santo Domingo</div>
+      </div>
+      <p class="tl-what">Published an Ionic Angular app giving nationwide access to radio stations across the Dominican Republic. Moved legacy Loopback and PHP APIs to .NET 5.</p>
+    </li>
+    <li>
+      <div class="tl-when">Nov 2019 – Present</div>
+      <div>
+        <h3 class="tl-role">Freelance Full-Stack Developer <span class="tl-at">Self-employed</span></h3>
+        <div class="tl-type">Freelance · Remote</div>
+      </div>
+      <p class="tl-what">End-to-end web, desktop and mobile work for clients, including an on-premise LLM and RAG gateway for a bank. <a href="/projects/llm-gateway" class="tl-link">Case study →</a></p>
+    </li>
+  </ol>
+
+  <p class="mt-5 text-[14px] leading-[1.6] text-muted max-w-[80ch]">
+    The overlapping dates are real: contract and part-time work ran alongside full-time roles. Client and bank names stay private.
+  </p>
+  <p class="mt-6 text-[16px] leading-[1.65] max-w-[80ch]">
+    <span class="label mr-2">Stack</span>
+    .NET and C#, Angular and TypeScript day to day; also React, Vue, Svelte, Ionic, Laravel and PHP, Go and SignalR,
+    on SQL Server, Postgres and SQLite, deployed to Azure, Docker and Cloud Run. C, Odin and Rust for systems work.
+  </p>
+</section>
+
+<!-- Selected work -->
+<section id="work" class="pt-16 lg:pt-20 scroll-mt-24">
+  <div class="flex flex-wrap items-end justify-between gap-x-6 gap-y-3 mb-6">
+    <div>
+      <div class="label mb-3">Selected work</div>
+      <h2 class="h2">Three case studies.</h2>
+    </div>
+    <a href="/work" class="mono-sm tracking-[.12em] hover:text-accent transition-colors shrink-0">All work →</a>
+  </div>
+  <div class="rule-grid grid-cols-1 md:grid-cols-3">
+    <a href="/projects/payment-gateways" class="p-6 lg:p-7 flex flex-col gap-3 min-h-[250px]">
+      <div class="label text-accent">ATL Software · 2022–2024</div>
+      <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1">60+ payment providers behind one checkout</div>
+      <p class="text-[15px] leading-[1.55] text-muted">An adapter contract per provider, a transaction state machine, and fraud checks ahead of capture. Checkout work contributed to a measured +15% conversion.</p>
+      <div class="mt-auto pt-3 flex items-center justify-between gap-3">
+        <span class="mono-sm">Angular · Ionic · .NET</span>
+        <span class="font-mono text-[11px] tracking-[.1em] text-accent shrink-0">Read →</span>
+      </div>
     </a>
-    <a href="/work/systems" class="p-6 pb-[30px] flex flex-col gap-3 min-h-[236px]">
-      <div class="label text-accent">[0x02]</div>
-      <div class="eyebrow tracking-[.12em]">SYSTEMS</div>
-      <div class="text-[24px] tracking-[-.02em] font-semibold mt-auto">C_RUNTIME</div>
-      <div class="text-[14px] leading-[1.5] text-muted">HTTP server in C, route table, middleware chain, template engine.</div>
+    <a href="/projects/llm-gateway" class="p-6 lg:p-7 flex flex-col gap-3 min-h-[250px]">
+      <div class="label text-accent">Freelance engagement · Banking</div>
+      <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1">An on-prem LLM gateway for a bank</div>
+      <p class="text-[15px] leading-[1.55] text-muted">Multi-provider model routing, RAG with vector search and multi-agent orchestration in C#/.NET, with zero external data egress by construction.</p>
+      <div class="mt-auto pt-3 flex items-center justify-between gap-3">
+        <span class="mono-sm">C# · .NET · RAG</span>
+        <span class="font-mono text-[11px] tracking-[.1em] text-accent shrink-0">Read →</span>
+      </div>
     </a>
-    <a href="/work/web" class="p-6 pb-[30px] flex flex-col gap-3 min-h-[236px]">
-      <div class="label text-accent">[0x03]</div>
-      <div class="eyebrow tracking-[.12em]">WEB</div>
-      <div class="text-[24px] tracking-[-.02em] font-semibold mt-auto">LUA_REACTIVE</div>
-      <div class="text-[14px] leading-[1.5] text-muted">Wasmoon-bridged Lua in the browser, signal-based reactivity.</div>
-    </a>
-    <a href="/work/gamedev" class="p-6 pb-[30px] flex flex-col gap-3 min-h-[236px]">
-      <div class="label text-accent">[0x04]</div>
-      <div class="eyebrow tracking-[.12em]">GAMEDEV</div>
-      <div class="text-[24px] tracking-[-.02em] font-semibold mt-auto">GAME_LOOPS</div>
-      <div class="text-[14px] leading-[1.5] text-muted">Passages in Unity, LÖVE prototypes, a Rust/Bevy ECS track.</div>
+    <a href="/projects/c-copper" class="p-6 lg:p-7 flex flex-col gap-3 min-h-[250px]">
+      <div class="label text-copper">Personal · Live</div>
+      <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1">c-copper, the C server behind this site</div>
+      <p class="text-[15px] leading-[1.55] text-muted">Socket loop, router, middleware chain, template engine and gzip, hand-written in C99. It rendered this page in <!--c:render_us--> ms.</p>
+      <div class="mt-auto pt-3 flex items-center justify-between gap-3">
+        <span class="mono-sm">C99 · pthreads · zlib</span>
+        <span class="font-mono text-[11px] tracking-[.1em] text-accent shrink-0">Read →</span>
+      </div>
     </a>
   </div>
 </section>
 
-<!-- Request trace -->
-<section class="rule-grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] mt-16">
-  <div class="p-7 lg:p-[34px_30px] flex flex-col">
-    <div class="label">REQUEST_TRACE</div>
-    <h2 class="h3 mt-[18px]">Every request on this site walks this loop.</h2>
-    <p class="body-muted mt-4 max-w-[42ch]">Route table, pattern match, handler dispatch — hand-written in C99, no framework underneath it. Excerpt from <span class="font-mono text-[13px]">src/router.c</span>.</p>
-    <a href="/work/systems" class="mt-auto pt-6 font-mono text-[12px] tracking-[.1em] text-accent hover:text-ink transition-colors">Inspect_C →</a>
-  </div>
-  <pre class="code !bg-code"><span class="k">int</span> <span class="f">router_match</span>(Router* r, Request* req, RouteHandler* handler, <span class="k">void</span>** ctx) {
-  <span class="k">for</span> (<span class="k">int</span> i = <span class="n">0</span>; i &lt; r-&gt;count; i++) {
-    Route* route = &amp;r-&gt;routes[i];
-    <span class="k">if</span> (!method_matches(route-&gt;method, str_cstr(&amp;req-&gt;method))) <span class="k">continue</span>;
-    <span class="k">if</span> (match_pattern(route-&gt;pattern, str_cstr(&amp;req-&gt;path), req)) {
-      *handler = route-&gt;handler;
-      *ctx = route-&gt;ctx;
-      <span class="k">return</span> <span class="n">1</span>;
-    }
-  }
-  <span class="k">return</span> <span class="n">0</span>; <span class="c">// dispatch() answers 405 or the 404 page</span>
-}</pre>
-</section>
-
-<!-- Specialized capabilities -->
-<section class="pt-16">
-  <h2 class="h2 mb-7">Specialized capabilities</h2>
-  <div class="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-8">
-    <div class="ruled">
-      <div class="flex items-baseline justify-between gap-3">
-        <h3 class="h4">Systems &amp; runtimes</h3>
-        <span class="label tracking-[.1em] shrink-0">C, LUA, POSIX</span>
-      </div>
-      <p class="body-muted mt-3.5">Threaded HTTP servers, manual memory allocators, template engines, embedded scripting bridges. The whole stack visible from the bare socket() call up to handlebars-style template interpolation.</p>
-    </div>
-    <div class="ruled">
-      <div class="flex items-baseline justify-between gap-3">
-        <h3 class="h4">Game loops &amp; sim</h3>
-        <span class="label tracking-[.1em] shrink-0">LÖVE, LUA 5.4</span>
-      </div>
-      <p class="body-muted mt-3.5">Frame-paced update loops, signal-driven reactivity, deterministic fixed timestep physics. Built directly against love.update / love.draw without engine abstractions.</p>
-    </div>
-    <div class="ruled">
-      <div class="flex items-baseline justify-between gap-3">
-        <h3 class="h4">Browser-side Lua</h3>
-        <span class="label tracking-[.1em] shrink-0">WASMOON, WASM</span>
-      </div>
-      <p class="body-muted mt-3.5">Lua compiled to WebAssembly drives the front-end. Per-route module loading, weak-key signals, custom hyperscript DOM helpers — no React, no virtual DOM.</p>
-    </div>
-  </div>
-</section>
-
-<!-- Toolkit -->
-<section class="pt-16 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12">
+<!-- Terminal -->
+<section class="pt-16 lg:pt-20 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] gap-6 lg:gap-12 items-start">
   <div>
-    <h2 class="label text-accent mb-4">TOOLKIT // EXPERIMENTAL_STACK</h2>
-    <div class="flex flex-wrap gap-2">
-      <span class="tag tag-accent">C99</span>
-      <span class="tag tag-accent">Pthreads</span>
-      <span class="tag tag-accent">Lua 5.4</span>
-      <span class="tag tag-accent">LÖVE 11.5</span>
-      <span class="tag tag-accent">wasmoon</span>
-      <span class="tag tag-accent">Odin</span>
-      <span class="tag tag-accent">Rust + Bevy</span>
-      <span class="tag tag-accent">Webpack 5</span>
-      <span class="tag tag-accent">Tailwind v4</span>
-      <span class="tag tag-accent">SQLite</span>
-      <span class="tag tag-accent">Linux/WSL</span>
-    </div>
+    <div class="label mb-3">Terminal</div>
+    <h2 class="h3 max-w-[20ch]">Ask the server directly.</h2>
+    <p class="body-muted mt-4 max-w-[44ch]">
+      A small shell wired to this site. <code class="ic">status</code> reads live numbers from
+      <code class="ic">/api/status</code> on the C server; <code class="ic">help</code> lists the rest.
+    </p>
   </div>
-  <div>
-    <h2 class="label mb-4">// PROFESSIONAL_STACK</h2>
-    <div class="flex flex-wrap gap-2">
-      <span class="tag">React</span>
-      <span class="tag">Angular</span>
-      <span class="tag">Vue</span>
-      <span class="tag">Svelte</span>
-      <span class="tag">TypeScript</span>
-      <span class="tag">Tailwind</span>
-      <span class="tag">.NET</span>
-      <span class="tag">C#</span>
-      <span class="tag">PHP</span>
-      <span class="tag">Laravel</span>
-      <span class="tag">Go</span>
-      <span class="tag">WordPress</span>
-      <span class="tag">SignalR</span>
-      <span class="tag">Azure</span>
-      <span class="tag">Docker</span>
-      <span class="tag">RAG</span>
-      <span class="tag">Ollama</span>
+  <div class="border border-rule bg-card">
+    <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-5 py-3 border-b border-rule label">
+      <span>c-copper shell</span>
+      <span class="normal-case tracking-[.06em] text-ink">
+        <span class="hidden md:inline">Press <kbd class="px-1.5 py-0.5 border border-rule bg-paper text-ink">/</kbd> to try the terminal</span>
+        <span class="md:hidden">Tap to try the terminal</span>
+      </span>
     </div>
-  </div>
-</section>
-
-<!-- Interactive terminal -->
-<section class="mt-16 border border-rule bg-card">
-  <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-5 py-3.5 border-b border-rule label">
-    <span>06_INTERACTIVE_TERMINAL</span>
-    <span class="normal-case">READY — type 'help', press <kbd class="px-1.5 py-0.5 border border-rule bg-paper text-ink">/</kbd> to focus</span>
-  </div>
-  <div
-    x-data="terminal()"
-    x-init="boot()"
-    @click="focusInput()"
-    x-ref="scroller"
-    class="p-5 font-mono text-[13px] leading-[1.7] text-ink min-h-[300px] max-h-[420px] overflow-y-auto cursor-text"
-  >
-    <div aria-live="polite" role="log" aria-label="terminal output">
-      <template x-for="(line, i) in history" :key="i">
-        <div x-html="line" class="whitespace-pre-wrap break-words"></div>
-      </template>
-    </div>
-    <div class="flex items-center">
-      <span class="text-accent select-none shrink-0">$&nbsp;</span>
-      <input
-        x-ref="input"
-        x-model="buffer"
-        @keydown.enter.prevent="run()"
-        @keydown.up.prevent="histUp()"
-        @keydown.down.prevent="histDown()"
-        type="text"
-        autocomplete="off"
-        autocapitalize="off"
-        spellcheck="false"
-        aria-label="terminal input"
-        class="flex-1 bg-transparent outline-none border-none text-ink caret-accent font-mono text-[13px] p-0 min-w-0"
-      />
+    <div
+      x-data="terminal()"
+      x-init="boot()"
+      @click="focusInput()"
+      x-ref="scroller"
+      class="p-5 font-mono text-[13px] leading-[1.7] text-ink min-h-[220px] max-h-[340px] overflow-y-auto cursor-text"
+    >
+      <div aria-live="polite" role="log" aria-label="terminal output">
+        <template x-for="(line, i) in history" :key="i">
+          <div x-html="line" class="whitespace-pre-wrap break-words"></div>
+        </template>
+      </div>
+      <div class="flex items-center">
+        <span class="text-accent select-none shrink-0">$&nbsp;</span>
+        <input
+          x-ref="input"
+          x-model="buffer"
+          @keydown.enter.prevent="run()"
+          @keydown.up.prevent="histUp()"
+          @keydown.down.prevent="histDown()"
+          type="text"
+          autocomplete="off"
+          autocapitalize="off"
+          spellcheck="false"
+          aria-label="terminal input"
+          placeholder="try: status"
+          class="flex-1 bg-transparent outline-none border-none text-ink caret-accent font-mono text-[13px] p-0 min-w-0 placeholder:text-muted"
+        />
+      </div>
     </div>
   </div>
   <script>
@@ -255,19 +244,14 @@
         },
 
         boot() {
-          this.println('<span class="text-muted">╔════════════════════════════════╗</span>');
-          this.println('<span class="text-muted">║ </span><span class="text-accent">c-copper</span><span class="text-muted"> · mvc · </span><span class="text-accent">v0.5</span><span class="text-muted">       ║</span>');
-          this.println('<span class="text-muted">╚════════════════════════════════╝</span>');
-          this.println('<span class="text-muted">listening on 0.0.0.0:8080 ...</span>');
-          this.println('<span class="text-muted">[req]</span> GET /');
-          this.println("");
-          this.println("<span class=\"text-accent\">interactive shell — type 'help' for commands</span>");
+          this.println('<span class="text-accent">c-copper</span><span class="text-muted"> v0.5 · a web server written in C</span>');
+          this.println("<span class=\"text-muted\">type 'help' for commands, or 'status' for live numbers</span>");
           window.addEventListener("keydown", (e) => {
             const t = e.target;
             const typing = t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable);
             if (e.key === "/" && !typing && !e.ctrlKey && !e.metaKey && !e.altKey) {
               e.preventDefault();
-              this.$refs.input.focus();
+              this.$refs.input.focus({ preventScroll: true });
               this.$refs.scroller.scrollIntoView({ block: "center" });
             }
           });
@@ -313,20 +297,44 @@
           return s.length >= n ? s : s + " ".repeat(n - s.length);
         },
 
+        dur(total) {
+          total = Math.max(0, Math.floor(Number(total) || 0));
+          const d = Math.floor(total / 86400), h = Math.floor((total % 86400) / 3600);
+          const m = Math.floor((total % 3600) / 60), s = total % 60;
+          if (d) return d + "d " + h + "h";
+          if (h) return h + "h " + m + "m";
+          if (m) return m + "m " + s + "s";
+          return s + "s";
+        },
+
+        // GET /api/status; resolves to the parsed JSON, or null after printing why
+        async fetchStatus() {
+          try {
+            const r = await fetch("/api/status", { cache: "no-store", headers: { Accept: "application/json" } });
+            if (!r.ok) throw new Error("HTTP " + r.status);
+            return await r.json();
+          } catch (err) {
+            this.println('<span class="text-copper">/api/status unreachable: ' + this.esc(err.message || err) + "</span>");
+            this.println('<span class="text-muted">the page itself is fine; the live numbers just could not be fetched</span>');
+            return null;
+          }
+        },
+
         commands: {
           help() {
             const rows = [
               ["help", "this list"],
+              ["status", "live numbers from /api/status"],
+              ["uptime", "how long this server instance has been up"],
               ["whoami", "identity card"],
               ["about", "longer bio"],
               ["stack", "languages & tools in active use"],
               ["routes", "http endpoints served by this binary"],
-              ["framework", "c-copper internals & source topology"],
+              ["framework", "c-copper internals"],
               ["runtime", "browser-side lua runtime details"],
               ["repos", "public source + container images"],
               ["contact", "how to reach me"],
               ["date", "current time, utc + ast"],
-              ["uptime", "time since this page loaded"],
               ["clear", "clear the screen"],
             ];
             for (const [c, d] of rows) {
@@ -334,66 +342,82 @@
             }
           },
 
+          async status() {
+            this.println('<span class="text-muted">GET /api/status ...</span>');
+            const s = await this.fetchStatus();
+            if (!s) return;
+            const n = (v) => (typeof v === "number" ? v.toLocaleString("en-US") : this.esc(v == null ? "?" : v));
+            const rm = s.render_ms || {};
+            const row = (k, v) => this.println('<span class="text-accent">  ' + this.pad(k, 11) + "</span>" + v);
+            row("server", this.esc(s.server) + " v" + this.esc(s.version) + ' <span class="text-muted">build ' + this.esc(s.build) + "</span>");
+            row("uptime", this.dur(s.uptime_s) + ' <span class="text-muted">since this instance woke up</span>');
+            row("requests", n(s.requests));
+            row("render", "p50 " + n(rm.p50) + " ms · p99 " + n(rm.p99) + ' ms <span class="text-muted">(last ' + n(rm.samples) + " renders)</span>");
+            row("memory", n(s.rss_kb) + ' KB <span class="text-muted">resident</span>');
+            row("binary", n(s.binary_kb) + ' KB');
+            row("pid", this.esc(s.pid));
+          },
+
+          async uptime() {
+            const page = this.dur((Date.now() - this.startMs) / 1000);
+            const s = await this.fetchStatus();
+            if (s) {
+              this.println('<span class="text-muted">server up ' + this.dur(s.uptime_s) + ", " + Number(s.requests).toLocaleString("en-US") + " requests served · this page open " + page + "</span>");
+            } else {
+              this.println('<span class="text-muted">this page open ' + page + "</span>");
+            }
+          },
+
           whoami() {
             this.println('<span class="text-accent">Alvaro Guzman</span>');
-            this.println('<span class="text-muted">Senior software engineer · Santo Domingo, DO</span>');
-            this.println('<span class="text-muted">Senior Fullstack — Fintech &amp; Core Banking — .NET, Angular, Svelte, Vue, Laravel, Go, Odin — 7+ years</span>');
+            this.println('<span class="text-muted">Senior full-stack engineer · payments and banking software</span>');
+            this.println('<span class="text-muted">.NET · Angular · TypeScript · 7+ years · Santo Domingo, DO (UTC-4)</span>');
           },
 
           about() {
-            this.println('<span class="text-muted">Senior software engineer with a fintech and banking background.</span>');
-            this.println('<span class="text-muted">60+ payment-gateway integrations shipped inside regulated</span>');
-            this.println('<span class="text-muted">environments. Comfortable from bare-metal C up through</span>');
-            this.println('<span class="text-muted">Angular / .NET delivery.</span>');
+            this.println('<span class="text-muted">Senior full-stack engineer for payments and banking software.</span>');
+            this.println('<span class="text-muted">60+ payment-API integrations at ATL Software; led 2RConnect,</span>');
+            this.println('<span class="text-muted">a multi-country platform, at Wepsys; now building RAG and</span>');
+            this.println('<span class="text-muted">AI-agent developer tooling at Clarika Software + Innovation.</span>');
             this.println("");
-            this.println('<span class="text-muted">Builder of c-copper (the framework serving this page) and</span>');
-            this.println('<span class="text-muted">Lunar, a statically-typed superset of Lua with full LSP</span>');
-            this.println('<span class="text-muted">and tooling.</span>');
+            this.println('<span class="text-muted">Builder of c-copper (the server behind this page) and</span>');
+            this.println('<span class="text-muted">Lunar, a statically-typed superset of Lua with full LSP.</span>');
           },
 
           stack() {
             const groups = [
-              ["frontend", [
-                ["React", "hooks, suspense, server components"],
-                ["Angular", "RxJS-heavy, banking dashboards"],
-                ["Vue", "Vue 3 composition + Pinia"],
-                ["Svelte / Kit", "lightweight SPAs"],
-                ["TypeScript", "default for any non-trivial UI"],
-                ["Tailwind", "this site, plus past delivery"],
-              ]],
-              ["backend / web", [
+              ["day to day", [
                 [".NET / C#", "enterprise APIs, SignalR realtime"],
+                ["Angular", "RxJS-heavy, banking apps"],
+                ["TypeScript", "default for any non-trivial UI"],
+                ["Ionic", "mobile commerce, nationwide radio app"],
+              ]],
+              ["also shipped", [
+                ["React / Vue / Svelte", "SPAs and dashboards"],
                 ["Laravel / PHP", "rapid-delivery monoliths"],
-                ["WordPress", "multilingual at enterprise scale"],
-                ["Go", "AI tooling, Lunar transpiler"],
+                ["Go", "AI tooling, Lunar compiler"],
               ]],
-              ["systems / low-level", [
-                ["C", "c-copper, POSIX, systems work"],
-                ["Odin", "low-level grind alongside C"],
-                ["Rust + Bevy", "ECS / data-oriented explorations"],
+              ["data / infra", [
+                ["SQL Server / Postgres", "relational"],
+                ["SQLite", "embedded, sqlite-vec"],
+                ["Azure / Docker", "delivery, Cloud Run"],
               ]],
-              ["games / sim", [
-                ["Lua + LÖVE 11.5", "frame-paced sims, hot-reload loops"],
-                ["Unity / C#", "Passages: gambit-driven action RPG"],
-              ]],
-              ["infra / data", [
-                ["Docker", "multi-stage builds, Cloud Run"],
-                ["Azure", "fintech delivery, App Services"],
-                ["SQLite / Postgres", "embedded + relational"],
-                ["Ollama / RAG", "on-prem LLM workflows"],
+              ["systems", [
+                ["C", "c-copper, POSIX"],
+                ["Odin / Rust", "low-level and ECS work"],
               ]],
             ];
             for (const [label, items] of groups) {
-              this.println('<span class="text-muted">// ' + label + "</span>");
+              this.println('<span class="text-muted">' + label + "</span>");
               for (const [k, v] of items) {
-                this.println('<span class="text-accent">  ' + this.pad(k, 20) + '</span><span class="text-muted">' + v + "</span>");
+                this.println('<span class="text-accent">  ' + this.pad(k, 22) + '</span><span class="text-muted">' + v + "</span>");
               }
               this.println("");
             }
           },
 
           routes() {
-            const get = ["/", "/work", "/work/fintech-ai", "/work/systems", "/work/web", "/work/gamedev", "/contact", "/workshop", "/writing", "/counter", "/todos", "/robots.txt", "/sitemap.xml", "/projects/{slug}", "/writing/{slug}"];
+            const get = ["/", "/work", "/work/fintech-ai", "/work/systems", "/work/web", "/work/gamedev", "/contact", "/workshop", "/writing", "/counter", "/todos", "/playground", "/reconcile", "/robots.txt", "/sitemap.xml", "/projects/{slug}", "/writing/{slug}", "/api/status"];
             const moved = ["/systems", "/gamedev", "/web", "/ai"];
             this.println('<span class="text-muted">GET routes:</span>');
             for (const r of get) this.println('<span class="text-accent">  GET    </span>' + r);
@@ -404,30 +428,31 @@
             this.println('<span class="text-muted">POST routes:</span>');
             this.println('<span class="text-accent">  POST   </span>/api/contact');
             this.println("");
-            this.println('<span class="text-muted">20 registrations in main.c; HEAD is answered by GET.</span>');
+            this.println('<span class="text-muted">23 registrations in main.c; HEAD is answered by GET.</span>');
           },
 
           framework() {
-            this.println('<span class="text-accent">c-copper</span> <span class="text-muted">// hand-rolled C HTTP framework</span>');
+            this.println('<span class="text-accent">c-copper</span> <span class="text-muted">hand-written C HTTP framework</span>');
             this.println("  source     : github.com/aag2807/copper-portfolio");
             this.println("  language   : C99");
             this.println("  threading  : pthreads, one thread per request");
-            this.println("  source loc : ~2,800 lines of C in src/ (.c + .h)");
+            this.println("  source loc : ~3,500 lines of C in src/ (.c + .h)");
             this.println("  http stack : raw socket(), no libevent / libuv");
-            this.println("  template   : 6 directives — &#123;&#123;key&#125;&#125; &#123;&#123;&#123;raw&#125;&#125;&#125; #if/else #each &commat;layout &commat;csrf");
+            this.println("  template   : 6 directives: &#123;&#123;key&#125;&#125; &#123;&#123;&#123;raw&#125;&#125;&#125; #if/else #each &commat;layout &commat;csrf");
             this.println("  middleware : logging / static / ratelimit / csrf");
-            this.println("  deps       : no frameworks; libcurl + libcrypto for outbound email");
+            this.println("  extras     : gzip (zlib), live render telemetry");
+            this.println("  deps       : no frameworks; libcurl + libcrypto for email, zlib for gzip");
             this.println("  container  : debian:bookworm-slim, multi-stage");
           },
 
           runtime() {
-            this.println('<span class="text-accent">browser-side lua</span> <span class="text-muted">// wasmoon</span>');
+            this.println('<span class="text-accent">browser-side lua</span> <span class="text-muted">wasmoon</span>');
             this.println("  engine      : Lua 5.4 compiled to WebAssembly (wasmoon)");
             this.println("  load model  : per-route, on-demand via data-lua-module");
             this.println("  reactivity  : signal / effect / computed (~120-line library)");
             this.println("  dom         : hyperscript builder (h.lua)");
             this.println("  bundle      : ~114 KiB framework + per-page module");
-            this.println("  zero of    : virtual DOM, react, jsx");
+            this.println("  zero of     : virtual DOM, react, jsx");
           },
 
           repos() {
@@ -454,34 +479,26 @@
             this.println('<span class="text-muted">' + fmt(new Date(now.getTime() - 4 * 3600 * 1000)) + " AST</span>");
           },
 
-          uptime() {
-            const elapsed = Math.floor((Date.now() - this.startMs) / 1000);
-            this.println('<span class="text-muted">page open for ' + Math.floor(elapsed / 60) + "m " + (elapsed % 60) + "s</span>");
-          },
-
           clear() {
             this.history = [];
           },
         },
       };
     }
-
   </script>
 </section>
 
-<!-- Closing CTA -->
-<section class="mt-16 pt-11 pb-14 border-t border-rule grid grid-cols-1 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] gap-10">
-  <div>
-    <h2 class="h2 max-w-[24ch]">Available for senior IC, architect, and applied-AI roles.</h2>
-    <div class="flex flex-wrap gap-2.5 mt-6">
-      <a href="mailto:aagn2807@gmail.com" class="btn btn-sm btn-accent">[mail/aagn2807]</a>
-      <a href="https://www.linkedin.com/in/aguzmandev/" target="_blank" rel="noreferrer" class="btn btn-sm btn-ghost">[linkedin/aguzmandev]</a>
-      <a href="https://github.com/aag2807" target="_blank" rel="noreferrer" class="btn btn-sm btn-ghost">[github/aag2807]</a>
-    </div>
-  </div>
-  <div class="mono-sm leading-[2.1]">
-    <div>Operator: Alvaro Guzman</div>
-    <div>Origin: Santo Domingo, DO</div>
-    <div>Runtime: c-copper / wasmoon-lua</div>
+<!-- Contact -->
+<section class="mt-16 lg:mt-20 py-12 lg:py-14 border-t border-rule">
+  <div class="label mb-3">Contact</div>
+  <h2 class="h2 max-w-[26ch]">Hiring a senior or staff engineer? Let's talk.</h2>
+  <p class="lede mt-5 max-w-[60ch] text-muted">
+    Email is fastest and I reply within 24 hours. Full-time through an employer of record, or a long-term contract.
+  </p>
+  <div class="flex flex-wrap gap-2.5 mt-7">
+    <a href="mailto:aagn2807@gmail.com" class="btn btn-accent">aagn2807@gmail.com</a>
+    <a href="https://www.linkedin.com/in/aguzmandev/" target="_blank" rel="noreferrer" class="btn btn-outline">LinkedIn</a>
+    <a href="https://github.com/aag2807" target="_blank" rel="noreferrer" class="btn btn-outline">GitHub</a>
+    <a href="/contact" class="btn btn-ghost">Contact form →</a>
   </div>
 </section>

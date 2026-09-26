@@ -4,15 +4,20 @@
 #include "src/ratelimit.h"
 #include "src/server.h"
 #include "src/static.h"
+#include "src/telemetry.h"
+#include "src/version.h"
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 extern void home_index(Request*, Response*, void*);
 extern void home_contact(Request*, Response*, void*);
 extern void home_workshop(Request*, Response*, void*);
 extern void home_counter(Request*, Response*, void*);
 extern void home_todolist(Request*, Response*, void*);
+extern void home_playground(Request*, Response*, void*);
+extern void home_reconcile(Request*, Response*, void*);
 extern void contact_submit(Request*, Response*, void*);
 extern void home_robots(Request*, Response*, void*);
 extern void home_sitemap(Request*, Response*, void*);
@@ -30,6 +35,7 @@ extern void redirect_ai(Request*, Response*, void*);
 extern void projects_show(Request*, Response*, void*);
 extern void writing_index(Request*, Response*, void*);
 extern void writing_show(Request*, Response*, void*);
+extern void api_status(Request*, Response*, void*);
 
 static int logging_middleware(Request* req, Response* res, MiddlewareNode* self, Router* router)
 {
@@ -55,16 +61,28 @@ static int resolve_port(int argc, char* argv[])
     return 8080;
 }
 
+// Prints the startup box with `title` centred in the 42-column interior.
+static void print_banner(const char* title)
+{
+    enum { kInner = 42 };
+    int len = (int)strlen(title);
+    int left = len < kInner ? (kInner - len + 1) / 2 : 0;
+    int right = len < kInner ? kInner - len - left : 0;
+    printf(" ╔══════════════════════════════════════════╗\n");
+    printf(" ║%*s%s%*s║\n", left, "", title, right, "");
+    printf(" ╚══════════════════════════════════════════╝\n\n");
+}
+
 int main(int argc, char* argv[])
 {
+    telemetry_init();
+
     // Line-buffer stdout so startup logs reach Cloud Run (a pipe) immediately.
     setvbuf(stdout, NULL, _IOLBF, 0);
 
     int port = resolve_port(argc, argv);
     printf("\n");
-    printf(" ╔══════════════════════════════════════════╗\n");
-    printf(" ║        C Copper Web Framework v0.5       ║\n");
-    printf(" ╚══════════════════════════════════════════╝\n\n");
+    print_banner("C Copper Web Framework v" COPPER_VERSION);
 
     env_load(".env");
     email_init();
@@ -90,6 +108,8 @@ int main(int argc, char* argv[])
     server_get(server, "/writing", writing_index);
     server_get(server, "/counter", home_counter);
     server_get(server, "/todos", home_todolist);
+    server_get(server, "/playground", home_playground);
+    server_get(server, "/reconcile", home_reconcile);
     server_get(server, "/robots.txt", home_robots);
     server_get(server, "/sitemap.xml", home_sitemap);
 
@@ -104,6 +124,7 @@ int main(int argc, char* argv[])
     server_get(server, "/writing/{slug}", writing_show);
 
     // API ROUTES
+    server_get(server, "/api/status", api_status);
     server_post(server, "/api/contact", contact_submit);
 
     server_start(server);

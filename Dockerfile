@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         build-essential \
         libcurl4-openssl-dev \
         libssl-dev \
+        zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /src
@@ -25,8 +26,12 @@ RUN npm ci --no-audit --no-fund
 # Project source. .dockerignore keeps node_modules / .env / build artifacts out.
 COPY . .
 
+# Commit shown by /api/status. .git is not in the build context, so the
+# Makefile's own git lookup would say "dev"; `make docker-build` passes it.
+ARG BUILD_SHA=dev
+
 # Produce public/framework/lua-framework.js + public/lua/*.lua, then the C binary.
-RUN npm run build && make
+RUN npm run build && make BUILD_SHA="$BUILD_SHA"
 
 # ---------- runtime stage ----------
 # Minimal image: just the C binary, views, public assets, and the libcurl runtime.
@@ -38,9 +43,11 @@ ENV DEBIAN_FRONTEND=noninteractive
 # libcurl4:        runtime for our libcurl Resend call (pulls libssl3 as a dep)
 # curl:            for the container healthcheck probe
 # tini:            PID 1 init — forwards SIGTERM and reaps zombies
+# zlib1g:          gzip response compression
 RUN apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates \
         libcurl4 \
+        zlib1g \
         curl \
         tini \
     && rm -rf /var/lib/apt/lists/*

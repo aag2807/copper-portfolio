@@ -51,7 +51,7 @@ reactive.effect(function()
 end)
 
 local root = h("div", { class = "flex flex-col gap-4" },
-	h("div", { class = "label text-accent" }, "[0x02] todos // mutable signal"),
+	h("div", { class = "label text-accent" }, "Todos · list signal + effect"),
 	h("div", { class = "flex flex-row gap-2" },
 		input,
 		h("button", {

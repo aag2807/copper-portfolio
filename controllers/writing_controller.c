@@ -10,7 +10,7 @@ ACTION(writing_index)
         {"title", "text", "Writing", NULL},
         {"path", "text", str_cstr(&req->path), NULL},
         {"description", "text",
-         "Build logs and long-form writeups — canonical on alvaro-guzman.com, compiled from markdown at build time.",
+         "Long-form writing by Alvaro Guzman on payments, banking software, systems work and engineering judgement. Compiled from markdown at build time.",
          NULL},
         {NULL, NULL, NULL, NULL},
     };
@@ -33,6 +33,7 @@ ACTION(writing_show)
                     {"description", "text", kWritingPosts[i].desc, NULL},
                     {"ogType", "text", "article", NULL},
                     {"published", "text", kWritingPosts[i].date, NULL},
+                    {"sky", "text", "dim", NULL}, /* long-form reading: universe.js dims */
                     {NULL, NULL, NULL, NULL},
                 };
                 response_status(res, 200, "OK");

@@ -4,7 +4,7 @@ local reactive = require("reactive")
 local count, setCount = reactive.signal(0)
 
 local root = h("div", { class = "flex flex-col gap-4 items-start" },
-	h("div", { class = "label text-accent" }, "[0x01] counter // wasmoon-bound"),
+	h("div", { class = "label text-accent" }, "Counter · one Lua signal"),
 	h("p", { class = "text-[38px] font-sans font-semibold text-ink tracking-[-.03em] leading-none" }, function()
 		return "count = " .. count()
 	end),

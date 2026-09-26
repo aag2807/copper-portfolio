@@ -1,7 +1,7 @@
 <!-- Hero -->
 <section class="pt-12 pb-10 lg:pt-[72px] grid grid-cols-1 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] gap-8 lg:gap-12 items-end border-b border-rule">
   <div>
-    <div class="eyebrow mb-6">03_WORKSHOP // EVERYTHING_BUILT</div>
+    <div class="eyebrow mb-6">Workshop</div>
     <h1 class="display max-w-[16ch]">Everything I've built, across domains.</h1>
   </div>
   <p class="lede-muted max-w-[42ch]">
@@ -13,7 +13,7 @@
 <!-- Featured live demo -->
 <section class="border border-rule bg-card mt-11 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
   <div class="p-7 lg:p-[34px_30px] flex flex-col">
-    <div class="label text-accent">FEATURED // LIVE</div>
+    <div class="label text-accent">Featured · live demo</div>
     <h2 class="mt-[18px] text-[32px] leading-[1.12] tracking-[-.03em] font-semibold max-w-[22ch]">Counter demo, driven by Lua in WASM</h2>
     <p class="mt-4 text-[16px] leading-[1.6] text-muted max-w-[44ch]">
       Click state held in a Lua signal, DOM updated through a hyperscript helper. Roughly the smallest honest proof
@@ -25,7 +25,7 @@
       <a href="https://github.com/aag2807/copper-portfolio" target="_blank" rel="noreferrer" class="btn btn-sm btn-ghost">Read source →</a>
     </div>
   </div>
-  <pre class="code code-sm border-t lg:border-t-0 lg:border-l border-rule"><span class="c">-- pages/counter.lua</span>
+  <pre class="code code-sm border-t lg:border-t-0 lg:border-l border-rule"><span class="c">-- pages/counter.lua (abridged)</span>
 <span class="k">local</span> h = require(<span class="s">"h"</span>).h
 <span class="k">local</span> reactive = require(<span class="s">"reactive"</span>)
 
@@ -43,51 +43,74 @@
 dom.mount(root, <span class="s">"#app"</span>)</pre>
 </section>
 
+<!-- Two more live demos -->
+<section class="rule-grid grid-cols-1 md:grid-cols-2 mt-6">
+  <a href="/reconcile" class="p-7 lg:p-[30px] flex flex-col gap-3 group">
+    <div class="flex items-center justify-between gap-3 label"><span class="text-accent">Live demo · Payments</span><span class="st-live">Live</span></div>
+    <div class="text-[24px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">Reconciliation checker</div>
+    <p class="text-[14.5px] leading-[1.55] text-muted max-w-[52ch]">A ledger matched against a provider settlement report, by reference, in Lua. Six planted discrepancies, each caught with a reason; edit an amount and the verdicts re-run live.</p>
+    <span class="btn btn-sm btn-ink self-start mt-auto group-hover:bg-accent group-hover:border-accent">Run demo →</span>
+  </a>
+  <a href="/playground" class="p-7 lg:p-[30px] flex flex-col gap-3 group">
+    <div class="flex items-center justify-between gap-3 label"><span class="text-accent">Live demo · Lua on WASM</span><span class="st-live">Live</span></div>
+    <div class="text-[24px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">Lua playground</div>
+    <p class="text-[14.5px] leading-[1.55] text-muted max-w-[52ch]">Edit and run Lua 5.4 in the browser: live DOM preview, console, a fresh engine per run and an instruction-limit guard. The counter and todo modules run in it unmodified.</p>
+    <span class="btn btn-sm btn-ink self-start mt-auto group-hover:bg-accent group-hover:border-accent">Open playground →</span>
+  </a>
+</section>
+
 <!-- Legend -->
 <div class="flex flex-wrap items-center gap-x-5 gap-y-2 mt-6 mb-1 px-1 label">
-  <span>STATUS —</span>
-  <span class="st-live">LIVE / ACTIVE / SHIPPED</span>
-  <span class="st-wip">IN_DEV / IN_PROG / ONGOING</span>
-  <span class="st-off">RESEARCH / ARCHIVED</span>
+  <span>Status:</span>
+  <span class="st-live">Live, active, shipped</span>
+  <span class="st-wip">In development, ongoing</span>
+  <span class="st-off">Research, archived</span>
 </div>
 
 <!-- Entries -->
 <section class="rule-grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 mt-4">
   <!-- FINTECH -->
   <a href="/projects/llm-gateway" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
-    <div class="flex items-center justify-between gap-3 label"><span>FINTECH // [00]</span><span class="st-live">ACTIVE</span></div>
+    <div class="flex items-center justify-between gap-3 label"><span>Fintech</span><span class="st-live">Active</span></div>
     <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">On-prem LLM gateway</div>
-    <div class="text-[14.5px] leading-[1.55] text-muted">On-premise AI platform for banking: multi-provider routing, RAG pipelines, multi-agent orchestration, zero data egress. Case study →</div>
+    <div class="text-[14.5px] leading-[1.55] text-muted">Freelance engagement for a bank: multi-provider routing, RAG pipelines, multi-agent orchestration, zero data egress. Case study →</div>
     <div class="mt-auto pt-4 label tracking-[.1em]">c# · .net · rag · multi-agent</div>
   </a>
   <a href="/projects/payment-gateways" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
-    <div class="flex items-center justify-between gap-3 label"><span>FINTECH // [01]</span><span class="st-live">SHIPPED</span></div>
+    <div class="flex items-center justify-between gap-3 label"><span>Fintech</span><span class="st-live">Shipped</span></div>
     <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">Payment gateway rails</div>
-    <div class="text-[14.5px] leading-[1.55] text-muted">60+ third-party payment providers behind one checkout — adapters, transaction state machine, fraud pipeline. Contributed to a measured +15% conversion. Case study →</div>
+    <div class="text-[14.5px] leading-[1.55] text-muted">At ATL Software: 60+ third-party payment providers behind one checkout — adapters, transaction state machine, fraud pipeline. Contributed to a measured +15% conversion. Case study →</div>
     <div class="mt-auto pt-4 label tracking-[.1em]">angular · .net · 60+ providers</div>
+  </a>
+
+  <a href="/reconcile" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
+    <div class="flex items-center justify-between gap-3 label"><span>Fintech</span><span class="st-live">Live demo</span></div>
+    <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">Reconciliation checker</div>
+    <div class="text-[14.5px] leading-[1.55] text-muted">Ledger vs provider settlement report, matched by reference in browser-side Lua. Integer cents, one verdict and reason per reference, editable sample data. Run it →</div>
+    <div class="mt-auto pt-4 label tracking-[.1em]">lua · integer cents · reconciliation</div>
   </a>
 
   <!-- SYSTEMS -->
   <a href="/projects/c-copper" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
-    <div class="flex items-center justify-between gap-3 label"><span>SYSTEMS // [00]</span><span class="st-live">LIVE</span></div>
+    <div class="flex items-center justify-between gap-3 label"><span>Systems</span><span class="st-live">Live</span></div>
     <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">c-copper</div>
     <div class="text-[14.5px] leading-[1.55] text-muted">The hand-written C MVC framework serving this page. Socket loop, pthread dispatch, pattern router, middleware chain, template engine. Case study →</div>
     <div class="mt-auto pt-4 label tracking-[.1em]">c99 · pthreads · no framework deps</div>
   </a>
   <a href="https://github.com/aag2807/lunar" target="_blank" rel="noreferrer" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
-    <div class="flex items-center justify-between gap-3 label"><span>SYSTEMS // [01]</span><span class="st-live">ACTIVE</span></div>
+    <div class="flex items-center justify-between gap-3 label"><span>Systems</span><span class="st-live">Active</span></div>
     <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">Lunar</div>
     <div class="text-[14.5px] leading-[1.55] text-muted">Statically-typed superset of Lua: compiler, LSP, bundler, and test framework, all in Go. TypeScript-for-Lua, end to end. Source →</div>
     <div class="mt-auto pt-4 label tracking-[.1em]">go · compiler · lsp · bundler</div>
   </a>
   <a href="/work/systems" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
-    <div class="flex items-center justify-between gap-3 label"><span>SYSTEMS // [02]</span><span class="st-wip">IN_DEV</span></div>
+    <div class="flex items-center justify-between gap-3 label"><span>Systems</span><span class="st-wip">In development</span></div>
     <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">Cobre</div>
     <div class="text-[14.5px] leading-[1.55] text-muted">Razor-pages-inspired web framework in C. <span class="font-mono text-[.9em]">.cob</span> transpiles to C, compiles to <span class="font-mono text-[.9em]">.so</span>, hot-loads. Arena allocator, TOML config.</div>
     <div class="mt-auto pt-4 label tracking-[.1em]">c · transpiler · arena</div>
   </a>
   <a href="/work/systems" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
-    <div class="flex items-center justify-between gap-3 label"><span>SYSTEMS // [03]</span><span class="st-off">ARCHIVED</span></div>
+    <div class="flex items-center justify-between gap-3 label"><span>Systems</span><span class="st-off">Archived</span></div>
     <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">Axon</div>
     <div class="text-[14.5px] leading-[1.55] text-muted">First pass at an on-premise LLM gateway in C#. Routing, request shaping, prompt template layering. Stays in the archive.</div>
     <div class="mt-auto pt-4 label tracking-[.1em]">c# · llm gateway</div>
@@ -95,25 +118,25 @@ dom.mount(root, <span class="s">"#app"</span>)</pre>
 
   <!-- AI -->
   <a href="/work/fintech-ai" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
-    <div class="flex items-center justify-between gap-3 label"><span>AI // [01]</span><span class="st-live">SHIPPED</span></div>
+    <div class="flex items-center justify-between gap-3 label"><span>AI lab</span><span class="st-live">Shipped</span></div>
     <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">The Council</div>
     <div class="text-[14.5px] leading-[1.55] text-muted">Four Claude personas argue a question in parallel; an Arbiter synthesizes one answer. Built to see if forced disagreement beats asking one model twice.</div>
     <div class="mt-auto pt-4 label tracking-[.1em]">react · 4 personas + arbiter</div>
   </a>
   <a href="/work/fintech-ai" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
-    <div class="flex items-center justify-between gap-3 label"><span>AI // [02]</span><span class="st-live">ACTIVE</span></div>
+    <div class="flex items-center justify-between gap-3 label"><span>AI lab</span><span class="st-live">Active</span></div>
     <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">Doc OCR Indexer</div>
     <div class="text-[14.5px] leading-[1.55] text-muted">OCR pipeline that hands raw text to a local LLM for classification and field extraction — dates, parties, totals — into a searchable store.</div>
     <div class="mt-auto pt-4 label tracking-[.1em]">python · ollama · mxbai-embed-large</div>
   </a>
   <a href="/work/fintech-ai" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
-    <div class="flex items-center justify-between gap-3 label"><span>AI // [03]</span><span class="st-live">ACTIVE</span></div>
+    <div class="flex items-center justify-between gap-3 label"><span>AI lab</span><span class="st-live">Active</span></div>
     <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">RAG Retrieval Bot</div>
     <div class="text-[14.5px] leading-[1.55] text-muted">Retrieval-augmented chat, end to end. Embed, store, kNN, stitch top chunks into the prompt — every stage wired by hand, no framework.</div>
     <div class="mt-auto pt-4 label tracking-[.1em]">python · sqlite-vec · ollama</div>
   </a>
   <a href="/work/fintech-ai" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
-    <div class="flex items-center justify-between gap-3 label"><span>AI // [04]</span><span class="st-live">ACTIVE</span></div>
+    <div class="flex items-center justify-between gap-3 label"><span>AI lab</span><span class="st-live">Active</span></div>
     <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">Go Coding CLI</div>
     <div class="text-[14.5px] leading-[1.55] text-muted">Single Go binary talking to the local Ollama daemon from inside the shell. Streams tokens, keeps a session buffer, stays out of the way.</div>
     <div class="mt-auto pt-4 label tracking-[.1em]">go · ollama · streaming</div>
@@ -121,19 +144,25 @@ dom.mount(root, <span class="s">"#app"</span>)</pre>
 
   <!-- WEB -->
   <a href="/work/web" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
-    <div class="flex items-center justify-between gap-3 label"><span>WEB // [00]</span><span class="st-live">LIVE</span></div>
+    <div class="flex items-center justify-between gap-3 label"><span>Web</span><span class="st-live">Live</span></div>
     <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">wasmoon-bridge</div>
     <div class="text-[14.5px] leading-[1.55] text-muted">Browser-side Lua runtime, mounted per route. Signals + hyperscript in a ~120-line Lua library; pages without a module ship zero wasmoon. Powers this site.</div>
     <div class="mt-auto pt-4 label tracking-[.1em]">lua 5.4 → wasm · signals</div>
   </a>
+  <a href="/playground" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
+    <div class="flex items-center justify-between gap-3 label"><span>Web</span><span class="st-live">Live demo</span></div>
+    <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">Lua playground</div>
+    <div class="text-[14.5px] leading-[1.55] text-muted">An editor, preview and console over the same wasmoon runtime. Fresh engine per run, count-hook loop guard, per-preset drafts kept in the browser. Open it →</div>
+    <div class="mt-auto pt-4 label tracking-[.1em]">lua 5.4 · wasm · debug.sethook</div>
+  </a>
   <a href="/work/web" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
-    <div class="flex items-center justify-between gap-3 label"><span>WEB // [01]</span><span class="st-live">SHIPPED</span></div>
+    <div class="flex items-center justify-between gap-3 label"><span>Web</span><span class="st-live">Shipped</span></div>
     <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">Scrum Dashboard</div>
     <div class="text-[14.5px] leading-[1.55] text-muted">Real-time sprint board over Jira Cloud. SignalR delta updates, a D3 force graph of backlog clusters, an OpenRouter-backed assistant inline.</div>
     <div class="mt-auto pt-4 label tracking-[.1em]">angular · .net · signalr · d3</div>
   </a>
   <a href="/work/web" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
-    <div class="flex items-center justify-between gap-3 label"><span>WEB // [02]</span><span class="st-wip">ONGOING · NDA</span></div>
+    <div class="flex items-center justify-between gap-3 label"><span>Web</span><span class="st-wip">Ongoing · NDA</span></div>
     <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">Enterprise Web Work</div>
     <div class="text-[14.5px] leading-[1.55] text-muted">Angular and .NET inside banking environments; multilingual WordPress at enterprise scale with custom plugins and legacy integrations. Walkthrough under NDA.</div>
     <div class="mt-auto pt-4 label tracking-[.1em]">angular · .net · wordpress</div>
@@ -141,19 +170,19 @@ dom.mount(root, <span class="s">"#app"</span>)</pre>
 
   <!-- GAMEDEV -->
   <a href="/work/gamedev" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
-    <div class="flex items-center justify-between gap-3 label"><span>GAMEDEV // [00]</span><span class="st-wip">IN_DEV</span></div>
+    <div class="flex items-center justify-between gap-3 label"><span>Gamedev</span><span class="st-wip">In development</span></div>
     <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">Passages</div>
     <div class="text-[14.5px] leading-[1.55] text-muted">LitRPG-inspired third-person action RPG. FF12-style gambits, dual Vitality/Essence resources, a behavior-tree editor for companions.</div>
     <div class="mt-auto pt-4 label tracking-[.1em]">unity · c# · gambit ai</div>
   </a>
   <a href="/work/gamedev" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
-    <div class="flex items-center justify-between gap-3 label"><span>GAMEDEV // [01]</span><span class="st-wip">IN_PROG</span></div>
+    <div class="flex items-center justify-between gap-3 label"><span>Gamedev</span><span class="st-wip">In progress</span></div>
     <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">Bevy + SDL2 Track</div>
     <div class="text-[14.5px] leading-[1.55] text-muted">Sequential learning ladder: SDL2/C++ fundamentals (Pong → Breakout → top-down shooter), then the same exercises rebuilt ECS-first in Rust + Bevy.</div>
     <div class="mt-auto pt-4 label tracking-[.1em]">rust · bevy · sdl2 · c++</div>
   </a>
   <a href="/work/gamedev" class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
-    <div class="flex items-center justify-between gap-3 label"><span>GAMEDEV // [02]</span><span class="st-off">RESEARCH</span></div>
+    <div class="flex items-center justify-between gap-3 label"><span>Gamedev</span><span class="st-off">Research</span></div>
     <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">BSP Renderer + Unity Shooter</div>
     <div class="text-[14.5px] leading-[1.55] text-muted">From-scratch BSP renderer in C — tree construction, polygon splitting, painter's-order traversal — plus a Unity shooter prototype on the C# side.</div>
     <div class="mt-auto pt-4 label tracking-[.1em]">c · unity · bsp</div>
@@ -161,12 +190,14 @@ dom.mount(root, <span class="s">"#app"</span>)</pre>
 
   <!-- TOOLING -->
   <div class="p-6 pb-7 flex flex-col gap-3 min-h-[250px]">
-    <div class="flex items-center justify-between gap-3 label"><span>TOOLING // [00]</span><span class="st-live">ACTIVE</span></div>
+    <div class="flex items-center justify-between gap-3 label"><span>Tooling</span><span class="st-live">Active</span></div>
     <div class="text-[22px] leading-[1.15] tracking-[-.02em] font-semibold mt-1.5">AI CLI Skills System</div>
     <div class="text-[14.5px] leading-[1.55] text-muted">Reusable SKILL.md playbooks for Angular, .NET, and React work inside AI coding CLIs — bash + markdown, versioned with the projects that use them.</div>
     <div class="mt-auto pt-4 label tracking-[.1em]">bash · markdown · skill.md</div>
   </div>
-  <div class="hidden sm:block xl:block !bg-paper" aria-hidden="true"></div>
+  <!-- fillers: 19 entries leave one empty cell at 2 columns, two at 3 -->
+  <div class="hidden sm:block !bg-paper" aria-hidden="true"></div>
+  <div class="hidden xl:block !bg-paper" aria-hidden="true"></div>
 </section>
 
-<div class="mono-sm text-right mt-4 mb-14 px-1">17 entries · updated continuously · the site you're on is entry WEB // [00]</div>
+<div class="mono-sm text-right mt-4 mb-14 px-1">19 entries · the site you're on runs on c-copper and wasmoon-bridge</div>

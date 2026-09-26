@@ -1,7 +1,6 @@
 <div class="pt-8 pb-14 flex flex-col gap-6">
   <div class="flex items-center gap-2 mono-sm tracking-[.1em]">
-    <a href="/workshop" class="hover:text-accent transition-colors">← ~/workshop</a>
-    <span>/counter</span>
+    <a href="/workshop" class="hover:text-accent transition-colors">← Workshop</a>
   </div>
   <h1 class="h3">Reactive counter, in Lua on WASM</h1>
 
@@ -9,7 +8,7 @@
     <!-- Mount target -->
     <div class="flex flex-col">
       <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-5 py-3.5 border-b border-rule label">
-        <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-accent"></span>wasmoon // pages/counter.lua</span>
+        <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-accent"></span>Running now · pages/counter.lua</span>
         <span class="normal-case tracking-[.06em]">data-lua-module="pages/counter"</span>
       </div>
       <div class="p-8 min-h-[300px] flex items-center justify-center">
@@ -19,29 +18,44 @@
 
     <!-- Source -->
     <div class="flex flex-col">
-      <div class="px-5 py-3.5 border-b border-rule label">SOURCE</div>
+      <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-5 py-3.5 border-b border-rule label">
+        <span>Source</span>
+        <a href="/static/lua/pages/counter.lua" class="normal-case tracking-[.06em] hover:text-accent transition-colors">public/lua/pages/counter.lua, verbatim →</a>
+      </div>
       <pre class="code code-sm flex-1"><span class="k">local</span> h = require(<span class="s">"h"</span>).h
 <span class="k">local</span> reactive = require(<span class="s">"reactive"</span>)
 
 <span class="k">local</span> count, setCount = reactive.signal(<span class="n">0</span>)
 
-<span class="k">local</span> root = h(<span class="s">"div"</span>, {},
-    h(<span class="s">"h2"</span>, {}, <span class="s">"Counter"</span>),
-    h(<span class="s">"p"</span>, {}, <span class="k">function</span>()
-        <span class="k">return</span> <span class="s">"Count: "</span> .. count()
+<span class="k">local</span> root = h(<span class="s">"div"</span>, { class = <span class="s">"flex flex-col gap-4 items-start"</span> },
+    h(<span class="s">"div"</span>, { class = <span class="s">"label text-accent"</span> }, <span class="s">"Counter · one Lua signal"</span>),
+    h(<span class="s">"p"</span>, { class = <span class="s">"text-[38px] font-sans font-semibold text-ink tracking-[-.03em] leading-none"</span> }, <span class="k">function</span>()
+        <span class="k">return</span> <span class="s">"count = "</span> .. count()
     <span class="k">end</span>),
-    h(<span class="s">"button"</span>, {
-        onClick = <span class="k">function</span>() setCount(count()-<span class="n">1</span>) <span class="k">end</span>,
-    }, <span class="s">"-"</span>),
-    h(<span class="s">"button"</span>, {
-        onClick = <span class="k">function</span>() setCount(count()+<span class="n">1</span>) <span class="k">end</span>,
-    }, <span class="s">"+"</span>)
+    h(<span class="s">"div"</span>, { class = <span class="s">"flex flex-row gap-2 pt-2"</span> },
+        h(<span class="s">"button"</span>, {
+            class = <span class="s">"btn btn-sm btn-outline"</span>,
+            onClick = <span class="k">function</span>() setCount(count() - <span class="n">1</span>) <span class="k">end</span>,
+        }, <span class="s">"decrement"</span>),
+        h(<span class="s">"button"</span>, {
+            class = <span class="s">"btn btn-sm btn-ink"</span>,
+            onClick = <span class="k">function</span>() setCount(count() + <span class="n">1</span>) <span class="k">end</span>,
+        }, <span class="s">"increment"</span>),
+        h(<span class="s">"button"</span>, {
+            class = <span class="s">"btn btn-sm btn-ghost"</span>,
+            onClick = <span class="k">function</span>() setCount(<span class="n">0</span>) <span class="k">end</span>,
+        }, <span class="s">"reset"</span>)
+    ),
+    h(<span class="s">"div"</span>, { class = <span class="s">"mono-sm pt-4 border-t border-rule w-full"</span> }, <span class="k">function</span>()
+        <span class="k">return</span> <span class="s">"signal updated "</span> .. count() .. <span class="s">" time(s) this session"</span>
+    <span class="k">end</span>)
 )
 
 dom.mount(root, <span class="s">"#app"</span>)</pre>
       <p class="px-5 py-4 border-t border-rule text-[14px] leading-[1.55] text-muted">
-        One signal, two handlers. The text node closure re-runs whenever <code class="ic">count</code> changes — no virtual DOM diff.
+        The exact module running on the left. One signal, three handlers; each text closure re-runs whenever <code class="ic">count</code> changes, with no virtual DOM diff.
       </p>
+      <a href="/playground" class="px-5 py-3.5 border-t border-rule mono-sm tracking-[.1em] text-accent hover:text-ink transition-colors">Edit and run this code →</a>
     </div>
   </section>
 </div>

@@ -1,0 +1,55 @@
+<div class="pt-8 pb-14 flex flex-col gap-6">
+  <div class="flex items-center gap-2 mono-sm tracking-[.1em]">
+    <a href="/workshop" class="hover:text-accent transition-colors">← Workshop</a>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] gap-4 lg:gap-12 items-end">
+    <div>
+      <div class="eyebrow mb-4">Live demo · Payments</div>
+      <h1 class="h3">Reconciliation checker</h1>
+    </div>
+    <p class="text-[15px] leading-[1.6] text-muted max-w-[56ch]">
+      Our ledger against the provider's settlement report, matched by reference in Lua running in your browser.
+      Six discrepancies are planted. Edit an amount, currency or status and the verdicts re-run as you type.
+    </p>
+  </div>
+
+  <p class="mono-sm leading-[1.7] max-w-[92ch]">
+    Sample data: fictional orders, fictional provider, fictional fees (2.9% + 0.30).
+    Amounts are stored as integer cents, so no float rounding can hide a one-cent gap.
+  </p>
+
+  <div id="app" class="font-mono">
+    <div class="rule-grid grid-cols-1"><p class="p-6 mono-sm">Booting the Lua engine…</p></div>
+  </div>
+
+  <section class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.45fr)] gap-8 lg:gap-14 pt-8">
+    <div>
+      <h2 class="label sec-label">Why this matters</h2>
+    </div>
+    <div class="flex flex-col gap-4 max-w-[64ch]">
+      <p class="text-[16px] leading-[1.65]">
+        A provider saying "approved" is not the source of truth; it is one side's claim about one moment.
+        Money problems surface later, when your own ledger is matched line by line against what the provider actually settled:
+        missing captures, double charges, refunds the provider never saw, a cent lost to rounding.
+      </p>
+      <p class="text-[16px] leading-[1.65] text-muted">
+        So amounts stay in integer cents, every reference gets exactly one verdict with a reason a person can act on,
+        and the match is a pure function: run it twice on the same files and you get the same answer.
+      </p>
+    </div>
+  </section>
+
+  <section class="rule-grid grid-cols-1">
+    <div class="flex flex-col">
+      <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-5 py-3.5 border-b border-rule label">
+        <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-accent" aria-hidden="true"></span>The matching code, as it runs</span>
+        <a href="/static/lua/pages/reconcile.lua" class="normal-case tracking-[.06em] hover:text-accent transition-colors">pages/reconcile.lua, <span data-lua-source-range="pages/reconcile.lua">full file</span> →</a>
+      </div>
+      <pre class="code code-sm max-h-[640px]" data-lua-source="pages/reconcile.lua" data-region="reconcile">-- loading pages/reconcile.lua…</pre>
+      <p class="px-5 py-4 border-t border-rule text-[14px] leading-[1.55] text-muted">
+        Fetched from the same file the engine just mounted, not a copy. The rest of the file is table UI that renders these results.
+      </p>
+    </div>
+  </section>
+</div>

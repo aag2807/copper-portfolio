@@ -1,0 +1,74 @@
+<div class="pt-8 pb-14 flex flex-col gap-6" data-lua-playground>
+  <div class="flex items-center gap-2 mono-sm tracking-[.1em]">
+    <a href="/workshop" class="hover:text-accent transition-colors">← Workshop</a>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] gap-4 lg:gap-12 items-end">
+    <div>
+      <div class="eyebrow mb-4">Live demo · Lua on WASM</div>
+      <h1 class="h3">Lua playground</h1>
+    </div>
+    <p class="text-[15px] leading-[1.6] text-muted max-w-[56ch]">
+      This is Lua 5.4 compiled to WebAssembly, running in your browser. Edit the code and run it.
+      The presets are the real modules behind <a href="/counter" class="text-accent underline underline-offset-2 decoration-1 hover:text-ink">/counter</a>
+      and <a href="/todos" class="text-accent underline underline-offset-2 decoration-1 hover:text-ink">/todos</a>;
+      how the runtime works is on <a href="/work/web" class="text-accent underline underline-offset-2 decoration-1 hover:text-ink">/work/web</a>.
+    </p>
+  </div>
+
+  <section class="rule-grid grid-cols-1 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
+    <!-- Editor -->
+    <div class="flex flex-col min-w-0">
+      <div class="flex flex-wrap items-center justify-between gap-3 px-4 py-3 border-b border-rule">
+        <div class="pg-presets" role="group" aria-label="Presets">
+          <button type="button" class="pg-preset" data-pg-preset="counter" aria-pressed="true">Counter</button>
+          <button type="button" class="pg-preset" data-pg-preset="todos" aria-pressed="false">Todos</button>
+          <button type="button" class="pg-preset" data-pg-preset="hello" aria-pressed="false">Hello, Lua</button>
+          <button type="button" class="pg-preset" data-pg-preset="ledger" aria-pressed="false">Ledger</button>
+        </div>
+        <div class="flex items-center gap-2">
+          <button type="button" class="btn btn-sm btn-ghost !py-2.5" data-pg-reset title="Restore the original example">Reset example</button>
+          <button type="button" class="btn btn-sm btn-ink !py-2.5" data-pg-run title="Run (Ctrl+Enter)">Run <span class="pg-kbd">Ctrl ↵</span></button>
+        </div>
+      </div>
+      <div class="pg-editor">
+        <pre class="pg-gutter" data-pg-gutter aria-hidden="true">1</pre>
+        <textarea class="pg-src" data-pg-editor spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off"
+          aria-label="Lua source" aria-describedby="pg-help" disabled>-- loading the Lua engine…</textarea>
+      </div>
+      <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 py-2.5 border-t border-rule mono-sm">
+        <span><span data-pg-file>pages/counter.lua</span> · <span data-pg-saved>Unmodified</span></span>
+        <span id="pg-help">Tab indents · Esc then Tab leaves the editor</span>
+      </div>
+    </div>
+
+    <!-- Preview + console -->
+    <div class="flex flex-col min-w-0">
+      <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-5 py-3.5 border-b border-rule label">
+        <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-accent" aria-hidden="true"></span>Preview</span>
+        <span class="normal-case tracking-[.06em]" data-pg-status aria-live="polite">Loading the engine…</span>
+      </div>
+      <div id="sandbox" class="pg-sandbox font-mono"></div>
+      <div class="flex items-center justify-between gap-4 px-5 py-3 border-y border-rule label">
+        <span>Console</span>
+        <button type="button" class="normal-case tracking-[.06em] hover:text-accent transition-colors" data-pg-clear>Clear</button>
+      </div>
+      <div class="pg-console" data-pg-console role="log" aria-label="Console output"></div>
+    </div>
+  </section>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 pt-2">
+    <div class="ruled">
+      <div class="label mb-2.5">A fresh engine per run</div>
+      <p class="text-[14px] leading-[1.6] text-muted">Every Run closes the previous Lua state and boots a new one with <code class="ic">h.lua</code> and <code class="ic">reactive.lua</code> already mounted, so <code class="ic">require</code> works as it does on the site.</p>
+    </div>
+    <div class="ruled">
+      <div class="label mb-2.5">Loops are stopped</div>
+      <p class="text-[14px] leading-[1.6] text-muted">A <code class="ic">debug.sethook</code> count hook stops top-level code after 20 million instructions; click handlers get 1.5 s each. Try <code class="ic">while true do end</code>.</p>
+    </div>
+    <div class="ruled">
+      <div class="label mb-2.5">The same bridge</div>
+      <p class="text-[14px] leading-[1.6] text-muted"><code class="ic">dom.mount(root, "#app")</code> lands in the preview pane, so the counter and todo modules run here unmodified. The runner is <a href="/static/lua/pages/playground.lua" class="text-accent hover:text-ink">pages/playground.lua</a>.</p>
+    </div>
+  </div>
+</div>

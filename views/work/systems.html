@@ -1,9 +1,9 @@
 <!-- Hero -->
 <section class="pt-12 pb-10 lg:pt-[66px] border-b border-rule">
-  <a href="/work" class="mono-sm tracking-[.14em] hover:text-accent transition-colors">← 02_WORK</a>
+  <a href="/work" class="mono-sm tracking-[.14em] hover:text-accent transition-colors">← Work</a>
   <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] gap-8 lg:gap-12 items-end mt-7">
     <div>
-      <div class="eyebrow text-accent mb-5">[0x02] SYSTEMS // FRAMEWORKS · LANGUAGES</div>
+      <div class="eyebrow text-accent mb-5">Systems · frameworks and languages</div>
       <h1 class="display max-w-[20ch]">From the socket up.</h1>
     </div>
     <p class="lede-muted">
@@ -12,17 +12,17 @@
     </p>
   </div>
   <div class="rule-grid grid-cols-2 lg:grid-cols-4 mt-11">
-    <div class="p-5"><div class="stat text-accent">~2,800</div><div class="label mt-2.5 leading-[1.5]">LINES OF C<br />src/, .c + .h</div></div>
-    <div class="p-5"><div class="stat">20</div><div class="label mt-2.5 leading-[1.5]">HTTP ROUTES<br />registered, 4 are 301s</div></div>
+    <div class="p-5"><div class="stat text-accent">~3,500</div><div class="label mt-2.5 leading-[1.5]">LINES OF C<br />src/, .c + .h</div></div>
+    <div class="p-5"><div class="stat">21</div><div class="label mt-2.5 leading-[1.5]">HTTP ROUTES<br />registered, 4 are 301s</div></div>
     <div class="p-5"><div class="stat">6</div><div class="label mt-2.5 leading-[1.5]">TEMPLATE<br />directives</div></div>
-    <div class="p-5"><div class="stat">0</div><div class="label mt-2.5 leading-[1.5]">FRAMEWORK DEPS<br />libcurl for outbound email</div></div>
+    <div class="p-5"><div class="stat">0</div><div class="label mt-2.5 leading-[1.5]">FRAMEWORK DEPS<br />libcurl for email · zlib for gzip</div></div>
   </div>
 </section>
 
 <!-- Router source -->
 <section class="rule-grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)] mt-11">
   <div class="p-7 lg:p-[34px_30px] flex flex-col">
-    <div class="label">01 // LIVE_SOURCE</div>
+    <div class="label">Live source</div>
     <h2 class="h3 mt-[18px] max-w-[22ch]">src/router.c — thread-safe pattern matching.</h2>
     <p class="body-muted mt-4 max-w-[42ch]">
       Literal routes short-circuit on <code class="ic">strcmp</code>. Parameterised routes tokenise both pattern and
@@ -81,7 +81,7 @@
 
 <!-- Pipeline + directives -->
 <section class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.45fr)] gap-8 lg:gap-14 py-12 lg:py-[60px] border-b border-rule">
-  <div><h2 class="label sec-label">02 // REQUEST_PIPELINE</h2></div>
+  <div><h2 class="label sec-label">Request pipeline</h2></div>
   <div>
     <h3 class="h3 max-w-[26ch]">Five stages, each one a file you can read.</h3>
     <div class="rule-grid grid-cols-2 sm:grid-cols-5 mt-7">
@@ -92,7 +92,7 @@
       <div class="p-4 text-center col-span-2 sm:col-span-1"><div class="font-mono text-[12px] text-accent">view</div><div class="label mt-1.5 tracking-[.08em]">render + layout</div></div>
     </div>
     <div class="mt-8">
-      <h4 class="label mb-3">TEMPLATE_DIRECTIVES (6)</h4>
+      <h4 class="label mb-3">Template directives (6)</h4>
       <div class="flex flex-col">
         <div class="kv"><span class="!text-accent">&#123;&#123; key &#125;&#125;</span><span class="text-muted">interpolate, HTML-escaped</span></div>
         <div class="kv"><span class="!text-accent">&#123;&#123;&#123; key &#125;&#125;&#125;</span><span class="text-muted">interpolate raw</span></div>
@@ -107,28 +107,28 @@
 
 <!-- Adjacent systems -->
 <section class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.45fr)] gap-8 lg:gap-14 py-12 lg:py-[60px] border-b border-rule">
-  <div><h2 class="label sec-label">03 // ADJACENT_SYSTEMS</h2></div>
+  <div><h2 class="label sec-label">Adjacent systems</h2></div>
   <div class="flex flex-col gap-8">
     <div class="ruled">
       <div class="flex items-baseline justify-between gap-3">
-        <div class="flex items-baseline gap-3.5"><span class="font-mono text-[11px] tracking-[.12em] text-accent">[0x02]</span><h3 class="h4">Cobre — Razor-pages-inspired web framework in C</h3></div>
-        <span class="label st-wip shrink-0">IN_DEV</span>
+        <div class="flex items-baseline gap-3.5"><span class="font-mono text-[11px] tracking-[.12em] text-accent">01</span><h3 class="h4">Cobre — Razor-pages-inspired web framework in C</h3></div>
+        <span class="label st-wip shrink-0">In development</span>
       </div>
       <p class="body-muted mt-3.5 max-w-[60ch]"><code class="ic">.cob</code> source files transpile to <code class="ic">.gen.c</code>, then compile to <code class="ic">.so</code> and hot-load. Arena allocator with a <code class="ic">Str</code> type, <code class="ic">goto cleanup</code> error handling, TOML config. The opinionated successor to c-copper.</p>
       <div class="flex flex-wrap gap-1.5 mt-4"><span class="tag tag-sm">C</span><span class="tag tag-sm">transpiler</span><span class="tag tag-sm">arena allocator</span><span class="tag tag-sm">.so hot-load</span></div>
     </div>
     <div class="ruled">
       <div class="flex items-baseline justify-between gap-3">
-        <div class="flex items-baseline gap-3.5"><span class="font-mono text-[11px] tracking-[.12em] text-accent">[0x03]</span><h3 class="h4">Lunar — statically-typed superset of Lua</h3></div>
-        <span class="label st-live shrink-0">ACTIVE</span>
+        <div class="flex items-baseline gap-3.5"><span class="font-mono text-[11px] tracking-[.12em] text-accent">02</span><h3 class="h4">Lunar — statically-typed superset of Lua</h3></div>
+        <span class="label st-live shrink-0">Active</span>
       </div>
       <p class="body-muted mt-3.5 max-w-[60ch]">Compiler, LSP, bundler, test framework — all in Go. TypeScript-for-Lua, end to end. Types on top of Lua semantics, so a codebase that outgrows plain Lua stays readable for the next person.</p>
-      <div class="flex flex-wrap gap-1.5 mt-4 items-center"><span class="tag tag-sm">Go</span><span class="tag tag-sm">compiler</span><span class="tag tag-sm">LSP</span><span class="tag tag-sm">bundler</span><a href="https://github.com/aag2807/lunar" target="_blank" rel="noreferrer" class="tag tag-sm tag-accent hover:bg-accent hover:text-white transition-colors">source →</a></div>
+      <div class="flex flex-wrap gap-1.5 mt-4 items-center"><span class="tag tag-sm">Go</span><span class="tag tag-sm">compiler</span><span class="tag tag-sm">LSP</span><span class="tag tag-sm">bundler</span><a href="https://github.com/aag2807/lunar" target="_blank" rel="noreferrer" class="tag tag-sm tag-accent hover:bg-accent hover:text-on-accent transition-colors">source →</a></div>
     </div>
     <div class="ruled">
       <div class="flex items-baseline justify-between gap-3">
-        <div class="flex items-baseline gap-3.5"><span class="font-mono text-[11px] tracking-[.12em] text-muted">[0x04]</span><h3 class="h4">Axon — self-hosted LLM gateway</h3></div>
-        <span class="label st-off shrink-0">ARCHIVED</span>
+        <div class="flex items-baseline gap-3.5"><span class="font-mono text-[11px] tracking-[.12em] text-muted">03</span><h3 class="h4">Axon — self-hosted LLM gateway</h3></div>
+        <span class="label st-off shrink-0">Archived</span>
       </div>
       <p class="body-muted mt-3.5 max-w-[60ch]">First pass at an on-premise LLM gateway in C#. Routing, request shaping, prompt template layering. Useful exercise in API surface design and provider abstraction; stays in the archive.</p>
       <div class="flex flex-wrap gap-1.5 mt-4"><span class="tag tag-sm">C#</span><span class="tag tag-sm">gateway</span><span class="tag tag-sm">predecessor</span></div>
